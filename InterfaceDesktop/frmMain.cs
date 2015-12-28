@@ -2,9 +2,9 @@
 using System.Net; // Comunicação web
 using System.Text; // Codificação de texto
 using System.Windows.Forms; // Formulários
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Data.SQLite;
+using Newtonsoft.Json; // JSON
+using System.Collections.Generic; // Variáveis anonimas (json)
+using System.Data.SQLite; // Bancos de dados
 
 namespace InterfaceDesktop
 {

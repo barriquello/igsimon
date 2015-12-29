@@ -1,18 +1,18 @@
 ﻿using System;
 namespace InterfaceDesktop
 {
-	// Utilizado em conjunto com a biblioteca para a des-serialização de strings JSON
-    class Feeds
-    {		
+    // Utilizado em conjunto com a biblioteca para a des-serialização de strings JSON
+    class Feed
+    {
         public string id { get; set; }
         public string name { get; set; }
         public string tag { get; set; }
     }
 
-    class Registro
+  /*  class Registro
     {
         public int horarioUnix { get; set; }
-        public DateTime Horario ()
+        public DateTime Horario()
         {
             return Uteis.Unix2time(horarioUnix);
         }
@@ -28,22 +28,21 @@ namespace InterfaceDesktop
         public float No { get; set; }
         public float To { get; set; }
         public float Te { get; set; }
-    }
+    }//*/
 
-    /// <summary>Índices das variáveis no servidor</summary>
-    class Indices
+    // Converte um registro CSV em DateTime e float
+    class RegistroCSV
     {
-        public static string P = "0";
-        public static string Q = "0";
-        public static string S = "0";
-        public static string Va = "0";
-        public static string Vb = "0";
-        public static string Vc = "0";
-        public static string Ia = "0";
-        public static string Ib = "0";
-        public static string Ic = "0";
-        public static string No = "0";
-        public static string To = "0";
-        public static string Te = "0";
+        public static string Time { get; set; }
+        public static string Valor { get; set; }
+        public static DateTime time()
+        {
+            return Uteis.Unix2time(Convert.ToInt32(Time));
+        }
+        public static float valor()
+        {
+            return Convert.ToSingle(Valor);
+        }
+        
     }
 }

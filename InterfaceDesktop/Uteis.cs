@@ -21,36 +21,36 @@ namespace InterfaceDesktop
                 SB.Append(md5Hash[md5Hash.Length - ii - 1].ToString("X2"));
             return SB.ToString();
         }
-		/// <summary>Converte Horário em horário Unix</summary>
+        /// <summary>Converte Horário em horário Unix</summary>
         public static Int32 Time2Unix(DateTime Horario)
         {
             return (Int32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
-		/// <summary>Converte horário Unix em horário</summary>
+        /// <summary>Converte horário Unix em horário</summary>
         public static DateTime Unix2time(Int32 Unix)
         {
             return new DateTime(1970, 1, 1).AddSeconds(Unix);
         }
 
     }
-	// Classe para manipular o banco de dados SQLite
+    // Classe para manipular o banco de dados SQLite
     class ComandoSQL
     {
-		// Comnado SQL INSERT
+        // Comnado SQL INSERT
         public static void INSERT(string strSQL)
         {
-			// Abre uma conexão com o banco de dados
+            // Abre uma conexão com o banco de dados
             using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
             {
                 Con.Open();
-				//Cria um comando virtual 
+                //Cria um comando virtual 
                 using (SQLiteCommand SQLiteComando = new SQLiteCommand(strSQL, Con))
                 {
-					// Executa o comando SQL espeficidado
+                    // Executa o comando SQL espeficidado
                     SQLiteComando.ExecuteNonQuery();
                 }
-				// Encerra a conexão com o banco de dados
-				Con.Close();
+                // Encerra a conexão com o banco de dados
+                Con.Close();
             }
         }
 
@@ -78,6 +78,4 @@ namespace InterfaceDesktop
             sqlConexao.Close();
         }
     }
-
-
 }

@@ -12,7 +12,7 @@ namespace InterfaceDesktop
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-			// Salva as configurações
+            // Salva as configurações
             ComandoSQL.INSERT("INSERT INTO " + Global.TabelaConfig +
                 " (Servidor, Username, " +
                 "Node_P, Node_Q, Node_S, " +
@@ -31,14 +31,14 @@ namespace InterfaceDesktop
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-			// Apenas encerra o formulário
+            // Apenas encerra o formulário
             this.Close();
         }
 
         private void btnAddUser_Click(object sender, EventArgs e)
         {
             bool erro = false;
-			// Verifica a senha (ou se existe algum)
+            // Verifica a senha (ou se existe algum)
             if ((Uteis.getMD5(txtSenhaAntiga.Text) == Global.Senha) | !Global.tabPage1)
             {
                 // Verifica o comprimento do nome de usuário
@@ -52,7 +52,7 @@ namespace InterfaceDesktop
                         for (int jj = 0; jj < username.Length; jj++)
                         {
                             char letra = txtNome.Text[jj];
-							// caracteres: [a-z,A-Z,0-9]
+                            // caracteres: [a-z,A-Z,0-9]
                             erro |= (letra < 'a' | letra > 'z') & (letra < '0' | letra > '9') & (letra < 'A' | letra > 'Z');
                         }
                         if (!erro)
@@ -64,7 +64,7 @@ namespace InterfaceDesktop
                                 {
                                     // Adicionar novo registro
                                     // Comando para trocar senha (adicionar um novo usuário com o mesmo nome)
-									// Verifica se as senhas são idênticas
+                                    // Verifica se as senhas são idênticas
                                     if (txtSenha.Text == txtSenha2.Text)
                                     {
                                         Global.Senha = Uteis.getMD5(txtSenha.Text);
@@ -84,7 +84,7 @@ namespace InterfaceDesktop
                             else
                             {
                                 bool Existe = false;
-								// Verifica se existe o usuário
+                                // Verifica se existe o usuário
                                 string strComando = "SELECT * FROM " + Global.TabelaUsers +
                                     " WHERE Username ='" + txtNome.Text + "' LIMIT 0,1";
                                 using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))

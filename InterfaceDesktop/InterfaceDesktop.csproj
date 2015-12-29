@@ -135,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icone.ico" />
+    <None Include="RES\Verde.png" />
+    <None Include="RES\Amarelo.png" />
+    <None Include="RES\Vermelho.png" />
     <None Include="RES\Icone.ico" />
     <None Include="RES\ico256.ico" />
     <None Include="RES\ico128.ico" />

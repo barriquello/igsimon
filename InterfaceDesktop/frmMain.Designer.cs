@@ -43,11 +43,14 @@
             this.lblMensagens = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
+            this.picStatus = new System.Windows.Forms.PictureBox();
+            this.tmrGraficos = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -167,11 +170,26 @@
             this.lblHora.Size = new System.Drawing.Size(10, 17);
             this.lblHora.Text = " ";
             // 
-            // timer1
+            // tmrRelogio
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 250;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.tmrRelogio.Enabled = true;
+            this.tmrRelogio.Interval = 250;
+            this.tmrRelogio.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // picStatus
+            // 
+            this.picStatus.InitialImage = global::InterfaceDesktop.Properties.Resources.LogoRomagnole;
+            this.picStatus.Location = new System.Drawing.Point(441, 69);
+            this.picStatus.Name = "picStatus";
+            this.picStatus.Size = new System.Drawing.Size(41, 38);
+            this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picStatus.TabIndex = 4;
+            this.picStatus.TabStop = false;
+            // 
+            // tmrGraficos
+            // 
+            this.tmrGraficos.Interval = 5000;
+            this.tmrGraficos.Tick += new System.EventHandler(this.tmrGraficos_Tick);
             // 
             // frmMain
             // 
@@ -179,14 +197,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(814, 634);
+            this.Controls.Add(this.picStatus);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.txtLoad);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimumSize = new System.Drawing.Size(822, 495);
             this.Icon = global::InterfaceDesktop.Properties.Resources.ico16;
+            this.MinimumSize = new System.Drawing.Size(822, 495);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMain";
@@ -196,6 +215,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,6 +234,8 @@
         private System.Windows.Forms.ToolStripStatusLabel lblMensagens;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel lblHora;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer tmrRelogio;
+        private System.Windows.Forms.PictureBox picStatus;
+        private System.Windows.Forms.Timer tmrGraficos;
     }
 }

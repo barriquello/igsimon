@@ -19,22 +19,22 @@ namespace InterfaceDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
+            txtLoad.Text = GetCSV(Global.strComandoCSV, new DateTime(2015, 12, 29, 17, 10, 0), DateTime.Now, Global.striIa);
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-			// Botão "Configurações"
+            // Botão "Configurações"
             Form frmconfig1 = new frmConfig();
             this.Hide();
             frmconfig1.ShowDialog();
             this.Show();
-
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-			// Lê as configurações armazenadas no banco de dados
+            // Lê as configurações armazenadas no banco de dados
             using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
             {
                 Con.Open();
@@ -63,8 +63,8 @@ namespace InterfaceDesktop
                     {
                         frmConfig Config = new frmConfig();
                         Config.ShowDialog();
-						// Reinicia a rotina para [tentar] carregar as configurações
-                        frmMain_Load(new object(),new EventArgs());
+                        // Reinicia a rotina para [tentar] carregar as configurações
+                        frmMain_Load(new object(), new EventArgs());
                         return;
                     }
                 }
@@ -76,7 +76,7 @@ namespace InterfaceDesktop
             {
                 Requisicao = Servidor.DownloadString(Requisicao);
                 txtLoad.Text = Requisicao;
-                List<Feeds> Fdd = JsonConvert.DeserializeObject<List<Feeds>>(Requisicao);
+                List<Feed> Fdd = JsonConvert.DeserializeObject<List<Feed>>(Requisicao);
                 for (int kk = 0; kk < Fdd.Count; kk++)
                 {
                     if (Fdd[kk].name == Global.strP) Global.striP = Fdd[kk].id;
@@ -95,17 +95,47 @@ namespace InterfaceDesktop
             }
             catch (Exception Erro)
             {
-				// Trocar para um alerta na barra inferior
+                // Trocar para um alerta na barra inferior
                 MessageBox.Show(Erro.Message);
             }
-
+            // Verifica se alguma variável não está associada a um índice
+            if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
+            {
+                MessageBox.Show("Verifique os nomes das variáveis");
+                frmConfig Config = new frmConfig();
+                Config.ShowDialog();
+                frmMain_Load(sender, e);
+                return;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-			// Relógio
+            // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
         }
 
+        private void tmrGraficos_Tick(object sender, EventArgs e)
+        {
+            string strResquisicao = Global.Servidor + "";
+
+        }
+
+        /// <summary>Retorna um arquivo CSV</summary>
+        /// <param name="Comando">Comando para o servidor</param>
+        /// <param name="Inicio">Tempo inicial</param>
+        /// <param name="Fim">Tempo final</param>
+        /// <param name="ID">ID do feed</param>
+        /// <returns>String CSV</returns>
+        private string GetCSV(string Comando, DateTime Inicio, DateTime Fim, string ID)
+        {
+            string strComando = Global.Servidor + Comando + ID +
+                "&start=" + Uteis.Time2Unix(Inicio) +
+                "&end=" + Uteis.Time2Unix(Fim) +
+                "&apikey=" + Global.APIKey + "&interval=30&timeformat=0";
+            Clipboard.SetText(strComando);
+            WebClient Web = new WebClient();
+            return Web.DownloadString(strComando);
+        }
     }
 }

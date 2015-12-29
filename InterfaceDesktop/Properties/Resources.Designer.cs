@@ -61,6 +61,16 @@ namespace InterfaceDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Amarelo {
+            get {
+                object obj = ResourceManager.GetObject("Amarelo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon ico16 {
@@ -76,6 +86,26 @@ namespace InterfaceDesktop.Properties {
         internal static System.Drawing.Bitmap LogoRomagnole {
             get {
                 object obj = ResourceManager.GetObject("LogoRomagnole", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Verde {
+            get {
+                object obj = ResourceManager.GetObject("Verde", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Vermelho {
+            get {
+                object obj = ResourceManager.GetObject("Vermelho", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

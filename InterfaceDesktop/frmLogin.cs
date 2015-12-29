@@ -19,7 +19,7 @@ namespace InterfaceDesktop
             Global.Senha = Uteis.getMD5(txtSenha.Text);
             // Limpa os campos "Senha" para o caso de a senha estar incorreta
             txtSenha.Text = "";
-			// Procura pelo nome de usuário no banco de dados
+            // Procura pelo nome de usuário no banco de dados
             string strComandoSQL = "SELECT * FROM " + Global.TabelaUsers +
                 " WHERE Username='" + txtUsername.Text + "' ORDER BY ID DESC LIMIT 0,1";
 
@@ -30,7 +30,7 @@ namespace InterfaceDesktop
                 using (SQLiteCommand Comando = new SQLiteCommand(strComandoSQL, Con))
                 {
                     SQLiteDataReader Leitor = Comando.ExecuteReader();
-                    
+
                     if (Leitor.Read())
                     {
                         if (Convert.ToString(Leitor["Senha"]) == Global.Senha)

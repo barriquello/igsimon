@@ -5,11 +5,26 @@ namespace InterfaceDesktop
     class Global
     {
         #region TabPage no formulário configurações
-		// Flag para indicar somente a obrigatoriedade da criação de um usuário
+        // Flag para indicar somente a obrigatoriedade da criação de um usuário
         public static bool tabPage1 = true;
-		// Flag para indicar a configuração obrigatória
+        // Flag para indicar a configuração obrigatória
         public static bool tabPage2 = true;
         #endregion
+
+        #region Comandos para o servidor
+        /// <summary>Comando para obter um arquivo CSV</summary>
+        public static string strComandoCSV = "/feed/csvexport.json?id=";
+
+
+        #endregion
+
+        #region Informações uteis
+        // Separador de campo do CSV
+        public string SeparadorCSV = "\t";
+        // Linha de cabeçalho no CSV
+        public bool CabecalhoCSV = true;
+        #endregion
+
 
         #region Nome das variáveis
         /// <summary>Nome da variável no servidor - Potência ativa</summary>

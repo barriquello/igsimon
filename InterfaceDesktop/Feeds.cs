@@ -1,8 +1,9 @@
 ﻿using System;
 namespace InterfaceDesktop
 {
+	// Utilizado em conjunto com a biblioteca para a des-serialização de strings JSON
     class Feeds
-    {
+    {		
         public string id { get; set; }
         public string name { get; set; }
         public string tag { get; set; }
@@ -21,7 +22,7 @@ namespace InterfaceDesktop
         public float Va { get; set; }
         public float Vb { get; set; }
         public float Vc { get; set; }
-        public float Ia{ get; set; }
+        public float Ia { get; set; }
         public float Ib { get; set; }
         public float Ic { get; set; }
         public float No { get; set; }

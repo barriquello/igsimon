@@ -17,18 +17,15 @@ namespace InterfaceDesktop
         {
             Global.Username = txtUsername.Text;
             Global.Senha = Uteis.getMD5(txtSenha.Text);
-            // Limpa os campos "Senha"
+            // Limpa os campos "Senha" para o caso de a senha estar incorreta
             txtSenha.Text = "";
-
+			// Procura pelo nome de usuário no banco de dados
             string strComandoSQL = "SELECT * FROM " + Global.TabelaUsers +
                 " WHERE Username='" + txtUsername.Text + "' ORDER BY ID DESC LIMIT 0,1";
-            //using (SQLiteCommand Comando = new SQLiteCommand(ComandoSQL, Con))
-            //{
 
             bool Erro = false;
             using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
             {
-
                 Con.Open();
                 using (SQLiteCommand Comando = new SQLiteCommand(strComandoSQL, Con))
                 {
@@ -38,7 +35,7 @@ namespace InterfaceDesktop
                     {
                         if (Convert.ToString(Leitor["Senha"]) == Global.Senha)
                         {
-                            //Login Permitido
+                            //Login Permitido Erro = false;
                         }
                         else
                         {
@@ -74,7 +71,7 @@ namespace InterfaceDesktop
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            // Cria o banco de dados e as tabelas se não existir
+            // Cria o banco de dados e as tabelas se não existirem
             ComandoSQL.CriarBancoDeDados();
             // Verifica se existe um usuário cadastrado
             string comandoSQL = ("SELECT * FROM " + Global.TabelaUsers);// + " ORDER BY ID DESC LIMIT 0,1");

@@ -19,44 +19,12 @@ namespace InterfaceDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            #region teste1
-            // testes
-
-            Int32 Agora = Uteis.Time2Unix(DateTime.UtcNow); //((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds));
-            Int32 Antes = Uteis.Time2Unix(new DateTime(2015, 12, 21)); //((Int32)(new DateTime(2015, 12, 22).Subtract(new DateTime(1970, 1, 1)).TotalSeconds));
-            //http://localhost/feed/csvexport.json?id=2&start=1450995509&end=1451081909&interval=1&timeformat=0
-            // string Comando = "http://localhost/feed/csvexport.json?id=3&start=" +
-            //     Antes.ToString() + "&end=" +
-            //     Agora.ToString() + "&interval=1&timeformat=0" +
-            string Comando = "http://localhost/feed/list.json" +
-                "&apikey=00857aea31e48a2564fb02664ddfc853";//72d5d09d5ed08c6743d2c71006f3c9bd";
-            //Console.WriteLine(Comando);
-            try
-            {
-                Comando = Encoding.Default.GetString(Servidor.DownloadData(Comando));
-                Comando = Comando.Replace("\n", "\r\n");
-                txtLoad.Text = Comando;
-
-                List<Feeds> Fdd =
-                    JsonConvert.DeserializeObject<List<Feeds>>(Comando);
-                Console.WriteLine(Fdd);
-                Console.WriteLine("Nome do nó\tíndice");
-                // for (int kk = 0; kk < Fdd.Count; kk++)
-                //    {
-                //         Console.WriteLine(Fdd[kk].name + "\t\t\t" + Fdd[kk].id);
-                //     }
-            }
-            catch (Exception Erro)
-            {
-                lblMensagens.Text = Erro.Message;
-            }
-
-            #endregion
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+			// Botão "Configurações"
             Form frmconfig1 = new frmConfig();
             this.Hide();
             frmconfig1.ShowDialog();
@@ -66,7 +34,7 @@ namespace InterfaceDesktop
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-
+			// Lê as configurações armazenadas no banco de dados
             using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
             {
                 Con.Open();
@@ -94,13 +62,10 @@ namespace InterfaceDesktop
                     else
                     {
                         frmConfig Config = new frmConfig();
-                        //                                this.Hide();
                         Config.ShowDialog();
-
+						// Reinicia a rotina para [tentar] carregar as configurações
                         frmMain_Load(new object(),new EventArgs());
-                        // encerra rotina
                         return;
-                        //                                this.Show
                     }
                 }
             }
@@ -110,12 +75,8 @@ namespace InterfaceDesktop
             try
             {
                 Requisicao = Servidor.DownloadString(Requisicao);
-                //Encoding.Default.GetString(Servidor.DownloadData(Requisicao));
-                // Comando = Comando.Replace("\n", "\r\n");
                 txtLoad.Text = Requisicao;
                 List<Feeds> Fdd = JsonConvert.DeserializeObject<List<Feeds>>(Requisicao);
-                //Console.WriteLine(Fdd);
-                //Console.WriteLine("Nome do nó\tíndice");
                 for (int kk = 0; kk < Fdd.Count; kk++)
                 {
                     if (Fdd[kk].name == Global.strP) Global.striP = Fdd[kk].id;
@@ -130,12 +91,11 @@ namespace InterfaceDesktop
                     if (Fdd[kk].name == Global.strNo) Global.striNo = Fdd[kk].id;
                     if (Fdd[kk].name == Global.strTo) Global.striTo = Fdd[kk].id;
                     if (Fdd[kk].name == Global.strTe) Global.striTe = Fdd[kk].id;
-                    //Console.WriteLine(Fdd[kk].name + "\t\t\t" + Fdd[kk].id);
-                    //Text += Fdd[kk].name + " ";
                 }
             }
             catch (Exception Erro)
             {
+				// Trocar para um alerta na barra inferior
                 MessageBox.Show(Erro.Message);
             }
 
@@ -143,6 +103,7 @@ namespace InterfaceDesktop
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+			// Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
         }
 

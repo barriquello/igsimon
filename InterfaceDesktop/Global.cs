@@ -5,43 +5,39 @@ namespace InterfaceDesktop
     class Global
     {
         #region TabPage no formulário configurações
+		// Flag para indicar somente a obrigatoriedade da criação de um usuário
         public static bool tabPage1 = true;
+		// Flag para indicar a configuração obrigatória
         public static bool tabPage2 = true;
         #endregion
 
-        #region Acessório SQLite
-        //public static SQLiteConnection SQLiteConn;
-        //public static SQLiteCommand SQLiteComando;
-
-        #endregion
-
         #region Nome das variáveis
-        /// <summary>String Potência ativa</summary>
+        /// <summary>Nome da variável no servidor - Potência ativa</summary>
         public static string strP = "Node:1: P";
-        /// <summary>String Potência reativa</summary>
+        /// <summary>Nome da variável no servidor - Potência reativa</summary>
         public static string strQ = "Node:1: Q";
-        /// <summary>String Potência aparente</summary>
+        /// <summary>Nome da variável no servidor - Potência aparente</summary>
         public static string strS = "Node:1: S";
-        /// <summary>String Va</summary>
+        /// <summary>Nome da variável no servidor - Va</summary>
         public static string strVa = "Node:1: Va";
-        /// <summary>String Vb</summary>
+        /// <summary>Nome da variável no servidor - Vb</summary>
         public static string strVb = "Node:1: Vb";
-        /// <summary>String Vc</summary>
+        /// <summary>Nome da variável no servidor - Vc</summary>
         public static string strVc = "Node:1: Vc";
-        /// <summary>String Ia</summary>
+        /// <summary>Nome da variável no servidor - Ia</summary>
         public static string strIa = "Node:1: Ia";
-        /// <summary>String Ib</summary>
+        /// <summary>Nome da variável no servidor - Ib</summary>
         public static string strIb = "Node:1: Ib";
-        /// <summary>String Ic</summary>
+        /// <summary>Nome da variável no servidor - Ic</summary>
         public static string strIc = "Node:1: Ic";
-        /// <summary>String Nível do óleo</summary>
+        /// <summary>Nome da variável no servidor - Nível do óleo</summary>
         public static string strNo = "Node:1: No";
-        /// <summary>String Temperatura do óleo</summary>
+        /// <summary>Nome da variável no servidor - Temperatura do óleo</summary>
         public static string strTo = "Node:1: To";
-        /// <summary>String Temeperatura dos enrolamentos</summary>
+        /// <summary>Nome da variável no servidor - Temeperatura dos enrolamentos</summary>
         public static string strTe = "Node:1: Te";
         #endregion
-        /// <summary>Buscar essas informações no servidor</summary>
+        /// <summary>índices das variáveis no servidor web - buscar essas informações no servidor</summary>
         #region Indices das variáveis
         public static string striP = "";
         public static string striQ = "";
@@ -60,7 +56,7 @@ namespace InterfaceDesktop
         #region Autenticação
         /// <summary>Nome de usuário para autenticação (local)</summary>
         public static string Username = "";
-        /// <summary>Senha para autenticação (local)</summary>
+        /// <summary>Senha para autenticação (criptografada) (local)</summary>
         public static string Senha = "";
         #endregion
 

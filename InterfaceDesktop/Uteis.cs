@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Data.SQLite;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Windows.Forms;
+using System.Data.SQLite; // Banco de dados
+using System.IO; // Sistema de arquivos
+using System.Security.Cryptography; // sistema de criptografia
+using System.Text; //Codificação de texto
+using System.Windows.Forms; //Formulários e controles
 namespace InterfaceDesktop
 {
     class Uteis
     {
-        /// <summary>
-        /// Algoritmo MD5
-        /// </summary>
+        /// <summary>Algoritmo MD5</summary>
         /// <param name="Input">Texto a ser criptografado</param>
         /// <returns>Texto criptografado</returns>
         public static string getMD5(string Input)
@@ -23,38 +21,36 @@ namespace InterfaceDesktop
                 SB.Append(md5Hash[md5Hash.Length - ii - 1].ToString("X2"));
             return SB.ToString();
         }
-
+		/// <summary>Converte Horário em horário Unix</summary>
         public static Int32 Time2Unix(DateTime Horario)
         {
             return (Int32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
+		/// <summary>Converte horário Unix em horário</summary>
         public static DateTime Unix2time(Int32 Unix)
         {
             return new DateTime(1970, 1, 1).AddSeconds(Unix);
         }
 
     }
-
+	// Classe para manipular o banco de dados SQLite
     class ComandoSQL
     {
- /*       public static SQLiteDataReader SELECT(string strSQL)
-        {
-            SQLiteConnection Con = new SQLiteConnection(Global.Conexao);
-            Con.Open();
-            return new SQLiteCommand(strSQL, Con).ExecuteReader(System.Data.CommandBehavior.CloseConnection);
-        }//*/
-
+		// Comnado SQL INSERT
         public static void INSERT(string strSQL)
         {
+			// Abre uma conexão com o banco de dados
             using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
             {
                 Con.Open();
-                using (
-                SQLiteCommand SQLiteComando = new SQLiteCommand(strSQL, Con))
+				//Cria um comando virtual 
+                using (SQLiteCommand SQLiteComando = new SQLiteCommand(strSQL, Con))
                 {
+					// Executa o comando SQL espeficidado
                     SQLiteComando.ExecuteNonQuery();
-                    Con.Close();
                 }
+				// Encerra a conexão com o banco de dados
+				Con.Close();
             }
         }
 

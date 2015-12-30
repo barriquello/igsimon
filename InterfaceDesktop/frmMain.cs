@@ -5,6 +5,7 @@ using System.Windows.Forms; // Formulários
 using Newtonsoft.Json; // JSON
 using System.Collections.Generic; // Variáveis anonimas (json)
 using System.Data.SQLite; // Bancos de dados
+using System.Windows.Forms.DataVisualization.Charting; //Gráficos
 
 namespace InterfaceDesktop
 {
@@ -19,15 +20,36 @@ namespace InterfaceDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string strInformacoes = GetCSV(Global.strComandoCSV, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1), Global.striIa);
-            txtLoad.Text = strInformacoes;
-            if (strInformacoes.Length > 10)
+            // Pegar o "time" mais recente:
+            string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"","");
+            DateTime tTime = Uteis.Unix2time(Convert.ToInt32(strTime)); // Horário mais recente armazenado no servidor
+            lblMensagens.Text ="Último registro: "+ tTime.ToString();
+            chartTemperatura.Series.Clear();
+            chartTemperatura.ChartAreas.Clear();
+            chartTemperatura.ChartAreas.Add("teste");
+            //habilita o zoom
+            chartTemperatura.ChartAreas["teste"].CursorX.IsUserSelectionEnabled = true;
+            chartTemperatura.ChartAreas["teste"].CursorX.Interval = 0.001;
+
+            string[] strVariaveis = Global.strTodas();
+            string[] Indices = Global.striTodas();
+            for (int kk = 0; kk < strVariaveis.Length; kk++)
             {
-                List<RegistroCSV> Registros =
-                CSV2Matriz(strInformacoes);
-                foreach (RegistroCSV Reg in Registros)
+                Series srTeste = new Series(strVariaveis[kk]);
+                srTeste.ChartType = SeriesChartType.FastLine;//.StepLine;
+                srTeste.XValueType = ChartValueType.Time;
+
+                string strInformacoes = GetCSV(Global.strComandoCSV, DateTime.Now.AddDays(-1), tTime, Indices[kk]);
+                //txtLoad.Text = strInformacoes;
+                if (strInformacoes.Length > 10)
                 {
-                    textBox1.Text += Reg.time().ToString() + " , " + Reg.valor().ToString() + "\n";
+                    List<RegistroCSV> Registros =
+                    CSV2Matriz(strInformacoes);
+                    foreach (RegistroCSV Reg in Registros)
+                    {
+                        srTeste.Points.AddXY(Reg.time(), Reg.valor());
+                    }
+                    chartTemperatura.Series.Add(srTeste);
                 }
             }
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
@@ -146,13 +168,15 @@ namespace InterfaceDesktop
                 "&start=" + Uteis.Time2Unix(Inicio) +
                 "&end=" + Uteis.Time2Unix(Fim) +
                 "&apikey=" + Global.APIKey + "&interval=30&timeformat=0";
-            Clipboard.SetText(strComando);
+        //    Clipboard.SetText(strComando);
             WebClient Web = new WebClient();
             return Web.DownloadString(strComando);
         }
 
         private List<RegistroCSV> CSV2Matriz(string strCSV)
         {
+            char TerminadorDeLinha = '\n'; // \n (O CSV gerado pela página tem como terminador '\n' mas em outros casos pode ser '\r' ou '\r\n')
+            if (strCSV.Length < 2) return new List<RegistroCSV>();
             List<RegistroCSV> Registros = new List<RegistroCSV>();
 
             int inicio = 0;
@@ -165,12 +189,13 @@ namespace InterfaceDesktop
             {
                 do
                 {
-                    jj++;
-                } while ((!(strCSV[jj] == '\n')) & (jj < strCSV.Length - 1));
+                    jj++; // pula o caractere
+                } while ((!(strCSV[jj] == TerminadorDeLinha)) & (jj < strCSV.Length - 1)); 
             }
 
             while (jj < strCSV.Length - 1)
             {
+                // Primeiro campo
                 RegistroCSV Registro = new RegistroCSV();
                 inicio = ++jj;
                 while ((!(strCSV[jj] == Global.SeparadorCSV)) & (jj < strCSV.Length - 1))
@@ -179,7 +204,7 @@ namespace InterfaceDesktop
                 }
                 Registro.Time = strCSV.Substring(inicio, jj - inicio);
                 inicio = ++jj;
-                while ((!(strCSV[jj] == '\n')) & (jj < strCSV.Length - 1))
+                while ((!(strCSV[jj] == TerminadorDeLinha)) & (jj < strCSV.Length - 1))
                 {
                     jj++;
                 }

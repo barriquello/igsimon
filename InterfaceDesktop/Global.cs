@@ -51,6 +51,18 @@ namespace InterfaceDesktop
         public static string strTo = "Node:1: To";
         /// <summary>Nome da variável no servidor - Temeperatura dos enrolamentos</summary>
         public static string strTe = "Node:1: Te";
+        /// <summary>Função para gerar uma lista de variáveis</summary>
+        /// <returns></returns>
+        public static string[] strTodas()
+        {
+            return new string[] {strP,strQ, strS,strVa, strVb, strVc, strIa, strIb, strIc, strNo,strTo, strTe };
+        }
+        public static string[] striTodas()
+        {
+            return new string[] { striP, striQ, striS, striVa, striVb, striVc, striIa, striIb, striIc, striNo, striTo, striTe };
+        }
+
+
         #endregion
         /// <summary>índices das variáveis no servidor web - buscar essas informações no servidor</summary>
         #region Indices das variáveis

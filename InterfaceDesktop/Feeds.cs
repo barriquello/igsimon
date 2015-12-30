@@ -33,13 +33,13 @@ namespace InterfaceDesktop
     // Converte um registro CSV em DateTime e float
     class RegistroCSV
     {
-        public static string Time { get; set; }
-        public static string Valor { get; set; }
-        public static DateTime time()
+        public string Time { get; set; }
+        public string Valor { get; set; }
+        public  DateTime time()
         {
             return Uteis.Unix2time(Convert.ToInt32(Time));
         }
-        public static float valor()
+        public  float valor()
         {
             return Convert.ToSingle(Valor);
         }

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.txtLoad = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -46,6 +46,7 @@
             this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
             this.picStatus = new System.Windows.Forms.PictureBox();
             this.tmrGraficos = new System.Windows.Forms.Timer(this.components);
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -69,11 +70,11 @@
             this.txtLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLoad.Location = new System.Drawing.Point(373, 511);
+            this.txtLoad.Location = new System.Drawing.Point(14, 195);
             this.txtLoad.Multiline = true;
             this.txtLoad.Name = "txtLoad";
             this.txtLoad.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLoad.Size = new System.Drawing.Size(270, 98);
+            this.txtLoad.Size = new System.Drawing.Size(788, 98);
             this.txtLoad.TabIndex = 1;
             // 
             // button2
@@ -112,17 +113,17 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            legend3.Name = "Legend1";
+            this.chart1.Legends.Add(legend3);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chart1.Series.Add(series3);
             this.chart1.Size = new System.Drawing.Size(468, 148);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -179,9 +180,9 @@
             // picStatus
             // 
             this.picStatus.InitialImage = global::InterfaceDesktop.Properties.Resources.LogoRomagnole;
-            this.picStatus.Location = new System.Drawing.Point(441, 69);
+            this.picStatus.Location = new System.Drawing.Point(253, 343);
             this.picStatus.Name = "picStatus";
-            this.picStatus.Size = new System.Drawing.Size(41, 38);
+            this.picStatus.Size = new System.Drawing.Size(32, 32);
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picStatus.TabIndex = 4;
             this.picStatus.TabStop = false;
@@ -190,6 +191,18 @@
             // 
             this.tmrGraficos.Interval = 5000;
             this.tmrGraficos.Tick += new System.EventHandler(this.tmrGraficos_Tick);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(14, 12);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(788, 177);
+            this.textBox1.TabIndex = 1;
             // 
             // frmMain
             // 
@@ -200,6 +213,7 @@
             this.Controls.Add(this.picStatus);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.txtLoad);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -237,5 +251,6 @@
         private System.Windows.Forms.Timer tmrRelogio;
         private System.Windows.Forms.PictureBox picStatus;
         private System.Windows.Forms.Timer tmrGraficos;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

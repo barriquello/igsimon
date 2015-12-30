@@ -4,6 +4,13 @@ namespace InterfaceDesktop
 {
     class Global
     {
+        #region Informações uteis
+        // Separador de campo do CSV
+        public static char SeparadorCSV = ',';// '\t';
+        // Linha de cabeçalho no CSV
+        public static bool CabecalhoCSV = true;
+        #endregion
+
         #region TabPage no formulário configurações
         // Flag para indicar somente a obrigatoriedade da criação de um usuário
         public static bool tabPage1 = true;
@@ -16,13 +23,6 @@ namespace InterfaceDesktop
         public static string strComandoCSV = "/feed/csvexport.json?id=";
 
 
-        #endregion
-
-        #region Informações uteis
-        // Separador de campo do CSV
-        public string SeparadorCSV = "\t";
-        // Linha de cabeçalho no CSV
-        public bool CabecalhoCSV = true;
         #endregion
 
 

@@ -19,8 +19,18 @@ namespace InterfaceDesktop
 
         private void button1_Click(object sender, EventArgs e)
         {
-            txtLoad.Text = GetCSV(Global.strComandoCSV, new DateTime(2015, 12, 29, 17, 10, 0), DateTime.Now, Global.striIa);
-
+            string strInformacoes = GetCSV(Global.strComandoCSV, DateTime.Now.AddDays(-1), DateTime.Now.AddDays(1), Global.striIa);
+            txtLoad.Text = strInformacoes;
+            if (strInformacoes.Length > 10)
+            {
+                List<RegistroCSV> Registros =
+                CSV2Matriz(strInformacoes);
+                foreach (RegistroCSV Reg in Registros)
+                {
+                    textBox1.Text += Reg.time().ToString() + " , " + Reg.valor().ToString() + "\n";
+                }
+            }
+            //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -29,6 +39,7 @@ namespace InterfaceDesktop
             Form frmconfig1 = new frmConfig();
             this.Hide();
             frmconfig1.ShowDialog();
+            frmMain_Load(new object(), new EventArgs());
             this.Show();
         }
 
@@ -115,12 +126,14 @@ namespace InterfaceDesktop
             lblHora.Text = Convert.ToString(DateTime.Now);
         }
 
+        // Atualiza os gráficos
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
             string strResquisicao = Global.Servidor + "";
 
         }
 
+        // Esta rotina deve ser utilizada considerando um intervalo de tempo limitado
         /// <summary>Retorna um arquivo CSV</summary>
         /// <param name="Comando">Comando para o servidor</param>
         /// <param name="Inicio">Tempo inicial</param>
@@ -136,6 +149,44 @@ namespace InterfaceDesktop
             Clipboard.SetText(strComando);
             WebClient Web = new WebClient();
             return Web.DownloadString(strComando);
+        }
+
+        private List<RegistroCSV> CSV2Matriz(string strCSV)
+        {
+            List<RegistroCSV> Registros = new List<RegistroCSV>();
+
+            int inicio = 0;
+            int jj = 0; // Contador para percorrer a string
+            // Loop para percorrer toda a sequência de texto
+            // Tempo \t Valor
+            // 1234  \t 14.9
+            // Pular a linha de cabeçalho
+            if (Global.CabecalhoCSV)
+            {
+                do
+                {
+                    jj++;
+                } while ((!(strCSV[jj] == '\n')) & (jj < strCSV.Length - 1));
+            }
+
+            while (jj < strCSV.Length - 1)
+            {
+                RegistroCSV Registro = new RegistroCSV();
+                inicio = ++jj;
+                while ((!(strCSV[jj] == Global.SeparadorCSV)) & (jj < strCSV.Length - 1))
+                {
+                    jj++;
+                }
+                Registro.Time = strCSV.Substring(inicio, jj - inicio);
+                inicio = ++jj;
+                while ((!(strCSV[jj] == '\n')) & (jj < strCSV.Length - 1))
+                {
+                    jj++;
+                }
+                Registro.Valor = strCSV.Substring(inicio, jj - inicio).Replace('.', ',');
+                Registros.Add(Registro);
+            }
+            return Registros;
         }
     }
 }

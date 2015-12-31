@@ -136,6 +136,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icone.ico" />
+    <None Include="RES\Excel.png" />
+    <None Include="RES\Graficos.png" />
     <None Include="RES\Verde.png" />
     <None Include="RES\Amarelo.png" />
     <None Include="RES\Vermelho.png" />

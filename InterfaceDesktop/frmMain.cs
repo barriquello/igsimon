@@ -13,6 +13,8 @@ namespace InterfaceDesktop
     {
         /// <summary>Componente para comunicação via internet</summary>
         WebClient Servidor = new WebClient();
+        /// <summary>Data do registro mais recente no servidor</summary>
+        DateTime tUltimaAtualizacao;
         public frmMain()
         {
             InitializeComponent();
@@ -21,25 +23,25 @@ namespace InterfaceDesktop
         private void button1_Click(object sender, EventArgs e)
         {
             // Pegar o "time" mais recente:
-            string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"","");
-            DateTime tTime = Uteis.Unix2time(Convert.ToInt32(strTime)); // Horário mais recente armazenado no servidor
-            lblMensagens.Text ="Último registro: "+ tTime.ToString();
+            string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            tUltimaAtualizacao = Uteis.Unix2time(Convert.ToInt32(strTime)); // Horário mais recente armazenado no servidor
+            lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
             chartTemperatura.Series.Clear();
             chartTemperatura.ChartAreas.Clear();
             chartTemperatura.ChartAreas.Add("teste");
             //habilita o zoom
             chartTemperatura.ChartAreas["teste"].CursorX.IsUserSelectionEnabled = true;
-            chartTemperatura.ChartAreas["teste"].CursorX.Interval = 0.001;
+            chartTemperatura.ChartAreas["teste"].CursorX.Interval = 0.005;
 
             string[] strVariaveis = Global.strTodas();
             string[] Indices = Global.striTodas();
             for (int kk = 0; kk < strVariaveis.Length; kk++)
             {
                 Series srTeste = new Series(strVariaveis[kk]);
-                srTeste.ChartType = SeriesChartType.FastLine;//.StepLine;
-                srTeste.XValueType = ChartValueType.Time;
+                srTeste.ChartType = SeriesChartType.StepLine;
+                srTeste.XValueType = ChartValueType.Auto;
 
-                string strInformacoes = GetCSV(Global.strComandoCSV, DateTime.Now.AddDays(-1), tTime, Indices[kk]);
+                string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
                 //txtLoad.Text = strInformacoes;
                 if (strInformacoes.Length > 10)
                 {
@@ -52,10 +54,14 @@ namespace InterfaceDesktop
                     chartTemperatura.Series.Add(srTeste);
                 }
             }
+            foreach (Series Sr in chartTemperatura.Series)
+            {
+                Sr.XValueType = ChartValueType.Time;
+            }
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnConfig_Click(object sender, EventArgs e)
         {
             // Botão "Configurações"
             Form frmconfig1 = new frmConfig();
@@ -108,7 +114,6 @@ namespace InterfaceDesktop
             try
             {
                 Requisicao = Servidor.DownloadString(Requisicao);
-                txtLoad.Text = Requisicao;
                 List<Feed> Fdd = JsonConvert.DeserializeObject<List<Feed>>(Requisicao);
                 for (int kk = 0; kk < Fdd.Count; kk++)
                 {
@@ -151,7 +156,17 @@ namespace InterfaceDesktop
         // Atualiza os gráficos
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
-            string strResquisicao = Global.Servidor + "";
+            // Rotina para buscar novas informações no servidor e exibir na tela
+            tmrGraficos.Interval = 15000; // 15 segundos
+            tmrGraficos.Enabled = false;
+            string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            // Verifica atualizacao
+            if (!(Uteis.Unix2time(Convert.ToInt32(strTime)) == tUltimaAtualizacao))
+            {
+                // Atualiza as informações
+
+            }
+
 
         }
 
@@ -168,7 +183,7 @@ namespace InterfaceDesktop
                 "&start=" + Uteis.Time2Unix(Inicio) +
                 "&end=" + Uteis.Time2Unix(Fim) +
                 "&apikey=" + Global.APIKey + "&interval=30&timeformat=0";
-        //    Clipboard.SetText(strComando);
+            //    Clipboard.SetText(strComando);
             WebClient Web = new WebClient();
             return Web.DownloadString(strComando);
         }
@@ -190,7 +205,7 @@ namespace InterfaceDesktop
                 do
                 {
                     jj++; // pula o caractere
-                } while ((!(strCSV[jj] == TerminadorDeLinha)) & (jj < strCSV.Length - 1)); 
+                } while ((!(strCSV[jj] == TerminadorDeLinha)) & (jj < strCSV.Length - 1));
             }
 
             while (jj < strCSV.Length - 1)
@@ -212,6 +227,41 @@ namespace InterfaceDesktop
                 Registros.Add(Registro);
             }
             return Registros;
+        }
+
+        private void chkPotencia_CheckedChanged(object sender, EventArgs e)
+        {
+            chkP.Checked = chkQ.Checked = chkS.Checked = chkPotencia.Checked;
+        }
+
+        private void chkTensao_CheckedChanged(object sender, EventArgs e)
+        {
+            chkVa.Checked = chkVb.Checked = chkVc.Checked = chkTensao.Checked;
+        }
+
+        private void chkCorrente_CheckedChanged(object sender, EventArgs e)
+        {
+            chkIa.Checked = chkIb.Checked = chkIc.Checked = chkCorrente.Checked;
+        }
+
+        private void chkETC_CheckedChanged(object sender, EventArgs e)
+        {
+            chkNo.Checked = chkTo.Checked = chkTe.Checked = chkETC.Checked;
+        }
+
+        private void btnGraficos_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("falta essa parte ainda...");
+        }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("falta essa parte ainda...");
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("falta essa parte ainda...");
         }
     }
 }

@@ -15,6 +15,7 @@ namespace InterfaceDesktop
         WebClient Servidor = new WebClient();
         /// <summary>Data do registro mais recente no servidor</summary>
         DateTime tUltimaAtualizacao;
+
         public frmMain()
         {
             InitializeComponent();
@@ -28,10 +29,34 @@ namespace InterfaceDesktop
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
             chartTemperatura.Series.Clear();
             chartTemperatura.ChartAreas.Clear();
-            chartTemperatura.ChartAreas.Add("teste");
+            chartTemperatura.ChartAreas.Add("P");
+            chartTemperatura.ChartAreas.Add("V");
+            chartTemperatura.ChartAreas.Add("I");
+            chartTemperatura.ChartAreas.Add("T");
             //habilita o zoom
-            chartTemperatura.ChartAreas["teste"].CursorX.IsUserSelectionEnabled = true;
-            chartTemperatura.ChartAreas["teste"].CursorX.Interval = 0.005;
+            chartTemperatura.ChartAreas["T"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
+            chartTemperatura.ChartAreas["T"].CursorX.Interval =
+                chartTemperatura.ChartAreas["I"].CursorX.Interval =
+                chartTemperatura.ChartAreas["V"].CursorX.Interval =
+                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.05;
+            // Desabilita a escala no eixo X para quase todos os gráficos
+            chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
+                chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
+            // Posiciona as várias chartáreas:
+            int intTamanhoLegenda = 100;
+            float fLargura = 100f * (chartTemperatura.Width - intTamanhoLegenda) / (chartTemperatura.Width * 1f);
+            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 0, fLargura, 25));
+            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 25, fLargura, 25));
+            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 50, fLargura, 25));
+            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 75, fLargura, 25));
+            // Alinhamento das chartareas
+            chartTemperatura.ChartAreas["P"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["V"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
 
             string[] strVariaveis = Global.strTodas();
             string[] Indices = Global.striTodas();
@@ -51,6 +76,7 @@ namespace InterfaceDesktop
                     {
                         srTeste.Points.AddXY(Reg.time(), Reg.valor());
                     }
+                    srTeste.ChartArea = Global.strCategoria[kk];
                     chartTemperatura.Series.Add(srTeste);
                 }
             }
@@ -147,7 +173,7 @@ namespace InterfaceDesktop
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void timerRelogio_Tick(object sender, EventArgs e)
         {
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
@@ -157,18 +183,89 @@ namespace InterfaceDesktop
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
             // Rotina para buscar novas informações no servidor e exibir na tela
-            tmrGraficos.Interval = 15000; // 15 segundos
-            tmrGraficos.Enabled = false;
+            if (tmrGraficos.Interval != 5000)
+                button1_Click(new object(), new EventArgs());
+
+            tmrGraficos.Interval = 5000; // 15 segundos
+            // Atualiza os gráficos:
+
+
+            //tmrGraficos.Enabled = false; return;
             string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            DateTime NovaAtualizaco = Uteis.Unix2time(Convert.ToInt32(strTime));
             // Verifica atualizacao
-            if (!(Uteis.Unix2time(Convert.ToInt32(strTime)) == tUltimaAtualizacao))
+            if (!(NovaAtualizaco == tUltimaAtualizacao))
             {
+                string strP = "";
+                string strQ = "";
+                string strS = "";
+                string strVa = "";
+                string strVb = "";
+                string strVc = "";
+                string strIa = "";
+                string strIb = "";
+                string strIc = "";
+                string strNo = "";
+                string strTo = "";
+                string strTe = "";
                 // Atualiza as informações
+                try
+                {
+                    tUltimaAtualizacao = NovaAtualizaco;
+                    strP = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "").Replace(".", ",");
+                    strQ = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striQ).Replace("\"", "").Replace(".", ",");
+                    strS = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striS).Replace("\"", "").Replace(".", ",");
+                    strVa = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striVa).Replace("\"", "").Replace(".", ",");
+                    strVb = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striVb).Replace("\"", "").Replace(".", ",");
+                    strVc = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striVc).Replace("\"", "").Replace(".", ",");
+                    strIa = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striIa).Replace("\"", "").Replace(".", ",");
+                    strIb = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striIb).Replace("\"", "").Replace(".", ",");
+                    strIc = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striIc).Replace("\"", "").Replace(".", ",");
+                    strNo = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striNo).Replace("\"", "").Replace(".", ",");
+                    strTo = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striTo).Replace("\"", "").Replace(".", ",");
+                    strTe = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striTe).Replace("\"", "").Replace(".", ",");
+                }
+                catch { }
+                // Exibe na tela
+                lblP.Text = strP;
+                lblQ.Text = strQ;
+                lblS.Text = strS;
+                lblVa.Text = strVa;
+                lblVb.Text = strVb;
+                lblVc.Text = strVc;
+                lblIa.Text = strIa;
+                lblIb.Text = strIb;
+                lblIc.Text = strIc;
+                lblNo.Text = strNo;
+                lblTo.Text = strTo;
+                lblTe.Text = strTe;
 
+                // Atualiza os gráficos:
+                NovoPontoNoGrafico(Global.strP, strP);
+                NovoPontoNoGrafico(Global.strQ, strQ);
+                NovoPontoNoGrafico(Global.strS, strS);
+
+                NovoPontoNoGrafico(Global.strVa, strVa);
+                NovoPontoNoGrafico(Global.strVb, strVb);
+                NovoPontoNoGrafico(Global.strVc, strVc);
+
+                NovoPontoNoGrafico(Global.strIa, strIa);
+                NovoPontoNoGrafico(Global.strIb, strIb);
+                NovoPontoNoGrafico(Global.strIc, strIc);
+
+                NovoPontoNoGrafico(Global.strNo, strNo);
+                NovoPontoNoGrafico(Global.strTo, strTo);
+                NovoPontoNoGrafico(Global.strTe, strTe);
+                chartTemperatura.Refresh();
             }
-
-
         }
+
+        private void NovoPontoNoGrafico(string Grafico, string Ponto)
+        {
+            chartTemperatura.Series[Grafico].Points.AddXY(tUltimaAtualizacao, Convert.ToDouble(Ponto));
+            chartTemperatura.Series[Grafico].Points.RemoveAt(0);
+        }
+
 
         // Esta rotina deve ser utilizada considerando um intervalo de tempo limitado
         /// <summary>Retorna um arquivo CSV</summary>

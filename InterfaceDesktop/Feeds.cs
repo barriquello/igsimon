@@ -9,28 +9,7 @@ namespace InterfaceDesktop
         public string tag { get; set; }
     }
 
-  /*  class Registro
-    {
-        public int horarioUnix { get; set; }
-        public DateTime Horario()
-        {
-            return Uteis.Unix2time(horarioUnix);
-        }
-        public float P { get; set; }
-        public float Q { get; set; }
-        public float S { get; set; }
-        public float Va { get; set; }
-        public float Vb { get; set; }
-        public float Vc { get; set; }
-        public float Ia { get; set; }
-        public float Ib { get; set; }
-        public float Ic { get; set; }
-        public float No { get; set; }
-        public float To { get; set; }
-        public float Te { get; set; }
-    }//*/
-
-    // Converte um registro CSV em DateTime e float
+    // Converte um registro CSV em DateTime e double
     class RegistroCSV
     {
         public string Time { get; set; }
@@ -39,9 +18,9 @@ namespace InterfaceDesktop
         {
             return Uteis.Unix2time(Convert.ToInt32(Time));
         }
-        public  float valor()
+        public  double valor()
         {
-            return Convert.ToSingle(Valor);
+            return Convert.ToDouble(Valor);
         }
         
     }

@@ -67,7 +67,7 @@ namespace InterfaceDesktop
         {
             return new string[] { strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe };
         }
-        public static string[] strCategoria = { "P", "P", "P", "V", "V", "V", "I", "I", "I", "T", "T", "T" };
+        public static string[] strCategoria = { "P", "P", "P", "V", "V", "V", "I", "I", "I", "N", "T", "T" };
         public static string[] striTodas()
         {
             return new string[] { striP, striQ, striS, striVa, striVb, striVc, striIa, striIb, striIc, striNo, striTo, striTe };

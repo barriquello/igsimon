@@ -30,38 +30,88 @@ namespace InterfaceDesktop
             // Limpa o gráfico
             chartTemperatura.Series.Clear();
             chartTemperatura.ChartAreas.Clear();
+            chartTemperatura.Legends.Clear();
+            // Inserir chartareas
             chartTemperatura.ChartAreas.Add("P");
             chartTemperatura.ChartAreas.Add("V");
             chartTemperatura.ChartAreas.Add("I");
+            chartTemperatura.ChartAreas.Add("N");
             chartTemperatura.ChartAreas.Add("T");
+            // Adiciona legendas
+            for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
+            {
+                chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[jj].Name).LegendItemOrder = LegendItemOrder.SameAsSeriesOrder;
+            }
             //habilita o zoom
             chartTemperatura.ChartAreas["T"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["N"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
             chartTemperatura.ChartAreas["T"].CursorX.Interval =
+                chartTemperatura.ChartAreas["N"].CursorX.Interval =
                 chartTemperatura.ChartAreas["I"].CursorX.Interval =
                 chartTemperatura.ChartAreas["V"].CursorX.Interval =
                 chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.05;
             // Desabilita a escala no eixo X para quase todos os gráficos
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
+                chartTemperatura.ChartAreas["T"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
-            // Posiciona as várias chartáreas:
-            int intTamanhoLegenda = 100;
-            float fLargura = 100f * (chartTemperatura.Width - intTamanhoLegenda) / (chartTemperatura.Width * 1f);
-            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 0, fLargura, 25));
-            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 25, fLargura, 25));
-            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 50, fLargura, 25));
-            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 75, fLargura, 25));
             // Alinhamento dos gráficos das chartareas
             chartTemperatura.ChartAreas["P"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["V"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
+                chartTemperatura.ChartAreas["T"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "N";
+            // Posiciona as várias chartáreas:
+            float fTamanhoLegenda = 100f;
+            float fLargura = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
+            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 0, fLargura, 20));
+            chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura+0.1f,0,fTamanhoLegenda,200));
 
-            // Posicionar legendas
+            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 20, fLargura, 20));
+            chartTemperatura.Legends["V"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,20, fTamanhoLegenda, 200));
+            
+            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 40, fLargura, 20));
+            chartTemperatura.Legends["I"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,40, fTamanhoLegenda, 0200));
+            
+            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 60, fLargura, 20)); // Gráfco temperatura menor
+            chartTemperatura.Legends["T"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,60, fTamanhoLegenda, 200));
+            
+            chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 80, fLargura, 20));
+            chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,80, fTamanhoLegenda, 200));
 
+            // Buscar informações no banco de dados
+            string[] strVariaveis = Global.strTodas();
+            string[] Indices = Global.striTodas();
+            for (int kk = 0; kk < strVariaveis.Length; kk++)
+            {
+                //if (strVariaveis[kk] != Global.strNo)
+                {
+                    Series srTeste = new Series(strVariaveis[kk]);
+                    srTeste.ChartType = SeriesChartType.StepLine;
+                    srTeste.XValueType = ChartValueType.Auto;
 
+                    string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
+                    //txtLoad.Text = strInformacoes;
+                    if (strInformacoes.Length > 10)
+                    {
+                        List<RegistroCSV> Registros =
+                        CSV2Matriz(strInformacoes);
+                        foreach (RegistroCSV Reg in Registros)
+                        {
+                            srTeste.Points.AddXY(Reg.time(), Reg.valor());
+                        }
+                        srTeste.ChartArea = Global.strCategoria[kk];
+                        srTeste.Legend = Global.strCategoria[kk];
+                        chartTemperatura.Series.Add(srTeste);
+                    }
+                }
+            }
+            foreach (Series Sr in chartTemperatura.Series)
+            {
+                Sr.XValueType = ChartValueType.Time;
+            }
         }
 
         private void SalvarNoDBTemp(UInt32 Horario, double P, double Q, double S, double Va, double Vb, double Vc, double Ia, double Ib, double Ic, double No, double To, double Te)
@@ -91,66 +141,9 @@ namespace InterfaceDesktop
             string strTime = GetCSV(Global.strComandoHorario, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
             tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
-            chartTemperatura.Series.Clear();
-            chartTemperatura.ChartAreas.Clear();
-            chartTemperatura.ChartAreas.Add("P");
-            chartTemperatura.ChartAreas.Add("V");
-            chartTemperatura.ChartAreas.Add("I");
-            chartTemperatura.ChartAreas.Add("T");
-            //habilita o zoom
-            chartTemperatura.ChartAreas["T"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
-            chartTemperatura.ChartAreas["T"].CursorX.Interval =
-                chartTemperatura.ChartAreas["I"].CursorX.Interval =
-                chartTemperatura.ChartAreas["V"].CursorX.Interval =
-                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.05;
-            // Desabilita a escala no eixo X para quase todos os gráficos
-            chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
-                chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
-                chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
-            // Posiciona as várias chartáreas:
-            int intTamanhoLegenda = 100;
-            float fLargura = 100f * (chartTemperatura.Width - intTamanhoLegenda) / (chartTemperatura.Width * 1f);
-            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 0, fLargura, 25));
-            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 25, fLargura, 25));
-            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 50, fLargura, 25));
-            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 75, fLargura, 25));
-            // Alinhamento dos gráficos das chartareas
-            chartTemperatura.ChartAreas["P"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["V"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
+            GerarGrafico();
 
-            string[] strVariaveis = Global.strTodas();
-            string[] Indices = Global.striTodas();
-            for (int kk = 0; kk < strVariaveis.Length; kk++)
-            {
-                if (strVariaveis[kk] != Global.strNo)
-                {
-                    Series srTeste = new Series(strVariaveis[kk]);
-                    srTeste.ChartType = SeriesChartType.StepLine;
-                    srTeste.XValueType = ChartValueType.Auto;
 
-                    string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
-                    //txtLoad.Text = strInformacoes;
-                    if (strInformacoes.Length > 10)
-                    {
-                        List<RegistroCSV> Registros =
-                        CSV2Matriz(strInformacoes);
-                        foreach (RegistroCSV Reg in Registros)
-                        {
-                            srTeste.Points.AddXY(Reg.time(), Reg.valor());
-                        }
-                        srTeste.ChartArea = Global.strCategoria[kk];
-                        chartTemperatura.Series.Add(srTeste);
-                    }
-                }
-            }
-            foreach (Series Sr in chartTemperatura.Series)
-            {
-                Sr.XValueType = ChartValueType.Time;
-            }
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
         }
 
@@ -365,6 +358,7 @@ namespace InterfaceDesktop
                 //NovoPontoNoGrafico(Global.strNo, strNo); //essa não vai pro gráfico
                 NovoPontoNoGrafico(Global.strTo, strTo);
                 NovoPontoNoGrafico(Global.strTe, strTe);
+                NovoPontoNoGrafico(Global.strNo, strNo);
                 chartTemperatura.Refresh();
             }
         }

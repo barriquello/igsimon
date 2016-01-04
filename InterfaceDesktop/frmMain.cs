@@ -15,17 +15,81 @@ namespace InterfaceDesktop
         WebClient Servidor = new WebClient();
         /// <summary>Data do registro mais recente no servidor</summary>
         DateTime tUltimaAtualizacao;
+        // Banco de dados temporário
+        SQLiteConnection SQLDBTemp;
+
+        UInt32 JanelaDeTempo = Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1));
 
         public frmMain()
         {
             InitializeComponent();
         }
 
+        private void GerarGrafico()
+        {
+            // Limpa o gráfico
+            chartTemperatura.Series.Clear();
+            chartTemperatura.ChartAreas.Clear();
+            chartTemperatura.ChartAreas.Add("P");
+            chartTemperatura.ChartAreas.Add("V");
+            chartTemperatura.ChartAreas.Add("I");
+            chartTemperatura.ChartAreas.Add("T");
+            //habilita o zoom
+            chartTemperatura.ChartAreas["T"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
+                chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
+            chartTemperatura.ChartAreas["T"].CursorX.Interval =
+                chartTemperatura.ChartAreas["I"].CursorX.Interval =
+                chartTemperatura.ChartAreas["V"].CursorX.Interval =
+                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.05;
+            // Desabilita a escala no eixo X para quase todos os gráficos
+            chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
+                chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
+            // Posiciona as várias chartáreas:
+            int intTamanhoLegenda = 100;
+            float fLargura = 100f * (chartTemperatura.Width - intTamanhoLegenda) / (chartTemperatura.Width * 1f);
+            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 0, fLargura, 25));
+            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 25, fLargura, 25));
+            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 50, fLargura, 25));
+            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 75, fLargura, 25));
+            // Alinhamento dos gráficos das chartareas
+            chartTemperatura.ChartAreas["P"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["V"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
+
+            // Posicionar legendas
+
+
+        }
+
+        private void SalvarNoDBTemp(UInt32 Horario, double P, double Q, double S, double Va, double Vb, double Vc, double Ia, double Ib, double Ic, double No, double To, double Te)
+        {
+            string strComando = "INSERT INTO '" + Global.TabelaDados + "' " +
+                "('Horario','" +
+                Global.strVa + "','" + Global.strVb + "','" + Global.strVc + "','" +
+                Global.strIa + "','" + Global.strIb + "','" + Global.strIc + "','" +
+                Global.strP + "','" + Global.strQ + "','" + Global.strS + "','" +
+                Global.strNo + "','" + Global.strTo + "','" + Global.strTe + "') " +
+                "VALUES(" +
+                Horario.ToString() + "," +
+                Va.ToString() + "," + Vb.ToString() + "," + Vc.ToString() + "," +
+                Ia.ToString() + "," + Ib.ToString() + "," + Ic.ToString() + "," +
+                P.ToString() + "," + Q.ToString() + "," + S.ToString() + "," +
+                No.ToString() + "," + To.ToString() + "," + Te.ToString() + ")";
+            using (SQLiteCommand Comando = new SQLiteCommand(strComando, SQLDBTemp))
+            {
+                Comando.ExecuteNonQuery();
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
+            // rotina para ser executada apenas uma vez
             // Pegar o "time" mais recente:
-            string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
-            tUltimaAtualizacao = Uteis.Unix2time(Convert.ToInt32(strTime)); // Horário mais recente armazenado no servidor
+            string strTime = GetCSV(Global.strComandoHorario, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
             chartTemperatura.Series.Clear();
             chartTemperatura.ChartAreas.Clear();
@@ -53,7 +117,7 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 25, fLargura, 25));
             chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 50, fLargura, 25));
             chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 75, fLargura, 25));
-            // Alinhamento das chartareas
+            // Alinhamento dos gráficos das chartareas
             chartTemperatura.ChartAreas["P"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["V"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
@@ -62,22 +126,25 @@ namespace InterfaceDesktop
             string[] Indices = Global.striTodas();
             for (int kk = 0; kk < strVariaveis.Length; kk++)
             {
-                Series srTeste = new Series(strVariaveis[kk]);
-                srTeste.ChartType = SeriesChartType.StepLine;
-                srTeste.XValueType = ChartValueType.Auto;
-
-                string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
-                //txtLoad.Text = strInformacoes;
-                if (strInformacoes.Length > 10)
+                if (strVariaveis[kk] != Global.strNo)
                 {
-                    List<RegistroCSV> Registros =
-                    CSV2Matriz(strInformacoes);
-                    foreach (RegistroCSV Reg in Registros)
+                    Series srTeste = new Series(strVariaveis[kk]);
+                    srTeste.ChartType = SeriesChartType.StepLine;
+                    srTeste.XValueType = ChartValueType.Auto;
+
+                    string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
+                    //txtLoad.Text = strInformacoes;
+                    if (strInformacoes.Length > 10)
                     {
-                        srTeste.Points.AddXY(Reg.time(), Reg.valor());
+                        List<RegistroCSV> Registros =
+                        CSV2Matriz(strInformacoes);
+                        foreach (RegistroCSV Reg in Registros)
+                        {
+                            srTeste.Points.AddXY(Reg.time(), Reg.valor());
+                        }
+                        srTeste.ChartArea = Global.strCategoria[kk];
+                        chartTemperatura.Series.Add(srTeste);
                     }
-                    srTeste.ChartArea = Global.strCategoria[kk];
-                    chartTemperatura.Series.Add(srTeste);
                 }
             }
             foreach (Series Sr in chartTemperatura.Series)
@@ -92,9 +159,19 @@ namespace InterfaceDesktop
             // Botão "Configurações"
             Form frmconfig1 = new frmConfig();
             this.Hide();
+            Global.restart = false;
+            Global.ConfigObriatoria = false;
             frmconfig1.ShowDialog();
-            frmMain_Load(new object(), new EventArgs());
-            this.Show();
+            if (Global.restart)
+            {
+                Global.restart = false;
+                MessageBox.Show("É necessário nova autenticação");
+                this.Close();
+            }
+            else
+            {
+                this.Show();
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -126,16 +203,22 @@ namespace InterfaceDesktop
                     }
                     else
                     {
-                        frmConfig Config = new frmConfig();
-                        Config.ShowDialog();
+                        while (!Global.restart)
+                        {
+                            Global.ConfigObriatoria = true;
+                            frmConfig Config = new frmConfig();
+                            Config.ShowDialog();
+                        }
+                        Global.ConfigObriatoria = false;
                         // Reinicia a rotina para [tentar] carregar as configurações
                         frmMain_Load(new object(), new EventArgs());
+                        Global.restart = false;
                         return;
                     }
                 }
             }
             // Buscar índices no servidor:
-            string Requisicao = Global.Servidor + "/feed/list.json?apikey=" + Global.APIKey;
+            string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
 
             try
             {
@@ -162,12 +245,34 @@ namespace InterfaceDesktop
                 // Trocar para um alerta na barra inferior
                 MessageBox.Show(Erro.Message);
             }
+            // Cria o banco de dados virtual local
+            string strGerarTabela = "CREATE TABLE IF NOT EXISTS '" + Global.TabelaDados + "' (" +
+                "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                "'Horario' INTEGER,'" + // Horário (UNIX)
+                Global.strVa + "' NUMERIC,'" + Global.strVb + "' NUMERIC,'" + Global.strVc + "' NUMERIC'" + //Tensões
+                Global.strIa + "' NUMERIC,'" + Global.strIb + "' NUMERIC,'" + Global.strIc + "' NUMERIC,'" + //Correntes
+                Global.strP + "' NUMERIC,'" + Global.strQ + "' NUMERIC,'" + Global.strS + "' NUMERIC,'" + // Potências
+                Global.strNo + "' NUMERIC,'" + Global.strTo + "' NUMERIC,'" + Global.strTe + "' NUMERIC" + // Nível do óleo e temperaturas
+                ");";
+            SQLDBTemp = new SQLiteConnection("Data Source=:memory:");
+            SQLDBTemp.Open();
+            using (SQLiteCommand SQLCom = new SQLiteCommand(strGerarTabela,SQLDBTemp))
+            {
+                SQLCom.ExecuteNonQuery();
+            }
+            //SQLDBTemp.Close();
             // Verifica se alguma variável não está associada a um índice
             if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
             {
-                MessageBox.Show("Verifique os nomes das variáveis");
-                frmConfig Config = new frmConfig();
-                Config.ShowDialog();
+                Global.ConfigObriatoria = true;
+                while (!Global.restart)
+                {
+                    MessageBox.Show("Verifique os nomes das variáveis");
+                    frmConfig Config = new frmConfig();
+                    Config.ShowDialog();
+                }
+                Global.ConfigObriatoria = false;
+                Global.restart = false;
                 frmMain_Load(sender, e);
                 return;
             }
@@ -183,16 +288,20 @@ namespace InterfaceDesktop
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
             // Rotina para buscar novas informações no servidor e exibir na tela
-            if (tmrGraficos.Interval != 5000)
-                button1_Click(new object(), new EventArgs());
+            if (true)
+            {
+                int timerInterval = 15000;
+                if (tmrGraficos.Interval != timerInterval)
+                    button1_Click(new object(), new EventArgs());
 
-            tmrGraficos.Interval = 5000; // 15 segundos
+                tmrGraficos.Interval = timerInterval; // 15 segundos
+            }
             // Atualiza os gráficos:
 
 
             //tmrGraficos.Enabled = false; return;
-            string strTime = GetCSV("/feed/get.json?field=time&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
-            DateTime NovaAtualizaco = Uteis.Unix2time(Convert.ToInt32(strTime));
+            string strTime = GetCSV(Global.strComandoHorario, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            DateTime NovaAtualizaco = Uteis.Unix2time(Convert.ToUInt32(strTime));
             // Verifica atualizacao
             if (!(NovaAtualizaco == tUltimaAtualizacao))
             {
@@ -212,18 +321,18 @@ namespace InterfaceDesktop
                 try
                 {
                     tUltimaAtualizacao = NovaAtualizaco;
-                    strP = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "").Replace(".", ",");
-                    strQ = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striQ).Replace("\"", "").Replace(".", ",");
-                    strS = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striS).Replace("\"", "").Replace(".", ",");
-                    strVa = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striVa).Replace("\"", "").Replace(".", ",");
-                    strVb = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striVb).Replace("\"", "").Replace(".", ",");
-                    strVc = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striVc).Replace("\"", "").Replace(".", ",");
-                    strIa = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striIa).Replace("\"", "").Replace(".", ",");
-                    strIb = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striIb).Replace("\"", "").Replace(".", ",");
-                    strIc = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striIc).Replace("\"", "").Replace(".", ",");
-                    strNo = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striNo).Replace("\"", "").Replace(".", ",");
-                    strTo = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striTo).Replace("\"", "").Replace(".", ",");
-                    strTe = GetCSV("/feed/get.json?field=value&id=", DateTime.Now, DateTime.Now, Global.striTe).Replace("\"", "").Replace(".", ",");
+                    strP = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "").Replace(".", ",");
+                    strQ = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striQ).Replace("\"", "").Replace(".", ",");
+                    strS = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striS).Replace("\"", "").Replace(".", ",");
+                    strVa = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striVa).Replace("\"", "").Replace(".", ",");
+                    strVb = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striVb).Replace("\"", "").Replace(".", ",");
+                    strVc = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striVc).Replace("\"", "").Replace(".", ",");
+                    strIa = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striIa).Replace("\"", "").Replace(".", ",");
+                    strIb = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striIb).Replace("\"", "").Replace(".", ",");
+                    strIc = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striIc).Replace("\"", "").Replace(".", ",");
+                    strNo = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striNo).Replace("\"", "").Replace(".", ",");
+                    strTo = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striTo).Replace("\"", "").Replace(".", ",");
+                    strTe = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striTe).Replace("\"", "").Replace(".", ",");
                 }
                 catch { }
                 // Exibe na tela
@@ -253,7 +362,7 @@ namespace InterfaceDesktop
                 NovoPontoNoGrafico(Global.strIb, strIb);
                 NovoPontoNoGrafico(Global.strIc, strIc);
 
-                NovoPontoNoGrafico(Global.strNo, strNo);
+                //NovoPontoNoGrafico(Global.strNo, strNo); //essa não vai pro gráfico
                 NovoPontoNoGrafico(Global.strTo, strTo);
                 NovoPontoNoGrafico(Global.strTe, strTe);
                 chartTemperatura.Refresh();
@@ -262,8 +371,10 @@ namespace InterfaceDesktop
 
         private void NovoPontoNoGrafico(string Grafico, string Ponto)
         {
+            // Redesenhar todas as séries
+            chartTemperatura.Series[Grafico].Points.Clear();
             chartTemperatura.Series[Grafico].Points.AddXY(tUltimaAtualizacao, Convert.ToDouble(Ponto));
-            chartTemperatura.Series[Grafico].Points.RemoveAt(0);
+            //chartTemperatura.Series[Grafico].Points.RemoveAt(0);
         }
 
 
@@ -277,10 +388,9 @@ namespace InterfaceDesktop
         private string GetCSV(string Comando, DateTime Inicio, DateTime Fim, string ID)
         {
             string strComando = Global.Servidor + Comando + ID +
-                "&start=" + Uteis.Time2Unix(Inicio) +
-                "&end=" + Uteis.Time2Unix(Fim) +
+                "&start=" + Uteis.Time2Unix(Inicio).ToString() +
+                "&end=" + Uteis.Time2Unix(Fim).ToString() +
                 "&apikey=" + Global.APIKey + "&interval=30&timeformat=0";
-            //    Clipboard.SetText(strComando);
             WebClient Web = new WebClient();
             return Web.DownloadString(strComando);
         }

@@ -26,13 +26,24 @@ namespace InterfaceDesktop
                 txtIa.Text + "', '" + txtIb.Text + "', '" + txtIc.Text + "', '" +
                 txtNo.Text + "', '" + txtTo.Text + "', '" + txtTe.Text + "', '" +
                 txtAPIKEY.Text + "')");
+            Global.restart = true;
             this.Close();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            // Apenas encerra o formulário
-            this.Close();
+
+            if (Global.ConfigObriatoria)
+            {
+                // Encerra o programa
+                Application.Exit();
+            }
+            else
+            {
+                // Encerra o formulário
+                Global.restart = false;
+                this.Close();
+            }
         }
 
         private void btnAddUser_Click(object sender, EventArgs e)
@@ -212,7 +223,6 @@ namespace InterfaceDesktop
                         }
                     }
                 }
-
             }
         }
     }

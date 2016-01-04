@@ -16,7 +16,7 @@ namespace InterfaceDesktop
         public string Valor { get; set; }
         public  DateTime time()
         {
-            return Uteis.Unix2time(Convert.ToInt32(Time));
+            return Uteis.Unix2time(Convert.ToUInt32(Time));
         }
         public  double valor()
         {

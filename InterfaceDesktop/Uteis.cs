@@ -22,12 +22,12 @@ namespace InterfaceDesktop
             return SB.ToString();
         }
         /// <summary>Converte Horário em horário Unix</summary>
-        public static Int32 Time2Unix(DateTime Horario)
+        public static UInt32 Time2Unix(DateTime Horario)
         {
-            return (Int32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
         /// <summary>Converte horário Unix em horário</summary>
-        public static DateTime Unix2time(Int32 Unix)
+        public static DateTime Unix2time(UInt32 Unix)
         {
             return new DateTime(1970, 1, 1).AddSeconds(Unix);
         }
@@ -73,8 +73,8 @@ namespace InterfaceDesktop
             SqlComando.CommandText = Global.strCriarTabelaConfig;
             SqlComando.ExecuteNonQuery();
             // Cria a tabela de dados
-            SqlComando.CommandText = Global.strCriarTabelaDados;
-            SqlComando.ExecuteNonQuery();
+            //SqlComando.CommandText = Global.strCriarTabelaDados;
+            //SqlComando.ExecuteNonQuery();
             sqlConexao.Close();
         }
     }

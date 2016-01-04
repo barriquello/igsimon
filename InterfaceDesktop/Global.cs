@@ -11,18 +11,28 @@ namespace InterfaceDesktop
         public static bool CabecalhoCSV = true;
         #endregion
 
-        #region TabPage no formulário configurações
+        #region Configurações relativas ao comportamento do formulário de configurações
         // Flag para indicar somente a obrigatoriedade da criação de um usuário
         public static bool tabPage1 = true;
         // Flag para indicar a configuração obrigatória
         public static bool tabPage2 = true;
+
+        /// <summary>Flag para indiar a necessidade de reiniciar o formulário principal</summary>
+        public static bool restart = false;
+        /// <summary>Flag para controlar o comportamento do botão cancelar do formulário de configuração</summary>
+        public static bool ConfigObriatoria = false;
+
         #endregion
 
         #region Comandos para o servidor
         /// <summary>Comando para obter um arquivo CSV</summary>
         public static string strComandoCSV = "/feed/csvexport.json?id=";
 
+        public static string strComandoHorario = "/feed/get.json?field=time&id=";
 
+        public static string strComandoValor = "/feed/get.json?field=value&id=";
+
+        public static string strComandoFeedList = "/feed/list.json?apikey=";
         #endregion
 
 
@@ -55,7 +65,7 @@ namespace InterfaceDesktop
         /// <returns></returns>
         public static string[] strTodas()
         {
-            return new string[] {strP,strQ, strS,strVa, strVb, strVc, strIa, strIb, strIc, strNo,strTo, strTe };
+            return new string[] { strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe };
         }
         public static string[] strCategoria = { "P", "P", "P", "V", "V", "V", "I", "I", "I", "T", "T", "T" };
         public static string[] striTodas()
@@ -97,27 +107,27 @@ namespace InterfaceDesktop
 
         #region Banco de dados
         /// <summary>Nome do arquivo de banco de dados</summary>
-        public static string ArquivoDB = "db.db";
+        public const string ArquivoDB = "db.db";
         /// <summary>Conexão com o banco de dados local</summary>        
-        public static string Conexao = @"Data Source=|DataDirectory|\" + ArquivoDB + ";Pooling=True;Synchronous=Off;journal mode=Wal";
+        public const string Conexao = @"Data Source=|DataDirectory|\" + ArquivoDB + ";Pooling=True;Synchronous=Off;journal mode=Wal";
         /// <summary>Nome da tabela de usuários</summary>
-        public static string TabelaUsers = "Usuarios";
+        public const string TabelaUsers = "Usuarios";
         /// <summary>Nome da tabela de configurações</summary>
-        public static string TabelaConfig = "Config";
+        public const string TabelaConfig = "Config";
         /// <summary>Nome da tabela de dados</summary>
-        public static string TabelaDados = "Dados";
+        public const string TabelaDados = "Dados";
         /// <summary>Criar tabela de usuários</summary>
-        public static string strCriarTabelaUsers = "CREATE TABLE IF NOT EXISTS '" + TabelaUsers + "' (" +
+        public const string strCriarTabelaUsers = "CREATE TABLE IF NOT EXISTS '" + TabelaUsers + "' (" +
             "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
             "'Username' TEXT," + // Nome de usuário para a autenticação
             "'Senha' TEXT" + // Senha do usuário criptografada com md5 modificado
             ");";
         /// <summary>Comando para adicionar ou trocar a senha de usuários</summary>
-        public static string strComandoUsuario = "INSERT INTO '" + TabelaUsers + "' " +
+        public const string strComandoUsuario = "INSERT INTO '" + TabelaUsers + "' " +
             "('Username','Senha') " +
             "VALUES(@Username, @Senha)";
         /// <summary>Criar tabela de configurações</summary>
-        public static string strCriarTabelaConfig = "CREATE TABLE IF NOT EXISTS '" + TabelaConfig + "' (" +
+        public const string strCriarTabelaConfig = "CREATE TABLE IF NOT EXISTS '" + TabelaConfig + "' (" +
             "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
             "'Servidor'	TEXT," + //Endereço do servidor
             "'Username'	TEXT," + //Nome do usuário que fez a modificação
@@ -136,21 +146,21 @@ namespace InterfaceDesktop
             "'APIKEY'	TEXT" + // APIKey gerada pelo servidor WEB
             ");";
         /// <summary>Comando para adicionar configurações</summary>
-        public static string strComandoConfig = "INSERT INTO '" + TabelaConfig + "' " +
+        public const string strComandoConfig = "INSERT INTO '" + TabelaConfig + "' " +
             "('Servidor','Username','APIKEY') " +
             "VALUES(@Servidor, @Username, @APIKEY)";
-        /// <summary>Criar a tabela de dados (adaptar essas configurações)</summary>
+        /*/// <summary>Criar a tabela de dados (adaptar essas configurações)</summary>
         public static string strCriarTabelaDados = "CREATE TABLE IF NOT EXISTS '" + TabelaDados + "' (" +
-            "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-            "'Horario' INTEGER," + // Horário (UNIX)
-            "'VA' NUMERIC," + "'VB' NUMERIC," + "'VC' NUMERIC" + //Tensões por fase(a definir)
-            "'IA' NUMERIC," + "'IB' NUMERIC," + "'IC' NUMERIC," + //Correntes por fase
-            "'P' NUMERIC," + "'Q' NUMERIC," + "'S' NUMERIC," + // Potências
-            "'Nivel' NUMERIC," + "'TOleo' NUMERIC," + "'TEnrol' NUMERIC" + // Nível do óleo e temperatura
-            ");";
-        public static string strComandoDados = "INSERT INTO '" + TabelaDados + "' " +
+             "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+             "'Horario' INTEGER," + // Horário (UNIX)
+             "'VA' NUMERIC," + "'VB' NUMERIC," + "'VC' NUMERIC" + //Tensões por fase(a definir)
+             "'IA' NUMERIC," + "'IB' NUMERIC," + "'IC' NUMERIC," + //Correntes por fase
+             "'P' NUMERIC," + "'Q' NUMERIC," + "'S' NUMERIC," + // Potências
+             "'Nivel' NUMERIC," + "'TOleo' NUMERIC," + "'TEnrol' NUMERIC" + // Nível do óleo e temperatura
+             ");";//*/
+        /*public static string strComandoDados = "INSERT INTO '" + TabelaDados + "' " +
             "('Horario','VA','VB','VC','IA','IB','IC','P','Q','S','Nivel','TOleo','TEnrol') " +
-            "VALUES(@Horario,@VA,@VB,@VC,@IA,@IB,@IC,@P,@Q,@S,@Nivel,@TOleo,@TEnrol)";
+            "VALUES(@Horario,@VA,@VB,@VC,@IA,@IB,@IC,@P,@Q,@S,@Nivel,@TOleo,@TEnrol)";//*/
         #endregion
     }
 }

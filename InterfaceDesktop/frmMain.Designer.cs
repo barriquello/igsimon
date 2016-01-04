@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -90,8 +90,9 @@
             this.btnExcel = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblMensagens = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSpring = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -101,27 +102,31 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(555, 548);
+            this.button1.Location = new System.Drawing.Point(555, 563);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(87, 34);
             this.button1.TabIndex = 0;
             this.button1.Text = "button1";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(14, 528);
+            this.button2.Image = global::InterfaceDesktop.Properties.Resources.Config;
+            this.button2.Location = new System.Drawing.Point(14, 543);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 75);
+            this.button2.Size = new System.Drawing.Size(77, 66);
             this.button2.TabIndex = 0;
-            this.button2.Text = "Config";
+            this.button2.Text = "Configurar";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.btnConfig_Click);
             // 
@@ -646,21 +651,19 @@
             // 
             // chartTemperatura
             // 
-            this.chartTemperatura.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.chartTemperatura.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            chartArea4.Name = "ChartArea1";
-            this.chartTemperatura.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chartTemperatura.Legends.Add(legend4);
-            this.chartTemperatura.Location = new System.Drawing.Point(310, 12);
+            chartArea2.Name = "ChartArea1";
+            this.chartTemperatura.ChartAreas.Add(chartArea2);
+            this.chartTemperatura.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend2.Name = "Legend1";
+            this.chartTemperatura.Legends.Add(legend2);
+            this.chartTemperatura.Location = new System.Drawing.Point(3, 19);
             this.chartTemperatura.Name = "chartTemperatura";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartTemperatura.Series.Add(series4);
-            this.chartTemperatura.Size = new System.Drawing.Size(706, 372);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartTemperatura.Series.Add(series2);
+            this.chartTemperatura.Size = new System.Drawing.Size(688, 350);
             this.chartTemperatura.TabIndex = 0;
             this.chartTemperatura.Text = "chart1";
             // 
@@ -668,20 +671,25 @@
             // 
             this.btnGraficos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGraficos.Image = global::InterfaceDesktop.Properties.Resources.Graficos;
-            this.btnGraficos.Location = new System.Drawing.Point(767, 527);
+            this.btnGraficos.Location = new System.Drawing.Point(761, 543);
             this.btnGraficos.Name = "btnGraficos";
-            this.btnGraficos.Size = new System.Drawing.Size(75, 75);
+            this.btnGraficos.Size = new System.Drawing.Size(77, 66);
             this.btnGraficos.TabIndex = 6;
+            this.btnGraficos.Text = "Gráficos";
+            this.btnGraficos.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnGraficos.UseVisualStyleBackColor = true;
             this.btnGraficos.Click += new System.EventHandler(this.btnGraficos_Click);
             // 
             // btnExportar
             // 
             this.btnExportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportar.Location = new System.Drawing.Point(848, 527);
+            this.btnExportar.Image = global::InterfaceDesktop.Properties.Resources.Comparacoes;
+            this.btnExportar.Location = new System.Drawing.Point(844, 543);
             this.btnExportar.Name = "btnExportar";
-            this.btnExportar.Size = new System.Drawing.Size(75, 75);
+            this.btnExportar.Size = new System.Drawing.Size(77, 66);
             this.btnExportar.TabIndex = 6;
+            this.btnExportar.Text = "Comparar";
+            this.btnExportar.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnExportar.UseVisualStyleBackColor = true;
             this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
             // 
@@ -689,10 +697,12 @@
             // 
             this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExcel.Image = global::InterfaceDesktop.Properties.Resources.Excel;
-            this.btnExcel.Location = new System.Drawing.Point(929, 528);
+            this.btnExcel.Location = new System.Drawing.Point(927, 543);
             this.btnExcel.Name = "btnExcel";
-            this.btnExcel.Size = new System.Drawing.Size(75, 75);
+            this.btnExcel.Size = new System.Drawing.Size(77, 66);
             this.btnExcel.TabIndex = 6;
+            this.btnExcel.Text = "Gerar XLS";
+            this.btnExcel.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnExcel.UseVisualStyleBackColor = true;
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
@@ -715,18 +725,31 @@
             this.lblMensagens.Size = new System.Drawing.Size(10, 17);
             this.lblMensagens.Text = " ";
             // 
+            // lblSpring
+            // 
+            this.lblSpring.Name = "lblSpring";
+            this.lblSpring.Size = new System.Drawing.Size(981, 17);
+            this.lblSpring.Spring = true;
+            this.lblSpring.Text = " ";
+            // 
             // lblHora
             // 
             this.lblHora.Name = "lblHora";
             this.lblHora.Size = new System.Drawing.Size(10, 17);
             this.lblHora.Text = " ";
             // 
-            // lblSpring
+            // groupBox5
             // 
-            this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(950, 17);
-            this.lblSpring.Spring = true;
-            this.lblSpring.Text = " ";
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.chartTemperatura);
+            this.groupBox5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox5.Location = new System.Drawing.Point(310, 12);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(694, 372);
+            this.groupBox5.TabIndex = 5;
+            this.groupBox5.TabStop = false;
             // 
             // frmMain
             // 
@@ -735,16 +758,16 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1016, 643);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.btnExcel);
-            this.Controls.Add(this.btnExportar);
             this.Controls.Add(this.btnGraficos);
-            this.Controls.Add(this.chartTemperatura);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnExportar);
+            this.Controls.Add(this.btnExcel);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = global::InterfaceDesktop.Properties.Resources.ico16;
             this.MinimumSize = new System.Drawing.Size(1024, 670);
@@ -766,6 +789,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -833,5 +857,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblMensagens;
         private System.Windows.Forms.ToolStripStatusLabel lblHora;
         private System.Windows.Forms.ToolStripStatusLabel lblSpring;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }

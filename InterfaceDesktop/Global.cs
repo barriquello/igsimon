@@ -6,9 +6,12 @@ namespace InterfaceDesktop
     {
         #region Informações uteis
         // Separador de campo do CSV
-        public static char SeparadorCSV = ',';// '\t';
+        public const char SeparadorCSV = ',';// '\t';
         // Linha de cabeçalho no CSV
-        public static bool CabecalhoCSV = true;
+        public const bool CabecalhoCSV = true;
+
+        public const int NOleoAlto = 7;
+        public const int NOleoBaixo = 3;
         #endregion
 
         #region Configurações relativas ao comportamento do formulário de configurações
@@ -26,13 +29,13 @@ namespace InterfaceDesktop
 
         #region Comandos para o servidor
         /// <summary>Comando para obter um arquivo CSV</summary>
-        public static string strComandoCSV = "/feed/csvexport.json?id=";
+        public const  string strComandoCSV = "/feed/csvexport.json?id=";
 
-        public static string strComandoHorario = "/feed/get.json?field=time&id=";
+        public const  string strComandoHorario = "/feed/get.json?field=time&id=";
 
-        public static string strComandoValor = "/feed/get.json?field=value&id=";
+        public const string strComandoValor = "/feed/get.json?field=value&id=";
 
-        public static string strComandoFeedList = "/feed/list.json?apikey=";
+        public const string strComandoFeedList = "/feed/list.json?apikey=";
         #endregion
 
 

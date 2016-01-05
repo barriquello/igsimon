@@ -33,7 +33,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
-            this.picStatus = new System.Windows.Forms.PictureBox();
             this.tmrGraficos = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkS = new System.Windows.Forms.CheckBox();
@@ -68,19 +67,13 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.chkTe = new System.Windows.Forms.CheckBox();
             this.chkTo = new System.Windows.Forms.CheckBox();
-            this.chkNo = new System.Windows.Forms.CheckBox();
-            this.chkETC = new System.Windows.Forms.CheckBox();
             this.lblTe = new System.Windows.Forms.Label();
             this.lblTo = new System.Windows.Forms.Label();
-            this.lblNo = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.picStatus = new System.Windows.Forms.PictureBox();
             this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
             this.chartTemperatura = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnGraficos = new System.Windows.Forms.Button();
             this.btnExportar = new System.Windows.Forms.Button();
@@ -90,22 +83,25 @@
             this.lblSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.chkNo = new System.Windows.Forms.CheckBox();
+            this.chkETC = new System.Windows.Forms.CheckBox();
+            this.lblNo = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(655, 543);
+            this.button1.Location = new System.Drawing.Point(655, 539);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(87, 34);
             this.button1.TabIndex = 0;
@@ -118,7 +114,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.Image = global::InterfaceDesktop.Properties.Resources.Config;
-            this.button2.Location = new System.Drawing.Point(14, 543);
+            this.button2.Location = new System.Drawing.Point(14, 539);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(77, 66);
             this.button2.TabIndex = 0;
@@ -140,16 +136,6 @@
             this.tmrRelogio.Interval = 250;
             this.tmrRelogio.Tick += new System.EventHandler(this.timerRelogio_Tick);
             // 
-            // picStatus
-            // 
-            this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Verde;
-            this.picStatus.Location = new System.Drawing.Point(97, 59);
-            this.picStatus.Name = "picStatus";
-            this.picStatus.Size = new System.Drawing.Size(32, 32);
-            this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picStatus.TabIndex = 4;
-            this.picStatus.TabStop = false;
-            // 
             // tmrGraficos
             // 
             this.tmrGraficos.Enabled = true;
@@ -169,7 +155,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(14, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(290, 120);
+            this.groupBox1.Size = new System.Drawing.Size(290, 98);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Potência";
@@ -177,7 +163,7 @@
             // chkS
             // 
             this.chkS.AutoSize = true;
-            this.chkS.Location = new System.Drawing.Point(268, 93);
+            this.chkS.Location = new System.Drawing.Point(269, 75);
             this.chkS.Name = "chkS";
             this.chkS.Size = new System.Drawing.Size(15, 14);
             this.chkS.TabIndex = 3;
@@ -186,7 +172,7 @@
             // chkQ
             // 
             this.chkQ.AutoSize = true;
-            this.chkQ.Location = new System.Drawing.Point(269, 57);
+            this.chkQ.Location = new System.Drawing.Point(269, 48);
             this.chkQ.Name = "chkQ";
             this.chkQ.Size = new System.Drawing.Size(15, 14);
             this.chkQ.TabIndex = 3;
@@ -214,8 +200,8 @@
             // lblS
             // 
             this.lblS.AutoSize = true;
-            this.lblS.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblS.Location = new System.Drawing.Point(153, 93);
+            this.lblS.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblS.Location = new System.Drawing.Point(154, 75);
             this.lblS.Name = "lblS";
             this.lblS.Size = new System.Drawing.Size(17, 16);
             this.lblS.TabIndex = 1;
@@ -224,50 +210,50 @@
             // lblQ
             // 
             this.lblQ.AutoSize = true;
-            this.lblQ.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQ.Location = new System.Drawing.Point(154, 57);
+            this.lblQ.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblQ.Location = new System.Drawing.Point(154, 48);
             this.lblQ.Name = "lblQ";
-            this.lblQ.Size = new System.Drawing.Size(19, 16);
+            this.lblQ.Size = new System.Drawing.Size(18, 16);
             this.lblQ.TabIndex = 1;
             this.lblQ.Text = "Q";
             // 
             // lblP
             // 
             this.lblP.AutoSize = true;
-            this.lblP.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblP.Font = new System.Drawing.Font("Verdana", 9.75F);
             this.lblP.Location = new System.Drawing.Point(154, 21);
             this.lblP.Name = "lblP";
-            this.lblP.Size = new System.Drawing.Size(17, 16);
+            this.lblP.Size = new System.Drawing.Size(16, 16);
             this.lblP.TabIndex = 1;
             this.lblP.Text = "P";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(6, 93);
+            this.label5.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.label5.Location = new System.Drawing.Point(7, 75);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(142, 16);
+            this.label5.Size = new System.Drawing.Size(130, 16);
             this.label5.TabIndex = 0;
             this.label5.Text = "Potência Aparente";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(7, 57);
+            this.label3.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.label3.Location = new System.Drawing.Point(7, 48);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(130, 16);
+            this.label3.Size = new System.Drawing.Size(119, 16);
             this.label3.TabIndex = 0;
             this.label3.Text = "Potência Reativa";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F);
             this.label1.Location = new System.Drawing.Point(7, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 16);
+            this.label1.Size = new System.Drawing.Size(104, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Potência Ativa";
             // 
@@ -283,10 +269,10 @@
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(14, 138);
+            this.groupBox2.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.groupBox2.Location = new System.Drawing.Point(14, 116);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(290, 120);
+            this.groupBox2.Size = new System.Drawing.Size(290, 98);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tensão";
@@ -294,7 +280,7 @@
             // chkVc
             // 
             this.chkVc.AutoSize = true;
-            this.chkVc.Location = new System.Drawing.Point(268, 93);
+            this.chkVc.Location = new System.Drawing.Point(268, 75);
             this.chkVc.Name = "chkVc";
             this.chkVc.Size = new System.Drawing.Size(15, 14);
             this.chkVc.TabIndex = 3;
@@ -303,7 +289,7 @@
             // chkVb
             // 
             this.chkVb.AutoSize = true;
-            this.chkVb.Location = new System.Drawing.Point(269, 57);
+            this.chkVb.Location = new System.Drawing.Point(269, 48);
             this.chkVb.Name = "chkVb";
             this.chkVb.Size = new System.Drawing.Size(15, 14);
             this.chkVb.TabIndex = 3;
@@ -331,60 +317,60 @@
             // lblVc
             // 
             this.lblVc.AutoSize = true;
-            this.lblVc.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVc.Location = new System.Drawing.Point(153, 93);
+            this.lblVc.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVc.Location = new System.Drawing.Point(153, 75);
             this.lblVc.Name = "lblVc";
-            this.lblVc.Size = new System.Drawing.Size(26, 16);
+            this.lblVc.Size = new System.Drawing.Size(25, 16);
             this.lblVc.TabIndex = 1;
             this.lblVc.Text = "Vc";
             // 
             // lblVb
             // 
             this.lblVb.AutoSize = true;
-            this.lblVb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVb.Location = new System.Drawing.Point(154, 57);
+            this.lblVb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVb.Location = new System.Drawing.Point(154, 48);
             this.lblVb.Name = "lblVb";
-            this.lblVb.Size = new System.Drawing.Size(27, 16);
+            this.lblVb.Size = new System.Drawing.Size(25, 16);
             this.lblVb.TabIndex = 1;
             this.lblVb.Text = "Vb";
             // 
             // lblVa
             // 
             this.lblVa.AutoSize = true;
-            this.lblVa.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVa.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVa.Location = new System.Drawing.Point(154, 21);
             this.lblVa.Name = "lblVa";
-            this.lblVa.Size = new System.Drawing.Size(27, 16);
+            this.lblVa.Size = new System.Drawing.Size(25, 16);
             this.lblVa.TabIndex = 1;
             this.lblVa.Text = "Va";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(7, 93);
+            this.label10.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(7, 75);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(82, 16);
+            this.label10.Size = new System.Drawing.Size(78, 16);
             this.label10.TabIndex = 0;
             this.label10.Text = "Tensão Vc";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(7, 57);
+            this.label11.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(7, 48);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(83, 16);
+            this.label11.Size = new System.Drawing.Size(78, 16);
             this.label11.TabIndex = 0;
             this.label11.Text = "Tensão Vb";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(7, 21);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(83, 16);
+            this.label12.Size = new System.Drawing.Size(78, 16);
             this.label12.TabIndex = 0;
             this.label12.Text = "Tensão Va";
             // 
@@ -400,10 +386,10 @@
             this.groupBox3.Controls.Add(this.label16);
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label18);
-            this.groupBox3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(14, 264);
+            this.groupBox3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.Location = new System.Drawing.Point(14, 220);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(290, 120);
+            this.groupBox3.Size = new System.Drawing.Size(290, 98);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Corrente";
@@ -411,7 +397,7 @@
             // chkIc
             // 
             this.chkIc.AutoSize = true;
-            this.chkIc.Location = new System.Drawing.Point(268, 93);
+            this.chkIc.Location = new System.Drawing.Point(268, 75);
             this.chkIc.Name = "chkIc";
             this.chkIc.Size = new System.Drawing.Size(15, 14);
             this.chkIc.TabIndex = 3;
@@ -420,7 +406,7 @@
             // chkIb
             // 
             this.chkIb.AutoSize = true;
-            this.chkIb.Location = new System.Drawing.Point(269, 57);
+            this.chkIb.Location = new System.Drawing.Point(269, 48);
             this.chkIb.Name = "chkIb";
             this.chkIb.Size = new System.Drawing.Size(15, 14);
             this.chkIb.TabIndex = 3;
@@ -448,91 +434,67 @@
             // lblIc
             // 
             this.lblIc.AutoSize = true;
-            this.lblIc.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIc.Location = new System.Drawing.Point(153, 93);
+            this.lblIc.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIc.Location = new System.Drawing.Point(153, 75);
             this.lblIc.Name = "lblIc";
-            this.lblIc.Size = new System.Drawing.Size(22, 16);
+            this.lblIc.Size = new System.Drawing.Size(21, 16);
             this.lblIc.TabIndex = 1;
             this.lblIc.Text = "Ic";
             // 
             // lblIb
             // 
             this.lblIb.AutoSize = true;
-            this.lblIb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIb.Location = new System.Drawing.Point(154, 57);
+            this.lblIb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIb.Location = new System.Drawing.Point(154, 48);
             this.lblIb.Name = "lblIb";
-            this.lblIb.Size = new System.Drawing.Size(23, 16);
+            this.lblIb.Size = new System.Drawing.Size(21, 16);
             this.lblIb.TabIndex = 1;
             this.lblIb.Text = "Ib";
             // 
             // lblIa
             // 
             this.lblIa.AutoSize = true;
-            this.lblIa.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIa.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIa.Location = new System.Drawing.Point(154, 21);
             this.lblIa.Name = "lblIa";
-            this.lblIa.Size = new System.Drawing.Size(23, 16);
+            this.lblIa.Size = new System.Drawing.Size(21, 16);
             this.lblIa.TabIndex = 1;
             this.lblIa.Text = "Ia";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(7, 93);
+            this.label16.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(7, 75);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(90, 16);
+            this.label16.Size = new System.Drawing.Size(83, 16);
             this.label16.TabIndex = 0;
             this.label16.Text = "Corrente Ic";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(7, 57);
+            this.label17.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(7, 48);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(91, 16);
+            this.label17.Size = new System.Drawing.Size(83, 16);
             this.label17.TabIndex = 0;
             this.label17.Text = "Corrente Ib";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label18.Location = new System.Drawing.Point(7, 21);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(91, 16);
+            this.label18.Size = new System.Drawing.Size(83, 16);
             this.label18.TabIndex = 0;
             this.label18.Text = "Corrente Ia";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.chkTe);
-            this.groupBox4.Controls.Add(this.chkTo);
-            this.groupBox4.Controls.Add(this.chkNo);
-            this.groupBox4.Controls.Add(this.chkETC);
-            this.groupBox4.Controls.Add(this.lblTe);
-            this.groupBox4.Controls.Add(this.lblTo);
-            this.groupBox4.Controls.Add(this.lblNo);
-            this.groupBox4.Controls.Add(this.label22);
-            this.groupBox4.Controls.Add(this.pictureBox2);
-            this.groupBox4.Controls.Add(this.pictureBox1);
-            this.groupBox4.Controls.Add(this.picStatus);
-            this.groupBox4.Controls.Add(this.label23);
-            this.groupBox4.Controls.Add(this.label24);
-            this.groupBox4.Location = new System.Drawing.Point(14, 394);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(990, 128);
-            this.groupBox4.TabIndex = 5;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Variáveis não elétricas";
             // 
             // chkTe
             // 
             this.chkTe.AutoSize = true;
-            this.chkTe.Location = new System.Drawing.Point(962, 19);
+            this.chkTe.Location = new System.Drawing.Point(268, 124);
             this.chkTe.Name = "chkTe";
             this.chkTe.Size = new System.Drawing.Size(15, 14);
             this.chkTe.TabIndex = 3;
@@ -541,36 +503,17 @@
             // chkTo
             // 
             this.chkTo.AutoSize = true;
-            this.chkTo.Location = new System.Drawing.Point(589, 19);
+            this.chkTo.Location = new System.Drawing.Point(269, 47);
             this.chkTo.Name = "chkTo";
             this.chkTo.Size = new System.Drawing.Size(15, 14);
             this.chkTo.TabIndex = 3;
             this.chkTo.UseVisualStyleBackColor = true;
             // 
-            // chkNo
-            // 
-            this.chkNo.AutoSize = true;
-            this.chkNo.Location = new System.Drawing.Point(204, 19);
-            this.chkNo.Name = "chkNo";
-            this.chkNo.Size = new System.Drawing.Size(15, 14);
-            this.chkNo.TabIndex = 3;
-            this.chkNo.UseVisualStyleBackColor = true;
-            // 
-            // chkETC
-            // 
-            this.chkETC.AutoSize = true;
-            this.chkETC.Location = new System.Drawing.Point(269, 0);
-            this.chkETC.Name = "chkETC";
-            this.chkETC.Size = new System.Drawing.Size(15, 14);
-            this.chkETC.TabIndex = 2;
-            this.chkETC.UseVisualStyleBackColor = true;
-            this.chkETC.CheckedChanged += new System.EventHandler(this.chkETC_CheckedChanged);
-            // 
             // lblTe
             // 
             this.lblTe.AutoSize = true;
-            this.lblTe.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTe.Location = new System.Drawing.Point(889, 17);
+            this.lblTe.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTe.Location = new System.Drawing.Point(153, 124);
             this.lblTe.Name = "lblTe";
             this.lblTe.Size = new System.Drawing.Size(25, 16);
             this.lblTe.TabIndex = 1;
@@ -579,72 +522,42 @@
             // lblTo
             // 
             this.lblTo.AutoSize = true;
-            this.lblTo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTo.Location = new System.Drawing.Point(516, 17);
+            this.lblTo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTo.Location = new System.Drawing.Point(154, 47);
             this.lblTo.Name = "lblTo";
             this.lblTo.Size = new System.Drawing.Size(25, 16);
             this.lblTo.TabIndex = 1;
             this.lblTo.Text = "To";
             // 
-            // lblNo
-            // 
-            this.lblNo.AutoSize = true;
-            this.lblNo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNo.Location = new System.Drawing.Point(117, 17);
-            this.lblNo.Name = "lblNo";
-            this.lblNo.Size = new System.Drawing.Size(27, 16);
-            this.lblNo.TabIndex = 1;
-            this.lblNo.Text = "No";
-            // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(638, 17);
+            this.label22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(7, 124);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(237, 16);
+            this.label22.Size = new System.Drawing.Size(142, 16);
             this.label22.TabIndex = 0;
-            this.label22.Text = "Temperatura dos Enrolamentos";
+            this.label22.Text = "Temp. Enrolamentos";
             // 
-            // pictureBox2
+            // picStatus
             // 
-            this.pictureBox2.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.pictureBox2.Location = new System.Drawing.Point(173, 59);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::InterfaceDesktop.Properties.Resources.Amarelo;
-            this.pictureBox1.Location = new System.Drawing.Point(135, 59);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
+            this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Amarelo;
+            this.picStatus.Location = new System.Drawing.Point(230, 18);
+            this.picStatus.Name = "picStatus";
+            this.picStatus.Size = new System.Drawing.Size(20, 20);
+            this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picStatus.TabIndex = 4;
+            this.picStatus.TabStop = false;
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(265, 17);
+            this.label23.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(7, 47);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(161, 16);
+            this.label23.Size = new System.Drawing.Size(126, 16);
             this.label23.TabIndex = 0;
-            this.label23.Text = "Temperatura do Óleo";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(7, 17);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(103, 16);
-            this.label24.TabIndex = 0;
-            this.label24.Text = "Nível do Óleo";
+            this.label23.Text = "Temperatura Óleo";
             // 
             // chartTemperatura
             // 
@@ -652,7 +565,7 @@
             this.chartTemperatura.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartTemperatura.Location = new System.Drawing.Point(3, 19);
             this.chartTemperatura.Name = "chartTemperatura";
-            this.chartTemperatura.Size = new System.Drawing.Size(688, 350);
+            this.chartTemperatura.Size = new System.Drawing.Size(688, 499);
             this.chartTemperatura.TabIndex = 0;
             this.chartTemperatura.Text = "chart1";
             // 
@@ -660,7 +573,7 @@
             // 
             this.btnGraficos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGraficos.Image = global::InterfaceDesktop.Properties.Resources.Graficos;
-            this.btnGraficos.Location = new System.Drawing.Point(761, 543);
+            this.btnGraficos.Location = new System.Drawing.Point(761, 539);
             this.btnGraficos.Name = "btnGraficos";
             this.btnGraficos.Size = new System.Drawing.Size(77, 66);
             this.btnGraficos.TabIndex = 6;
@@ -673,7 +586,7 @@
             // 
             this.btnExportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportar.Image = global::InterfaceDesktop.Properties.Resources.Comparacoes;
-            this.btnExportar.Location = new System.Drawing.Point(844, 543);
+            this.btnExportar.Location = new System.Drawing.Point(844, 539);
             this.btnExportar.Name = "btnExportar";
             this.btnExportar.Size = new System.Drawing.Size(77, 66);
             this.btnExportar.TabIndex = 6;
@@ -686,7 +599,7 @@
             // 
             this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExcel.Image = global::InterfaceDesktop.Properties.Resources.Excel;
-            this.btnExcel.Location = new System.Drawing.Point(927, 543);
+            this.btnExcel.Location = new System.Drawing.Point(927, 539);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(77, 66);
             this.btnExcel.TabIndex = 6;
@@ -701,7 +614,7 @@
             this.lblMensagens,
             this.lblSpring,
             this.lblHora});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 621);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 617);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip1.Size = new System.Drawing.Size(1016, 22);
@@ -717,7 +630,7 @@
             // lblSpring
             // 
             this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(950, 17);
+            this.lblSpring.Size = new System.Drawing.Size(981, 17);
             this.lblSpring.Spring = true;
             this.lblSpring.Text = " ";
             // 
@@ -733,24 +646,84 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.chartTemperatura);
-            this.groupBox5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(310, 12);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(694, 372);
+            this.groupBox5.Size = new System.Drawing.Size(694, 521);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.chkTe);
+            this.groupBox6.Controls.Add(this.chkNo);
+            this.groupBox6.Controls.Add(this.label23);
+            this.groupBox6.Controls.Add(this.lblTe);
+            this.groupBox6.Controls.Add(this.chkETC);
+            this.groupBox6.Controls.Add(this.chkTo);
+            this.groupBox6.Controls.Add(this.lblNo);
+            this.groupBox6.Controls.Add(this.label22);
+            this.groupBox6.Controls.Add(this.label24);
+            this.groupBox6.Controls.Add(this.lblTo);
+            this.groupBox6.Controls.Add(this.picStatus);
+            this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox6.Location = new System.Drawing.Point(14, 324);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(290, 209);
+            this.groupBox6.TabIndex = 5;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Nível / Temperatura";
+            // 
+            // chkNo
+            // 
+            this.chkNo.AutoSize = true;
+            this.chkNo.Location = new System.Drawing.Point(269, 21);
+            this.chkNo.Name = "chkNo";
+            this.chkNo.Size = new System.Drawing.Size(15, 14);
+            this.chkNo.TabIndex = 7;
+            this.chkNo.UseVisualStyleBackColor = true;
+            // 
+            // chkETC
+            // 
+            this.chkETC.AutoSize = true;
+            this.chkETC.Location = new System.Drawing.Point(269, 0);
+            this.chkETC.Name = "chkETC";
+            this.chkETC.Size = new System.Drawing.Size(15, 14);
+            this.chkETC.TabIndex = 6;
+            this.chkETC.UseVisualStyleBackColor = true;
+            this.chkETC.CheckedChanged += new System.EventHandler(this.chkETC_CheckedChanged);
+            // 
+            // lblNo
+            // 
+            this.lblNo.AutoSize = true;
+            this.lblNo.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblNo.Location = new System.Drawing.Point(154, 21);
+            this.lblNo.Name = "lblNo";
+            this.lblNo.Size = new System.Drawing.Size(25, 16);
+            this.lblNo.TabIndex = 5;
+            this.lblNo.Text = "No";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.label24.Location = new System.Drawing.Point(7, 21);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(94, 16);
+            this.label24.TabIndex = 4;
+            this.label24.Text = "Nível do Óleo";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1016, 643);
+            this.ClientSize = new System.Drawing.Size(1016, 639);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnGraficos);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
@@ -759,26 +732,24 @@
             this.Controls.Add(this.btnExcel);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = global::InterfaceDesktop.Properties.Resources.ico16;
-            this.MinimumSize = new System.Drawing.Size(1024, 670);
+            this.MinimumSize = new System.Drawing.Size(1024, 677);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMain";
             this.Load += new System.EventHandler(this.frmMain_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.picStatus)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -790,7 +761,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Timer tmrRelogio;
-        private System.Windows.Forms.PictureBox picStatus;
         private System.Windows.Forms.Timer tmrGraficos;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox chkS;
@@ -825,27 +795,26 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox chkTe;
         private System.Windows.Forms.CheckBox chkTo;
-        private System.Windows.Forms.CheckBox chkNo;
-        private System.Windows.Forms.CheckBox chkETC;
         private System.Windows.Forms.Label lblTe;
         private System.Windows.Forms.Label lblTo;
-        private System.Windows.Forms.Label lblNo;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartTemperatura;
         private System.Windows.Forms.Button btnGraficos;
         private System.Windows.Forms.Button btnExportar;
         private System.Windows.Forms.Button btnExcel;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox picStatus;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblMensagens;
         private System.Windows.Forms.ToolStripStatusLabel lblHora;
         private System.Windows.Forms.ToolStripStatusLabel lblSpring;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.CheckBox chkNo;
+        private System.Windows.Forms.CheckBox chkETC;
+        private System.Windows.Forms.Label lblNo;
+        private System.Windows.Forms.Label label24;
     }
 }

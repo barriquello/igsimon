@@ -16,15 +16,18 @@ namespace InterfaceDesktop
         /// <summary>Data do registro mais recente no servidor</summary>
         DateTime tUltimaAtualizacao;
         // Banco de dados temporário
-        SQLiteConnection SQLDBTemp;
+        //SQLiteConnection SQLDBTemp;
+        // Janela de tempo
+        //UInt32 JanelaDeTempo = Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1));
 
-        UInt32 JanelaDeTempo = Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1));
+        List<RegistroDB> Registros = new List<RegistroDB>();
 
         public frmMain()
         {
             InitializeComponent();
         }
 
+        // Cria a ESTRUTURA do gráfico
         private void GerarGrafico()
         {
             // Limpa o gráfico
@@ -56,7 +59,7 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["N"].CursorX.Interval =
                 chartTemperatura.ChartAreas["I"].CursorX.Interval =
                 chartTemperatura.ChartAreas["V"].CursorX.Interval =
-                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.05;
+                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.01;
             // Desabilita a escala no eixo X para quase todos os gráficos
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
@@ -69,9 +72,13 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["I"].AlignWithChartArea = "N";
 
             // Etiquetas personalizadas no eixo de nível do óleo
-            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(0, 3, "Baixo");
-            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(4, 6, "Normal");
-            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(7, 10, "Alto");
+            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(0, Global.NOleoBaixo, "Baixo");
+            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(Global.NOleoBaixo, Global.NOleoAlto, "Normal");
+            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(Global.NOleoAlto, 10, "Alto");
+
+            // Linhas entre os valores:
+            chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.Interval = Global.NOleoAlto - Global.NOleoBaixo;
+            chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.IntervalOffset = Global.NOleoBaixo;
             // Posiciona as várias chartáreas:
             //chartTemperatura.Legends["P"].DockedToChartArea = "P";
             float fTamanhoLegenda = 100f;
@@ -92,41 +99,117 @@ namespace InterfaceDesktop
 
             chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f));
             chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 80f, fLarguraLegenda - 0.2f, 20f));
+            
+            string[] strSeries = Global.strTodas();
 
+            for (int jj = 0; jj < Global.strCategoria.Length; jj++)
+            {
+                Series srSerie = new Series(strSeries[jj]);
+                srSerie.Legend = Global.strCategoria[jj];
+                srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
+                srSerie.XValueType = ChartValueType.Time;
+                srSerie.ChartType = SeriesChartType.StepLine;
+                srSerie.BorderWidth = 2;
+
+                chartTemperatura.Series.Add(srSerie);
+            }
+            /*
             // Buscar informações no banco de dados
             string[] strVariaveis = Global.strTodas();
             string[] Indices = Global.striTodas();
             for (int kk = 0; kk < strVariaveis.Length; kk++)
             {
                 //if (strVariaveis[kk] != Global.strNo)
-                {
-                    Series srTeste = new Series(strVariaveis[kk]);
-                    srTeste.ChartType = SeriesChartType.StepLine;
-                    srTeste.XValueType = ChartValueType.Auto;
-                    srTeste.BorderWidth = 2;
+                //{
+                Series srTeste = new Series(strVariaveis[kk]);
+                srTeste.ChartType = SeriesChartType.StepLine;
+                srTeste.XValueType = ChartValueType.Auto;
+                srTeste.BorderWidth = 2;
 
-                    string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
-                    //txtLoad.Text = strInformacoes;
-                    if (strInformacoes.Length > 10)
+                string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
+                //txtLoad.Text = strInformacoes;
+                if (strInformacoes.Length > 10)
+                {
+                    List<RegistroCSV> Registros =
+                    CSV2Matriz(strInformacoes);
+                    foreach (RegistroCSV Reg in Registros)
                     {
-                        List<RegistroCSV> Registros =
-                        CSV2Matriz(strInformacoes);
-                        foreach (RegistroCSV Reg in Registros)
-                        {
-                            srTeste.Points.AddXY(Reg.time(), Reg.valor());
-                        }
-                        srTeste.ChartArea = Global.strCategoria[kk];
-                        srTeste.Legend = Global.strCategoria[kk];
-                        chartTemperatura.Series.Add(srTeste);
+                        srTeste.Points.AddXY(Reg.time(), Reg.valor());
                     }
+                    srTeste.ChartArea = Global.strCategoria[kk];
+                    srTeste.Legend = Global.strCategoria[kk];
+                    chartTemperatura.Series.Add(srTeste);
                 }
+                //}
             }
             foreach (Series Sr in chartTemperatura.Series)
             {
                 Sr.XValueType = ChartValueType.Time;
-            }
+            } //*/
         }
 
+        private void PlotaGrafico(UInt32 Start, UInt32 End)
+        { //Começar essa
+            /*
+    // Buscar informações no banco de dados
+    string[] strVariaveis = Global.strTodas();
+    string[] Indices = Global.striTodas();
+    for (int kk = 0; kk < strVariaveis.Length; kk++)
+    {
+        //if (strVariaveis[kk] != Global.strNo)
+        //{
+        Series srTeste = new Series(strVariaveis[kk]);
+        srTeste.ChartType = SeriesChartType.StepLine;
+        srTeste.XValueType = ChartValueType.Auto;
+        srTeste.BorderWidth = 2;
+
+        string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
+        //txtLoad.Text = strInformacoes;
+        if (strInformacoes.Length > 10)
+        {
+            List<RegistroCSV> Registros =
+            CSV2Matriz(strInformacoes);
+            foreach (RegistroCSV Reg in Registros)
+            {
+                srTeste.Points.AddXY(Reg.time(), Reg.valor());
+            }
+            srTeste.ChartArea = Global.strCategoria[kk];
+            srTeste.Legend = Global.strCategoria[kk];
+            chartTemperatura.Series.Add(srTeste);
+        }
+        //}
+    }
+    foreach (Series Sr in chartTemperatura.Series)
+    {
+        Sr.XValueType = ChartValueType.Time;
+    } //*/
+
+        }
+        // Busca todas as informações do intervalo informado
+        private void BuscaDados(UInt32 Inicio, UInt32 Final = 0)
+        {
+            if (Final == 0)
+            {
+                Final = Uteis.Time2Unix(DateTime.Now);
+            }
+            string[] strTodas = Global.striTodas();
+            for (int jj = 0; jj < Global.strCategoria.Length; jj++)
+            {
+                string strTemp = GetCSV(Global.strComandoCSV, Inicio, Final, strTodas[jj]);
+                List<RegistroCSV> Dados = CSV2Matriz(strTemp);
+                for (int kk = 0; kk < Dados.Count; kk++)
+                {
+                    UInt32 Horario = Dados[kk].timeUnix();
+                    int indice = Registros.FindIndex(x => x.Horario == Horario);
+                    ///////////////////
+                    if (in
+                }
+            }
+            // Terminar essas
+
+        }
+
+        /*
         private void SalvarNoDBTemp(UInt32 Horario, double P, double Q, double S, double Va, double Vb, double Vc, double Ia, double Ib, double Ic, double No, double To, double Te)
         {
             string strComando = "INSERT INTO '" + Global.TabelaDados + "' " +
@@ -145,17 +228,18 @@ namespace InterfaceDesktop
             {
                 Comando.ExecuteNonQuery();
             }
-        }
+        }//*/
 
         private void button1_Click(object sender, EventArgs e)
         {
             // rotina para ser executada apenas uma vez
             // Pegar o "time" mais recente:
-            string strTime = GetCSV(Global.strComandoHorario, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            string strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now),Uteis.Time2Unix( DateTime.Now), Global.striP).Replace("\"", "");
             tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
+            BuscaDados(Uteis.Time2Unix(DateTime.Now.AddDays(-1)));
             GerarGrafico();
-
+            PlotaGrafico(Uteis.Time2Unix(DateTime.Now.AddDays(-1)), Uteis.Time2Unix(DateTime.Now));
 
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
         }
@@ -251,7 +335,7 @@ namespace InterfaceDesktop
                 // Trocar para um alerta na barra inferior
                 MessageBox.Show(Erro.Message);
             }
-            // Cria o banco de dados virtual local
+            /*// Cria o banco de dados virtual local
             string strGerarTabela = "CREATE TABLE IF NOT EXISTS '" + Global.TabelaDados + "' (" +
                 "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                 "'Horario' INTEGER,'" + // Horário (UNIX)
@@ -266,7 +350,7 @@ namespace InterfaceDesktop
             {
                 SQLCom.ExecuteNonQuery();
             }
-            //SQLDBTemp.Close();
+            //SQLDBTemp.Close();//*/
             // Verifica se alguma variável não está associada a um índice
             if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
             {
@@ -294,19 +378,28 @@ namespace InterfaceDesktop
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
             // Rotina para buscar novas informações no servidor e exibir na tela
-            if (true)
-            {
+            //if (true)
+            //{
+            string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"","");//*não importa o resto*/ Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+
                 int timerInterval = 15000;
                 if (tmrGraficos.Interval != timerInterval)
-                    button1_Click(new object(), new EventArgs());
+                {
+                    tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
+                    lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
+                    BuscaDados(DateTime.Now.AddDays(-1),DateTime.Now);
+
+                    GerarGrafico();
+                    PlotaGrafico(DateTime.Now.AddDays(-1),DateTime.Now);
+                }
 
                 tmrGraficos.Interval = timerInterval; // 15 segundos
-            }
+            //}
             // Atualiza os gráficos:
 
 
             //tmrGraficos.Enabled = false; return;
-            string strTime = GetCSV(Global.strComandoHorario, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "");
+            //strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
             DateTime NovaAtualizaco = Uteis.Unix2time(Convert.ToUInt32(strTime));
             // Verifica atualizacao
             if (!(NovaAtualizaco == tUltimaAtualizacao))
@@ -327,18 +420,18 @@ namespace InterfaceDesktop
                 try
                 {
                     tUltimaAtualizacao = NovaAtualizaco;
-                    strP = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striP).Replace("\"", "").Replace(".", ",");
-                    strQ = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striQ).Replace("\"", "").Replace(".", ",");
-                    strS = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striS).Replace("\"", "").Replace(".", ",");
-                    strVa = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striVa).Replace("\"", "").Replace(".", ",");
-                    strVb = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striVb).Replace("\"", "").Replace(".", ",");
-                    strVc = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striVc).Replace("\"", "").Replace(".", ",");
-                    strIa = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striIa).Replace("\"", "").Replace(".", ",");
-                    strIb = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striIb).Replace("\"", "").Replace(".", ",");
-                    strIc = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striIc).Replace("\"", "").Replace(".", ",");
-                    strNo = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striNo).Replace("\"", "").Replace(".", ",");
-                    strTo = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striTo).Replace("\"", "").Replace(".", ",");
-                    strTe = GetCSV(Global.strComandoValor, DateTime.Now, DateTime.Now, Global.striTe).Replace("\"", "").Replace(".", ",");
+                    strP  = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "").Replace(".", ",");
+                    strQ  = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striQ).Replace("\"", "").Replace(".", ",");
+                    strS  = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striS).Replace("\"", "").Replace(".", ",");
+                    strVa = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striVa).Replace("\"", "").Replace(".", ",");
+                    strVb = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striVb).Replace("\"", "").Replace(".", ",");
+                    strVc = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striVc).Replace("\"", "").Replace(".", ",");
+                    strIa = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striIa).Replace("\"", "").Replace(".", ",");
+                    strIb = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striIb).Replace("\"", "").Replace(".", ",");
+                    strIc = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striIc).Replace("\"", "").Replace(".", ",");
+                    strNo = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striNo).Replace("\"", "").Replace(".", ",");
+                    strTo = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striTo).Replace("\"", "").Replace(".", ",");
+                    strTe = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striTe).Replace("\"", "").Replace(".", ",");
                 }
                 catch { }
                 // Exibe na tela
@@ -355,34 +448,46 @@ namespace InterfaceDesktop
                 lblTo.Text = strTo;
                 lblTe.Text = strTe;
 
-                // Atualiza os gráficos:
-                NovoPontoNoGrafico(Global.strP, strP);
-                NovoPontoNoGrafico(Global.strQ, strQ);
-                NovoPontoNoGrafico(Global.strS, strS);
+                int Noleo = Convert.ToInt32(strNo);
 
-                NovoPontoNoGrafico(Global.strVa, strVa);
-                NovoPontoNoGrafico(Global.strVb, strVb);
-                NovoPontoNoGrafico(Global.strVc, strVc);
+                if ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto))
+                {
+                    picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
+                }
+                else
+                {
+                    picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
+                }
 
+                /* // Atualiza os gráficos:
+                NovoPontoNoGrafico(Global.strP, strP);                NovoPontoNoGrafico(Global.strQ, strQ);                NovoPontoNoGrafico(Global.strS, strS);
+                NovoPontoNoGrafico(Global.strVa, strVa);                NovoPontoNoGrafico(Global.strVb, strVb);                NovoPontoNoGrafico(Global.strVc, strVc);
                 NovoPontoNoGrafico(Global.strIa, strIa);
                 NovoPontoNoGrafico(Global.strIb, strIb);
                 NovoPontoNoGrafico(Global.strIc, strIc);
-
                 //NovoPontoNoGrafico(Global.strNo, strNo); //essa não vai pro gráfico
-                NovoPontoNoGrafico(Global.strTo, strTo);
-                NovoPontoNoGrafico(Global.strTe, strTe);
-                NovoPontoNoGrafico(Global.strNo, strNo);
-                chartTemperatura.Refresh();
+                NovoPontoNoGrafico(Global.strTo, strTo);                NovoPontoNoGrafico(Global.strTe, strTe);                NovoPontoNoGrafico(Global.strNo, strNo);
+                chartTemperatura.Refresh();//*/
             }
         }
 
-        private void NovoPontoNoGrafico(string Grafico, string Ponto)
+        private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
+        {
+            PlotaGrafico(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
+        }
+
+        private void BuscaDados(DateTime dateTime1, DateTime dateTime2)
+        {
+            BuscaDados(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
+        }
+
+        /*private void NovoPontoNoGrafico(string Grafico, string Ponto)
         {
             // Redesenhar todas as séries
             chartTemperatura.Series[Grafico].Points.Clear();
             chartTemperatura.Series[Grafico].Points.AddXY(tUltimaAtualizacao, Convert.ToDouble(Ponto));
             //chartTemperatura.Series[Grafico].Points.RemoveAt(0);
-        }
+        }//*/
 
 
         // Esta rotina deve ser utilizada considerando um intervalo de tempo limitado
@@ -392,16 +497,17 @@ namespace InterfaceDesktop
         /// <param name="Fim">Tempo final</param>
         /// <param name="ID">ID do feed</param>
         /// <returns>String CSV</returns>
-        private string GetCSV(string Comando, DateTime Inicio, DateTime Fim, string ID)
+        private string GetCSV(string Comando, UInt32 Inicio, UInt32 Fim, string ID)
         {
             string strComando = Global.Servidor + Comando + ID +
-                "&start=" + Uteis.Time2Unix(Inicio).ToString() +
-                "&end=" + Uteis.Time2Unix(Fim).ToString() +
+                "&start=" + Inicio.ToString() +
+                "&end=" + Fim.ToString() +
                 "&apikey=" + Global.APIKey + "&interval=30&timeformat=0";
             WebClient Web = new WebClient();
             return Web.DownloadString(strComando);
         }
 
+        // Transforma uma lista CSV em uma matriz
         private List<RegistroCSV> CSV2Matriz(string strCSV)
         {
             char TerminadorDeLinha = '\n'; // \n (O CSV gerado pela página tem como terminador '\n' mas em outros casos pode ser '\r' ou '\r\n')

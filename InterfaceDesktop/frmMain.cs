@@ -40,8 +40,12 @@ namespace InterfaceDesktop
             // Adiciona legendas
             for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
             {
-                chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[jj].Name).LegendItemOrder = LegendItemOrder.SameAsSeriesOrder;
+                chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[jj].Name).LegendItemOrder = LegendItemOrder.Auto;
+                chartTemperatura.Legends[jj].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
+                chartTemperatura.Legends[jj].LegendStyle = LegendStyle.Column; // legendas em uma coluna
             }
+
+
             //habilita o zoom
             chartTemperatura.ChartAreas["T"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["N"].CursorX.IsUserSelectionEnabled =
@@ -63,23 +67,31 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["V"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["T"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["I"].AlignWithChartArea = "N";
-            // Posiciona as várias chartáreas:
-            float fTamanhoLegenda = 100f;
-            float fLargura = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
-            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 0, fLargura, 20));
-            chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura+0.1f,0,fTamanhoLegenda,200));
 
-            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 20, fLargura, 20));
-            chartTemperatura.Legends["V"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,20, fTamanhoLegenda, 200));
-            
-            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 40, fLargura, 20));
-            chartTemperatura.Legends["I"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,40, fTamanhoLegenda, 0200));
-            
-            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 60, fLargura, 20)); // Gráfco temperatura menor
-            chartTemperatura.Legends["T"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,60, fTamanhoLegenda, 200));
-            
-            chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0, 80, fLargura, 20));
-            chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF( fLargura + 0.1f,80, fTamanhoLegenda, 200));
+            // Etiquetas personalizadas no eixo de nível do óleo
+            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(0, 3, "Baixo");
+            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(4, 6, "Normal");
+            chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(7, 10, "Alto");
+            // Posiciona as várias chartáreas:
+            //chartTemperatura.Legends["P"].DockedToChartArea = "P";
+            float fTamanhoLegenda = 100f;
+            float fLarguraLegenda = 20f;
+            float fLargura = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
+            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, 20f));
+            chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, 20f));
+
+
+            chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 20f, fLargura, 20f));
+            chartTemperatura.Legends["V"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 20f, fLarguraLegenda - 0.2f, 20f));
+
+            chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 40f, fLargura, 20f));
+            chartTemperatura.Legends["I"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 40f, fLarguraLegenda - 0.2f, 20f));
+
+            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 60f, fLargura, 20f)); // Gráfco temperatura menor
+            chartTemperatura.Legends["T"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 60f, fLarguraLegenda - 0.2f, 20f));
+
+            chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f));
+            chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 80f, fLarguraLegenda - 0.2f, 20f));
 
             // Buscar informações no banco de dados
             string[] strVariaveis = Global.strTodas();
@@ -91,6 +103,7 @@ namespace InterfaceDesktop
                     Series srTeste = new Series(strVariaveis[kk]);
                     srTeste.ChartType = SeriesChartType.StepLine;
                     srTeste.XValueType = ChartValueType.Auto;
+                    srTeste.BorderWidth = 2;
 
                     string strInformacoes = GetCSV(Global.strComandoCSV, tUltimaAtualizacao.AddDays(-1), tUltimaAtualizacao, Indices[kk]);
                     //txtLoad.Text = strInformacoes;
@@ -249,7 +262,7 @@ namespace InterfaceDesktop
                 ");";
             SQLDBTemp = new SQLiteConnection("Data Source=:memory:");
             SQLDBTemp.Open();
-            using (SQLiteCommand SQLCom = new SQLiteCommand(strGerarTabela,SQLDBTemp))
+            using (SQLiteCommand SQLCom = new SQLiteCommand(strGerarTabela, SQLDBTemp))
             {
                 SQLCom.ExecuteNonQuery();
             }

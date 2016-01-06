@@ -30,7 +30,7 @@ namespace InterfaceDesktop
         // Cria a ESTRUTURA do gráfico
         private void GerarGrafico()
         {
-            // Limpa o gráfico
+            // Limpa o gráfico (tudo nele)
             chartTemperatura.Series.Clear();
             chartTemperatura.ChartAreas.Clear();
             chartTemperatura.Legends.Clear();
@@ -43,6 +43,7 @@ namespace InterfaceDesktop
             // Adiciona legendas
             for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
             {
+                // por consequência do chartTemperatura.Legends.clear(), jj será o índice da nova legenda
                 chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[jj].Name).LegendItemOrder = LegendItemOrder.Auto;
                 chartTemperatura.Legends[jj].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
                 chartTemperatura.Legends[jj].LegendStyle = LegendStyle.Column; // legendas em uma coluna
@@ -55,17 +56,18 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
+            // resolução máxima
             chartTemperatura.ChartAreas["T"].CursorX.Interval =
                 chartTemperatura.ChartAreas["N"].CursorX.Interval =
                 chartTemperatura.ChartAreas["I"].CursorX.Interval =
                 chartTemperatura.ChartAreas["V"].CursorX.Interval =
                 chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.01;
-            // Desabilita a escala no eixo X para quase todos os gráficos
+            // Desabilita a escala no eixo X para quase todos os gráficos (exceto no gráfico do nível de óleo, esse fica na parte inferior)
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["T"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
-            // Alinhamento dos gráficos das chartareas
+            // Alinhamento dos gráficos das chartareas (alinhados com o gráfico debaixo
             chartTemperatura.ChartAreas["P"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["V"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["T"].AlignWithChartArea =
@@ -76,17 +78,17 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(Global.NOleoBaixo, Global.NOleoAlto, "Normal");
             chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(Global.NOleoAlto, 10, "Alto");
 
-            // Linhas entre os valores:
-            chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.Interval = Global.NOleoAlto - Global.NOleoBaixo;
+            // Linhas entre os valores adjacentes:
+            chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.Interval = Global.NOleoAlto - Global.NOleoBaixo; // Com essa técnica, se o número que indica o nível do óleo >= diferença entre nível alto e baixo outra(s) linha(s) aparece(m)
             chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.IntervalOffset = Global.NOleoBaixo;
             // Posiciona as várias chartáreas:
             //chartTemperatura.Legends["P"].DockedToChartArea = "P";
+            // talvez seja necessário rever esses valores:
             float fTamanhoLegenda = 100f;
             float fLarguraLegenda = 20f;
             float fLargura = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
-            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, 20f));
-            chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, 20f));
-
+            chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, 20f)); // 80% da largura e 20 % da altura do chart
+            chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, 20f)); //20 % da largura e 20% da altura
 
             chartTemperatura.ChartAreas["V"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 20f, fLargura, 20f));
             chartTemperatura.Legends["V"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 20f, fLarguraLegenda - 0.2f, 20f));
@@ -94,24 +96,25 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 40f, fLargura, 20f));
             chartTemperatura.Legends["I"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 40f, fLarguraLegenda - 0.2f, 20f));
 
-            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 60f, fLargura, 20f)); // Gráfco temperatura menor
+            chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 60f, fLargura, 20f));
             chartTemperatura.Legends["T"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 60f, fLarguraLegenda - 0.2f, 20f));
 
-            chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f));
+            chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f)); // gráfico do nível do óleo menor por conta da escala
             chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 80f, fLarguraLegenda - 0.2f, 20f));
             
             string[] strSeries = Global.strTodas();
 
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
-                Series srSerie = new Series(strSeries[jj]);
-                srSerie.Legend = Global.strCategoria[jj];
+                Series srSerie = new Series(strSeries[jj]); // nova série
+                srSerie.ChartArea =
+                    srSerie.Legend = Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
                 srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
-                srSerie.XValueType = ChartValueType.Time;
-                srSerie.ChartType = SeriesChartType.StepLine;
-                srSerie.BorderWidth = 2;
+                srSerie.XValueType = ChartValueType.Time; // Bug do .NET
+                srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
+                srSerie.BorderWidth = 2; // tamanho da linha
 
-                chartTemperatura.Series.Add(srSerie);
+                chartTemperatura.Series.Add(srSerie); // adiciona a série de dados ao gráfico
             }
             /*
             // Buscar informações no banco de dados
@@ -149,7 +152,11 @@ namespace InterfaceDesktop
         }
 
         private void PlotaGrafico(UInt32 Start, UInt32 End)
-        { //Começar essa
+        {
+            // Classifica por horário (no caso de alteração nos limites
+            Registros.Sort((x, y) => x.Horario.CompareTo(y.Horario));
+
+
             /*
     // Buscar informações no banco de dados
     string[] strVariaveis = Global.strTodas();
@@ -188,25 +195,48 @@ namespace InterfaceDesktop
         // Busca todas as informações do intervalo informado
         private void BuscaDados(UInt32 Inicio, UInt32 Final = 0)
         {
-            if (Final == 0)
+            // Medir performance:
+            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
+            //Verifica qual é o último registro no servidor
+            string strTime = GetCSV(Global.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+            UInt32 Ultimo = Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
+            UInt32 _Final = Final;
+
+            if (Final == 0) // especificação de data opcional
             {
-                Final = Uteis.Time2Unix(DateTime.Now);
+                _Final = Uteis.Time2Unix(DateTime.Now);
             }
+            if (Ultimo > _Final)
+            {
+                Ultimo = _Final;
+            }
+            // Busca o comando mais recente armazenado no servidor
+
+
+
+            //lista de índices
             string[] strTodas = Global.striTodas();
+            // para cada variável do servidor:
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
-                string strTemp = GetCSV(Global.strComandoCSV, Inicio, Final, strTodas[jj]);
+                // Busca todos os valores do servidor
+                string strTemp = GetCSV(Global.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
                 List<RegistroCSV> Dados = CSV2Matriz(strTemp);
                 for (int kk = 0; kk < Dados.Count; kk++)
                 {
                     UInt32 Horario = Dados[kk].timeUnix();
                     int indice = Registros.FindIndex(x => x.Horario == Horario);
-                    ///////////////////
-                    if (in
+
+                    if (indice < 0)
+                    {
+                        Registros.Add(new RegistroDB());
+                        indice = Registros.Count - 1;
+                    }
+                    Registros[indice].Horario = Horario;
+                    Registros[indice].P[jj] = (float)Dados[kk].valor();
                 }
             }
-            // Terminar essas
-
+            //sw.Stop(); Text = sw.Elapsed.ToString();
         }
 
         /*
@@ -447,6 +477,10 @@ namespace InterfaceDesktop
                 lblNo.Text = strNo;
                 lblTo.Text = strTo;
                 lblTe.Text = strTe;
+                aTo.Value(Convert.ToSingle(strTo));
+                aTe.Value(Convert.ToSingle(strTe));
+                
+                lblTe.Text = strTe;
 
                 int Noleo = Convert.ToInt32(strNo);
 
@@ -460,13 +494,11 @@ namespace InterfaceDesktop
                 }
 
                 /* // Atualiza os gráficos:
-                NovoPontoNoGrafico(Global.strP, strP);                NovoPontoNoGrafico(Global.strQ, strQ);                NovoPontoNoGrafico(Global.strS, strS);
-                NovoPontoNoGrafico(Global.strVa, strVa);                NovoPontoNoGrafico(Global.strVb, strVb);                NovoPontoNoGrafico(Global.strVc, strVc);
-                NovoPontoNoGrafico(Global.strIa, strIa);
-                NovoPontoNoGrafico(Global.strIb, strIb);
-                NovoPontoNoGrafico(Global.strIc, strIc);
+                NovoPontoNoGrafico(Global.strP, strP); NovoPontoNoGrafico(Global.strQ, strQ); NovoPontoNoGrafico(Global.strS, strS);
+                NovoPontoNoGrafico(Global.strVa, strVa); NovoPontoNoGrafico(Global.strVb, strVb); NovoPontoNoGrafico(Global.strVc, strVc);
+                NovoPontoNoGrafico(Global.strIa, strIa); NovoPontoNoGrafico(Global.strIb, strIb); NovoPontoNoGrafico(Global.strIc, strIc);
                 //NovoPontoNoGrafico(Global.strNo, strNo); //essa não vai pro gráfico
-                NovoPontoNoGrafico(Global.strTo, strTo);                NovoPontoNoGrafico(Global.strTe, strTe);                NovoPontoNoGrafico(Global.strNo, strNo);
+                NovoPontoNoGrafico(Global.strTo, strTo); NovoPontoNoGrafico(Global.strTe, strTe); NovoPontoNoGrafico(Global.strNo, strNo);
                 chartTemperatura.Refresh();//*/
             }
         }

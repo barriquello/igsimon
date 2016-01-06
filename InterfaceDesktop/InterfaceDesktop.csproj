@@ -75,6 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analogico.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Analogico.Designer.cs">
+      <DependentUpon>Analogico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Feeds.cs" />
     <Compile Include="frmConfig.cs">
       <SubType>Form</SubType>
@@ -99,6 +105,9 @@
     <Compile Include="Global.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Uteis.cs" />
+    <EmbeddedResource Include="Analogico.resx">
+      <DependentUpon>Analogico.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmConfig.resx">
       <DependentUpon>frmConfig.cs</DependentUpon>
     </EmbeddedResource>
@@ -136,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icone.ico" />
+    <None Include="RES\Relogio.png" />
     <None Include="RES\Config.png" />
     <None Include="RES\Comparacoes.png" />
     <None Include="RES\Excel.png" />

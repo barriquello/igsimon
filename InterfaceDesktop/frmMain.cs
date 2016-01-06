@@ -18,6 +18,7 @@ namespace InterfaceDesktop
         // Banco de dados temporário
         //SQLiteConnection SQLDBTemp;
         // Janela de tempo
+        TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
         //UInt32 JanelaDeTempo = Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1));
 
         List<RegistroDB> Registros = new List<RegistroDB>();
@@ -56,12 +57,12 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
                 chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
-            // resolução máxima
+            // resolução máxima (em dias)
             chartTemperatura.ChartAreas["T"].CursorX.Interval =
                 chartTemperatura.ChartAreas["N"].CursorX.Interval =
                 chartTemperatura.ChartAreas["I"].CursorX.Interval =
                 chartTemperatura.ChartAreas["V"].CursorX.Interval =
-                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.01;
+                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.007; // 10 min
             // Desabilita a escala no eixo X para quase todos os gráficos (exceto no gráfico do nível de óleo, esse fica na parte inferior)
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
@@ -101,7 +102,7 @@ namespace InterfaceDesktop
 
             chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f)); // gráfico do nível do óleo menor por conta da escala
             chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 80f, fLarguraLegenda - 0.2f, 20f));
-            
+
             string[] strSeries = Global.strTodas();
 
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
@@ -109,8 +110,8 @@ namespace InterfaceDesktop
                 Series srSerie = new Series(strSeries[jj]); // nova série
                 srSerie.ChartArea =
                     srSerie.Legend = Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
-                srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
-                srSerie.XValueType = ChartValueType.Time; // Bug do .NET
+                //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
+                srSerie.XValueType = ChartValueType.Time; //
                 srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
                 srSerie.BorderWidth = 2; // tamanho da linha
 
@@ -155,6 +156,35 @@ namespace InterfaceDesktop
         {
             // Classifica por horário (no caso de alteração nos limites
             Registros.Sort((x, y) => x.Horario.CompareTo(y.Horario));
+            SuspendLayout();
+            for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
+            {
+                chartTemperatura.Series[jj].XValueType = ChartValueType.Auto;//bug do .NET
+            }
+            for (int mm = 0; mm < Registros.Count; mm++)
+            {
+                if (Registros[mm].Horario >= Start)
+                    if (Registros[mm].Horario > End)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        AdicionaPonto(Registros[mm]);
+                    }
+            }
+            for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
+            {
+                if ((End - Start) > Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1)))
+                {
+                    chartTemperatura.Series[jj].XValueType = ChartValueType.DateTime;
+                }
+                else
+                {
+                    chartTemperatura.Series[jj].XValueType = ChartValueType.Time;
+                }
+            }
+            ResumeLayout();
 
 
             /*
@@ -192,6 +222,17 @@ namespace InterfaceDesktop
     } //*/
 
         }
+        // Adiciona pontos ao gráfico
+        private void AdicionaPonto(RegistroDB registro)
+        {
+            string[] strTodas = Global.strTodas();
+            DateTime Horario = Uteis.Unix2time(registro.Horario);
+            for (int mm = 0; mm < Global.intIndiceRegistro.Length; mm++)
+            {
+                chartTemperatura.Series[strTodas[mm]].Points.AddXY(Horario, registro.P[Global.intIndiceRegistro[mm]]);
+            }
+        }
+
         // Busca todas as informações do intervalo informado
         private void BuscaDados(UInt32 Inicio, UInt32 Final = 0)
         {
@@ -233,7 +274,7 @@ namespace InterfaceDesktop
                         indice = Registros.Count - 1;
                     }
                     Registros[indice].Horario = Horario;
-                    Registros[indice].P[jj] = (float)Dados[kk].valor();
+                    Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
                 }
             }
             //sw.Stop(); Text = sw.Elapsed.ToString();
@@ -264,12 +305,12 @@ namespace InterfaceDesktop
         {
             // rotina para ser executada apenas uma vez
             // Pegar o "time" mais recente:
-            string strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now),Uteis.Time2Unix( DateTime.Now), Global.striP).Replace("\"", "");
+            string strTime = GetCSV(Global.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
             tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
-            BuscaDados(Uteis.Time2Unix(DateTime.Now.AddDays(-1)));
+            BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
             GerarGrafico();
-            PlotaGrafico(Uteis.Time2Unix(DateTime.Now.AddDays(-1)), Uteis.Time2Unix(DateTime.Now));
+            PlotaGrafico(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
 
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
         }
@@ -410,23 +451,25 @@ namespace InterfaceDesktop
             // Rotina para buscar novas informações no servidor e exibir na tela
             //if (true)
             //{
-            string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"","");//*não importa o resto*/ Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+            string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
 
-                int timerInterval = 15000;
-                if (tmrGraficos.Interval != timerInterval)
-                {
-                    tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
-                    lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
-                    BuscaDados(DateTime.Now.AddDays(-1),DateTime.Now);
+            int timerInterval = 15000;
+            tmrGraficos.Enabled = false;
+            if (tmrGraficos.Interval != timerInterval)
+            {
+                tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
+                lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
+                BuscaDados(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
 
-                    GerarGrafico();
-                    PlotaGrafico(DateTime.Now.AddDays(-1),DateTime.Now);
-                }
-
-                tmrGraficos.Interval = timerInterval; // 15 segundos
+                GerarGrafico();
+                PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
+            }
+            tmrGraficos.Interval = timerInterval; // 15 segundos
+            tmrGraficos.Enabled = true;
             //}
-            // Atualiza os gráficos:
-
+            // Atualiza as etiquetas
+            if (Registros.Count > 0)
+                AtualizaLabels(Registros[Registros.Count - 1]);
 
             //tmrGraficos.Enabled = false; return;
             //strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
@@ -450,18 +493,18 @@ namespace InterfaceDesktop
                 try
                 {
                     tUltimaAtualizacao = NovaAtualizaco;
-                    strP  = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "").Replace(".", ",");
-                    strQ  = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striQ).Replace("\"", "").Replace(".", ",");
-                    strS  = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striS).Replace("\"", "").Replace(".", ",");
-                    strVa = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striVa).Replace("\"", "").Replace(".", ",");
-                    strVb = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striVb).Replace("\"", "").Replace(".", ",");
-                    strVc = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striVc).Replace("\"", "").Replace(".", ",");
-                    strIa = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striIa).Replace("\"", "").Replace(".", ",");
-                    strIb = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striIb).Replace("\"", "").Replace(".", ",");
-                    strIc = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striIc).Replace("\"", "").Replace(".", ",");
-                    strNo = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striNo).Replace("\"", "").Replace(".", ",");
-                    strTo = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striTo).Replace("\"", "").Replace(".", ",");
-                    strTe = GetCSV(Global.strComandoValor,Uteis.Time2Unix(DateTime.Now),Uteis.Time2Unix(DateTime.Now), Global.striTe).Replace("\"", "").Replace(".", ",");
+                    strP = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "").Replace(".", ",");
+                    strQ = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striQ).Replace("\"", "").Replace(".", ",");
+                    strS = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striS).Replace("\"", "").Replace(".", ",");
+                    strVa = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striVa).Replace("\"", "").Replace(".", ",");
+                    strVb = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striVb).Replace("\"", "").Replace(".", ",");
+                    strVc = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striVc).Replace("\"", "").Replace(".", ",");
+                    strIa = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striIa).Replace("\"", "").Replace(".", ",");
+                    strIb = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striIb).Replace("\"", "").Replace(".", ",");
+                    strIc = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striIc).Replace("\"", "").Replace(".", ",");
+                    strNo = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striNo).Replace("\"", "").Replace(".", ",");
+                    strTo = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striTo).Replace("\"", "").Replace(".", ",");
+                    strTe = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striTe).Replace("\"", "").Replace(".", ",");
                 }
                 catch { }
                 // Exibe na tela
@@ -479,7 +522,7 @@ namespace InterfaceDesktop
                 lblTe.Text = strTe;
                 aTo.Value(Convert.ToSingle(strTo));
                 aTe.Value(Convert.ToSingle(strTe));
-                
+
                 lblTe.Text = strTe;
 
                 int Noleo = Convert.ToInt32(strNo);
@@ -501,6 +544,11 @@ namespace InterfaceDesktop
                 NovoPontoNoGrafico(Global.strTo, strTo); NovoPontoNoGrafico(Global.strTe, strTe); NovoPontoNoGrafico(Global.strNo, strNo);
                 chartTemperatura.Refresh();//*/
             }
+        }
+
+        private void AtualizaLabels(RegistroDB registroDB)
+        {
+            //throw new NotImplementedException();
         }
 
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
@@ -534,7 +582,7 @@ namespace InterfaceDesktop
             string strComando = Global.Servidor + Comando + ID +
                 "&start=" + Inicio.ToString() +
                 "&end=" + Fim.ToString() +
-                "&apikey=" + Global.APIKey + "&interval=30&timeformat=0";
+                "&apikey=" + Global.APIKey + "&interval=1&timeformat=0";
             WebClient Web = new WebClient();
             return Web.DownloadString(strComando);
         }
@@ -614,6 +662,27 @@ namespace InterfaceDesktop
         private void btnExcel_Click(object sender, EventArgs e)
         {
             MessageBox.Show("falta essa parte ainda...");
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rd7d.Checked)
+            {
+                JanelaDeTempo = new TimeSpan(7, 0, 0, 0);
+            }
+            if (rd1d.Checked)
+            {
+                JanelaDeTempo = new TimeSpan(1, 0, 0, 0, 0);
+            }
+            if (rd12h.Checked)
+            {
+                JanelaDeTempo = new TimeSpan(12, 0, 0);
+            }
+            if (rd1h.Checked)
+            {
+                JanelaDeTempo = new TimeSpan(1, 0, 0);
+            }
+
         }
     }
 }

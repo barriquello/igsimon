@@ -64,10 +64,10 @@
             this.lineShape1.BorderWidth = 5;
             this.lineShape1.Name = "lineShape1";
             this.lineShape1.SelectionColor = System.Drawing.Color.Transparent;
-            this.lineShape1.X1 = 53;
-            this.lineShape1.X2 = 140;
-            this.lineShape1.Y1 = 73;
-            this.lineShape1.Y2 = 96;
+            this.lineShape1.X1 = 31;
+            this.lineShape1.X2 = 118;
+            this.lineShape1.Y1 = 154;
+            this.lineShape1.Y2 = 154;
             // 
             // Analogico
             // 

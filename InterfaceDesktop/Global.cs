@@ -70,7 +70,10 @@ namespace InterfaceDesktop
         {
             return new string[] { strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe };
         }
+        // Tipo de dado (definição de qual chartárea
         public static string[] strCategoria = { "P", "P", "P", "V", "V", "V", "I", "I", "I", "N", "T", "T" };
+        // Índice na variável de registros
+        public static int[] intIndiceRegistro = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
         public static string[] striTodas()
         {
             return new string[] { striP, striQ, striS, striVa, striVb, striVc, striIa, striIb, striIc, striNo, striTo, striTe };

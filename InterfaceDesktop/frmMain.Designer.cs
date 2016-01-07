@@ -81,10 +81,13 @@
             this.btnExcel = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblMensagens = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblMEM = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSpring = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.aTe = new InterfaceDesktop.Analogico();
+            this.aTo = new InterfaceDesktop.Analogico();
             this.chkNo = new System.Windows.Forms.CheckBox();
             this.chkETC = new System.Windows.Forms.CheckBox();
             this.lblNo = new System.Windows.Forms.Label();
@@ -94,9 +97,6 @@
             this.rd12h = new System.Windows.Forms.RadioButton();
             this.rd1d = new System.Windows.Forms.RadioButton();
             this.rd7d = new System.Windows.Forms.RadioButton();
-            this.lblMEM = new System.Windows.Forms.ToolStripStatusLabel();
-            this.aTe = new InterfaceDesktop.Analogico();
-            this.aTo = new InterfaceDesktop.Analogico();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -163,7 +163,7 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(12, 72);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(290, 82);
             this.groupBox1.TabIndex = 5;
@@ -200,7 +200,7 @@
             // chkPotencia
             // 
             this.chkPotencia.AutoSize = true;
-            this.chkPotencia.Location = new System.Drawing.Point(269, 0);
+            this.chkPotencia.Location = new System.Drawing.Point(261, 0);
             this.chkPotencia.Name = "chkPotencia";
             this.chkPotencia.Size = new System.Drawing.Size(15, 14);
             this.chkPotencia.TabIndex = 2;
@@ -280,7 +280,7 @@
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.groupBox2.Location = new System.Drawing.Point(12, 94);
+            this.groupBox2.Location = new System.Drawing.Point(12, 154);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(290, 82);
             this.groupBox2.TabIndex = 5;
@@ -317,7 +317,7 @@
             // chkTensao
             // 
             this.chkTensao.AutoSize = true;
-            this.chkTensao.Location = new System.Drawing.Point(269, 0);
+            this.chkTensao.Location = new System.Drawing.Point(261, 0);
             this.chkTensao.Name = "chkTensao";
             this.chkTensao.Size = new System.Drawing.Size(15, 14);
             this.chkTensao.TabIndex = 2;
@@ -397,7 +397,7 @@
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(12, 176);
+            this.groupBox3.Location = new System.Drawing.Point(12, 236);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(290, 82);
             this.groupBox3.TabIndex = 5;
@@ -434,7 +434,7 @@
             // chkCorrente
             // 
             this.chkCorrente.AutoSize = true;
-            this.chkCorrente.Location = new System.Drawing.Point(269, 0);
+            this.chkCorrente.Location = new System.Drawing.Point(261, 0);
             this.chkCorrente.Name = "chkCorrente";
             this.chkCorrente.Size = new System.Drawing.Size(15, 14);
             this.chkCorrente.TabIndex = 2;
@@ -504,7 +504,7 @@
             // chkTe
             // 
             this.chkTe.AutoSize = true;
-            this.chkTe.Location = new System.Drawing.Point(268, 130);
+            this.chkTe.Location = new System.Drawing.Point(268, 138);
             this.chkTe.Name = "chkTe";
             this.chkTe.Size = new System.Drawing.Size(15, 14);
             this.chkTe.TabIndex = 3;
@@ -523,7 +523,7 @@
             // 
             this.lblTe.AutoSize = true;
             this.lblTe.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTe.Location = new System.Drawing.Point(153, 130);
+            this.lblTe.Location = new System.Drawing.Point(153, 138);
             this.lblTe.Name = "lblTe";
             this.lblTe.Size = new System.Drawing.Size(25, 16);
             this.lblTe.TabIndex = 1;
@@ -543,7 +543,7 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(7, 130);
+            this.label22.Location = new System.Drawing.Point(7, 138);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(142, 16);
             this.label22.TabIndex = 0;
@@ -638,6 +638,11 @@
             this.lblMensagens.Size = new System.Drawing.Size(10, 17);
             this.lblMensagens.Text = " ";
             // 
+            // lblMEM
+            // 
+            this.lblMEM.Name = "lblMEM";
+            this.lblMEM.Size = new System.Drawing.Size(0, 17);
+            // 
             // lblSpring
             // 
             this.lblSpring.Name = "lblSpring";
@@ -666,8 +671,6 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox6.Controls.Add(this.aTe);
             this.groupBox6.Controls.Add(this.aTo);
             this.groupBox6.Controls.Add(this.chkTe);
@@ -682,12 +685,34 @@
             this.groupBox6.Controls.Add(this.lblTo);
             this.groupBox6.Controls.Add(this.picStatus);
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox6.Location = new System.Drawing.Point(12, 258);
+            this.groupBox6.Location = new System.Drawing.Point(12, 318);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(290, 232);
+            this.groupBox6.Size = new System.Drawing.Size(290, 234);
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Nível / Temperatura";
+            // 
+            // aTe
+            // 
+            this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
+            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTe.Location = new System.Drawing.Point(76, 161);
+            this.aTe.Margin = new System.Windows.Forms.Padding(5);
+            this.aTe.Name = "aTe";
+            this.aTe.Size = new System.Drawing.Size(136, 68);
+            this.aTe.TabIndex = 8;
+            this.aTe.TabStop = false;
+            // 
+            // aTo
+            // 
+            this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
+            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTo.Location = new System.Drawing.Point(76, 59);
+            this.aTo.Margin = new System.Windows.Forms.Padding(4);
+            this.aTo.Name = "aTo";
+            this.aTo.Size = new System.Drawing.Size(136, 68);
+            this.aTo.TabIndex = 8;
+            this.aTo.TabStop = false;
             // 
             // chkNo
             // 
@@ -701,7 +726,7 @@
             // chkETC
             // 
             this.chkETC.AutoSize = true;
-            this.chkETC.Location = new System.Drawing.Point(269, 0);
+            this.chkETC.Location = new System.Drawing.Point(261, 0);
             this.chkETC.Name = "chkETC";
             this.chkETC.Size = new System.Drawing.Size(15, 14);
             this.chkETC.TabIndex = 6;
@@ -735,12 +760,12 @@
             this.groupBox4.Controls.Add(this.rd1d);
             this.groupBox4.Controls.Add(this.rd7d);
             this.groupBox4.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(12, 489);
+            this.groupBox4.Location = new System.Drawing.Point(12, 12);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(290, 58);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Intervalo";
+            this.groupBox4.Text = "Intervalo do gráfico";
             // 
             // rd1h
             // 
@@ -787,33 +812,6 @@
             this.rd7d.Text = "1 Semana";
             this.rd7d.UseVisualStyleBackColor = true;
             this.rd7d.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            // 
-            // lblMEM
-            // 
-            this.lblMEM.Name = "lblMEM";
-            this.lblMEM.Size = new System.Drawing.Size(0, 17);
-            // 
-            // aTe
-            // 
-            this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
-            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTe.Location = new System.Drawing.Point(143, 153);
-            this.aTe.Margin = new System.Windows.Forms.Padding(5);
-            this.aTe.Name = "aTe";
-            this.aTe.Size = new System.Drawing.Size(130, 65);
-            this.aTe.TabIndex = 8;
-            this.aTe.TabStop = false;
-            // 
-            // aTo
-            // 
-            this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
-            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTo.Location = new System.Drawing.Point(143, 59);
-            this.aTo.Margin = new System.Windows.Forms.Padding(4);
-            this.aTo.Name = "aTo";
-            this.aTo.Size = new System.Drawing.Size(130, 65);
-            this.aTo.TabIndex = 8;
-            this.aTo.TabStop = false;
             // 
             // frmMain
             // 

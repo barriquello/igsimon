@@ -50,26 +50,28 @@ namespace InterfaceDesktop
                 chartTemperatura.Legends[jj].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
                 chartTemperatura.Legends[jj].LegendStyle = LegendStyle.Column; // legendas em uma coluna
             }
+            for (int kk = 0; kk < chartTemperatura.ChartAreas.Count; kk++)
+            {
+                // Habilita o zoom
+                chartTemperatura.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
+                // Resolução máxima
+                chartTemperatura.ChartAreas[kk].CursorX.IntervalType = DateTimeIntervalType.Minutes;
+                chartTemperatura.ChartAreas[kk].CursorX.Interval = 10;// minutos
+                chartTemperatura.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSize = 1;
+                chartTemperatura.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSizeType = DateTimeIntervalType.Minutes;
+            }
+            // desabilita as barras de rolagem dos gráficos de cima
+            chartTemperatura.ChartAreas["P"].AxisX.ScrollBar.Enabled =
+                chartTemperatura.ChartAreas["V"].AxisX.ScrollBar.Enabled =
+                chartTemperatura.ChartAreas["I"].AxisX.ScrollBar.Enabled =
+                chartTemperatura.ChartAreas["T"].AxisX.ScrollBar.Enabled = false;
 
-
-            //habilita o zoom
-            chartTemperatura.ChartAreas["T"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["N"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["I"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["V"].CursorX.IsUserSelectionEnabled =
-                chartTemperatura.ChartAreas["P"].CursorX.IsUserSelectionEnabled = true;
-            // resolução máxima (em dias)
-            chartTemperatura.ChartAreas["T"].CursorX.Interval =
-                chartTemperatura.ChartAreas["N"].CursorX.Interval =
-                chartTemperatura.ChartAreas["I"].CursorX.Interval =
-                chartTemperatura.ChartAreas["V"].CursorX.Interval =
-                chartTemperatura.ChartAreas["P"].CursorX.Interval = 0.007; // 10 min
             // Desabilita a escala no eixo X para quase todos os gráficos (exceto no gráfico do nível de óleo, esse fica na parte inferior)
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["V"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["T"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
-            // Alinhamento dos gráficos das chartareas (alinhados com o gráfico debaixo
+            // Alinhamento dos gráficos das chartareas (alinhados com o gráfico debaixo)
             chartTemperatura.ChartAreas["P"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["V"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["T"].AlignWithChartArea =
@@ -120,11 +122,18 @@ namespace InterfaceDesktop
             }
         }
 
+        private void LimpaSeries()
+        {
+            for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
+                chartTemperatura.Series[jj].Points.Clear();
+        }
+
         private void PlotaGrafico(UInt32 Start, UInt32 End)
         {
             // Classifica por horário (no caso de alteração nos limites
             Registros.OrderBy(RegistroDB => RegistroDB.Horario);
-            while (Registros.Count>Global.RegistrosMAXIMO)
+            // Elimina registros mais antigos com a finalidade de reduzir o uso de memória
+            while (Registros.Count > Global.RegistrosMAXIMO)
             {
                 Registros.RemoveAt(0);
             }
@@ -234,7 +243,7 @@ namespace InterfaceDesktop
             BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
             GerarGrafico();
             PlotaGrafico(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
-
+            //chartTemperatura.Printing.PrintPreview();
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
         }
 
@@ -358,25 +367,41 @@ namespace InterfaceDesktop
         // Atualiza os gráficos
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
+            bool Plotar = false;
             // Rotina para buscar novas informações no servidor e exibir na tela
-            //if (true)
-            //{
             string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
-
-            int timerInterval = 15000;
-            tmrGraficos.Enabled = false;
-            if (tmrGraficos.Interval != timerInterval)
-            {
+            DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
+            if (strTime.Length > 1)
                 tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
-                lblMensagens.Text = string.Format("Último registro: {0}", tUltimaAtualizacao);
+            else
+                return;
+            tmrGraficos.Enabled = false;
+            if (tmrGraficos.Interval != Global.intTaxaAtualizacao)
+            {
+                // Primeira execução
                 BuscaDados(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
-
                 GerarGrafico();
-                PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
+                if (Registros.Count > 0)
+                    Plotar = true;
             }
-            tmrGraficos.Interval = timerInterval; // 15 segundos
-            tmrGraficos.Enabled = true;
-            //}
+            else
+            {
+                if (tUltimaAtualizacao.CompareTo(VelhaUltimaAtualizacao) != 0)
+                {
+                    Plotar = true;
+                    BuscaDados(VelhaUltimaAtualizacao, tUltimaAtualizacao);
+                    LimpaSeries();
+
+                }
+
+            }
+            if (Plotar)
+            {
+                //GerarGrafico();
+                PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
+                lblMensagens.Text = string.Format("Último registro: {0}", tUltimaAtualizacao);
+            }
+
             // Atualiza as etiquetas
             if (Registros.Count > 0)
                 AtualizaLabels(Registros[Registros.Count - 1]);
@@ -384,81 +409,26 @@ namespace InterfaceDesktop
             //tmrGraficos.Enabled = false; return;
             //strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
             DateTime NovaAtualizaco = Uteis.Unix2time(Convert.ToUInt32(strTime));
-            // Verifica atualizacao
-            if (!(NovaAtualizaco == tUltimaAtualizacao))
-            {
-                string strP = "";
-                string strQ = "";
-                string strS = "";
-                string strVa = "";
-                string strVb = "";
-                string strVc = "";
-                string strIa = "";
-                string strIb = "";
-                string strIc = "";
-                string strNo = "";
-                string strTo = "";
-                string strTe = "";
-                // Atualiza as informações
-                try
-                {
-                    tUltimaAtualizacao = NovaAtualizaco;
-                    strP = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "").Replace(".", ",");
-                    strQ = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striQ).Replace("\"", "").Replace(".", ",");
-                    strS = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striS).Replace("\"", "").Replace(".", ",");
-                    strVa = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striVa).Replace("\"", "").Replace(".", ",");
-                    strVb = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striVb).Replace("\"", "").Replace(".", ",");
-                    strVc = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striVc).Replace("\"", "").Replace(".", ",");
-                    strIa = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striIa).Replace("\"", "").Replace(".", ",");
-                    strIb = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striIb).Replace("\"", "").Replace(".", ",");
-                    strIc = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striIc).Replace("\"", "").Replace(".", ",");
-                    strNo = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striNo).Replace("\"", "").Replace(".", ",");
-                    strTo = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striTo).Replace("\"", "").Replace(".", ",");
-                    strTe = GetCSV(Global.strComandoValor, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striTe).Replace("\"", "").Replace(".", ",");
-                }
-                catch { }
-                // Exibe na tela
-                lblP.Text = strP;
-                lblQ.Text = strQ;
-                lblS.Text = strS;
-                lblVa.Text = strVa;
-                lblVb.Text = strVb;
-                lblVc.Text = strVc;
-                lblIa.Text = strIa;
-                lblIb.Text = strIb;
-                lblIc.Text = strIc;
-                lblNo.Text = strNo;
-                lblTo.Text = strTo;
-                lblTe.Text = strTe;
-                aTo.Value(Convert.ToSingle(strTo));
-                aTe.Value(Convert.ToSingle(strTe));
 
-                lblTe.Text = strTe;
-
-                int Noleo = Convert.ToInt32(strNo);
-
-                if ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto))
-                {
-                    picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
-                }
-                else
-                {
-                    picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
-                }
-
-                /* // Atualiza os gráficos:
-                NovoPontoNoGrafico(Global.strP, strP); NovoPontoNoGrafico(Global.strQ, strQ); NovoPontoNoGrafico(Global.strS, strS);
-                NovoPontoNoGrafico(Global.strVa, strVa); NovoPontoNoGrafico(Global.strVb, strVb); NovoPontoNoGrafico(Global.strVc, strVc);
-                NovoPontoNoGrafico(Global.strIa, strIa); NovoPontoNoGrafico(Global.strIb, strIb); NovoPontoNoGrafico(Global.strIc, strIc);
-                //NovoPontoNoGrafico(Global.strNo, strNo); //essa não vai pro gráfico
-                NovoPontoNoGrafico(Global.strTo, strTo); NovoPontoNoGrafico(Global.strTe, strTe); NovoPontoNoGrafico(Global.strNo, strNo);
-                chartTemperatura.Refresh();//*/
-            }
+            tmrGraficos.Interval = Global.intTaxaAtualizacao;
+            tmrGraficos.Enabled = true;
         }
 
         private void AtualizaLabels(RegistroDB registroDB)
         {
-            //throw new NotImplementedException();
+            //{ 0       1   2       3       4   5       6       7       8   9       10      11
+            //{ strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe };
+            // Exibe na tela:
+            // Texto
+            lblP.Text = registroDB.P[0].ToString(); lblQ.Text = registroDB.P[1].ToString(); lblS.Text = registroDB.P[2].ToString();
+            lblVa.Text = registroDB.P[3].ToString(); lblVb.Text = registroDB.P[4].ToString(); lblVc.Text = registroDB.P[5].ToString();
+            lblIa.Text = registroDB.P[6].ToString(); lblIb.Text = registroDB.P[7].ToString(); lblIc.Text = registroDB.P[8].ToString();
+            lblNo.Text = registroDB.P[9].ToString(); lblTo.Text = registroDB.P[10].ToString(); lblTe.Text = registroDB.P[11].ToString();
+            // Ponteiros
+            aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
+            // "Led"
+            int Noleo = Convert.ToInt32(registroDB.P[9]);
+            picStatus.Image = ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto)) ? picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho : picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
         }
 
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
@@ -489,22 +459,29 @@ namespace InterfaceDesktop
         /// <returns>String CSV</returns>
         private string GetCSV(string Comando, UInt32 Inicio, UInt32 Fim, string ID)
         {
-            string strComando = Global.Servidor + Comando + ID +
-                "&start=" + Inicio.ToString() +
-                "&end=" + Fim.ToString() +
-                "&apikey=" + Global.APIKey + "&interval=1&timeformat=0";
-            WebClient Web = new WebClient();
-            strComando = Web.DownloadString(strComando);
-            // Verifica a APIKey
-            if (strComando.Contains("API"))
+            try
             {
-                MessageBox.Show("APIKey incorreta");
-                this.Hide();
-                frmConfig Config = new frmConfig();
-                Config.ShowDialog();
-                this.Close();
+                string strComando = Global.Servidor + Comando + ID +
+                    "&start=" + Inicio.ToString() +
+                    "&end=" + Fim.ToString() +
+                    "&apikey=" + Global.APIKey + "&interval=1&timeformat=0";
+                WebClient Web = new WebClient();
+                strComando = Web.DownloadString(strComando);
+                // Verifica a APIKey
+                if (strComando.Contains("API"))
+                {
+                    MessageBox.Show("APIKey incorreta");
+                    this.Hide();
+                    frmConfig Config = new frmConfig();
+                    Config.ShowDialog();
+                    this.Close();
+                }
+                return strComando;
             }
-            return strComando;
+            catch
+            {
+                return "";
+            }
         }
 
         // Transforma uma lista CSV em uma matriz

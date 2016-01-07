@@ -34,17 +34,5 @@ namespace InterfaceDesktop
     {
         public UInt32 Horario { get; set; }
         public float[] P = new float[Global.strCategoria.Length];//{ get; set; }
-        /*        public float Q { get; set; }
-                public float S { get; set; }
-                public float Va { get; set; }
-                public float Vb { get; set; }
-                public float Vc { get; set; }
-                public float Ia { get; set; }
-                public float Ib { get; set; }
-                public float Ic { get; set; }
-                public float No { get; set; }
-                public float To { get; set; }
-                public float Te { get; set; }
-                //*/
     }
 }

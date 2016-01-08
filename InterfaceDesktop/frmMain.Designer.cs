@@ -578,6 +578,7 @@
             this.chartTemperatura.Size = new System.Drawing.Size(688, 518);
             this.chartTemperatura.TabIndex = 0;
             this.chartTemperatura.Text = "chart1";
+            this.chartTemperatura.AxisViewChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.ViewEventArgs>(this.chartTemperatura_AxisViewChanged);
             // 
             // btnGraficos
             // 

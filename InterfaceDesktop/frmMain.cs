@@ -203,7 +203,7 @@ namespace InterfaceDesktop
             //lista de índices
             string[] strTodas = Global.striTodas();
             // para cada variável do servidor:
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
+            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
 
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
@@ -229,7 +229,7 @@ namespace InterfaceDesktop
                 }
 
             }
-            sw.Stop(); Text = "Total " + sw.ElapsedMilliseconds.ToString() + " ms.";
+            //sw.Stop(); Text = "Total " + sw.ElapsedMilliseconds.ToString() + " ms.";
         }
 
 
@@ -578,6 +578,41 @@ namespace InterfaceDesktop
             if (rd1h.Checked)
             {
                 JanelaDeTempo = new TimeSpan(1, 0, 0);
+            }
+        }
+
+        private void chartTemperatura_AxisViewChanged(object sender, ViewEventArgs e)
+        {
+            ChartValueType Escala; //Nova escala (data ou hora)
+            if (e.NewSize<double.MaxValue) // se não houver reset no zoom
+            {
+                if (e.NewSize <= 1) // se a janela for menor que ou igual a um dia
+                {
+                    Escala = ChartValueType.Time; // Hora
+                }
+                else
+                {
+                    Escala = ChartValueType.DateTime; //data
+                }
+            }
+            else // se houver reset no zoom
+            {
+                if (JanelaDeTempo.TotalDays>1)
+                {
+                    Escala = ChartValueType.DateTime;
+                }
+                else
+                {
+                    Escala = ChartValueType.Time;
+                }
+            }
+
+            if (chartTemperatura.Series[0].XValueType != Escala)
+            {
+                for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
+                {
+                    chartTemperatura.Series[jj].XValueType = Escala;
+                }
             }
         }
     }

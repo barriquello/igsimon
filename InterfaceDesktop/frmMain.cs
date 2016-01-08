@@ -7,6 +7,7 @@ using System.Collections.Generic; // Variáveis anonimas (json)
 using System.Data.SQLite; // Bancos de dados
 using System.Windows.Forms.DataVisualization.Charting; //Gráficos
 using System.Linq;
+using System.IO;
 
 namespace InterfaceDesktop
 {
@@ -131,7 +132,8 @@ namespace InterfaceDesktop
         private void PlotaGrafico(UInt32 Start, UInt32 End)
         {
             // Classifica por horário (no caso de alteração nos limites
-            Registros.OrderBy(RegistroDB => RegistroDB.Horario);
+            Registros =
+                Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
             // Elimina registros mais antigos com a finalidade de reduzir o uso de memória
             while (Registros.Count > Global.RegistrosMAXIMO)
             {
@@ -204,6 +206,7 @@ namespace InterfaceDesktop
             string[] strTodas = Global.striTodas();
             // para cada variável do servidor:
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
+            List<int> Salvar = new List<int>();
 
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
@@ -211,7 +214,6 @@ namespace InterfaceDesktop
                 string strTemp = GetCSV(Global.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
 
                 List<RegistroCSV> Dados = CSV2Matriz(strTemp);
-
                 for (int kk = 0; kk < Dados.Count; kk++)
                 {
                     UInt32 Horario_ = Dados[kk].timeUnix();
@@ -223,15 +225,48 @@ namespace InterfaceDesktop
                     {
                         Registros.Add(new RegistroDB());
                         indice = Registros.Count - 1;
+                        Salvar.Add(indice); // salvar no banco de dados o item atual
                     }
                     Registros[indice].Horario = Horario_;
                     Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
                 }
-
+            }
+            for (int mm = 0; mm < Salvar.Count; mm++)
+            {
+                SalvarCSV(Registros[Salvar[mm]]);
             }
             //sw.Stop(); Text = "Total " + sw.ElapsedMilliseconds.ToString() + " ms.";
         }
 
+        /// <summary>Salva num arquivo CSV os dados</summary>
+        private void SalvarCSV(RegistroDB reg)
+        {
+            //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            // Verifica a existência do arquivo e cria o arquivo se necessário
+            string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
+            if (!(new FileInfo(Arquivo).Exists))
+            {
+                // Gera Arquivo CSV com horário
+                GravaNoCSV(Arquivo, "Horário",
+                    Global.strP, Global.strQ, Global.strS,
+                    Global.strVa, Global.strVb, Global.strVc,
+                    Global.strIa, Global.strIb, Global.strIc,
+                    Global.strNo, Global.strTo, Global.strTe);
+            }
+            System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
+            GravaNoCSV(Arquivo, reg.Horario.ToString(),
+                reg.P[0].ToString(SeparadorDecimal), reg.P[1].ToString(SeparadorDecimal), reg.P[2].ToString(SeparadorDecimal),
+                reg.P[3].ToString(SeparadorDecimal), reg.P[4].ToString(SeparadorDecimal), reg.P[5].ToString(SeparadorDecimal),
+                reg.P[6].ToString(SeparadorDecimal), reg.P[7].ToString(SeparadorDecimal), reg.P[8].ToString(SeparadorDecimal),
+                reg.P[9].ToString(SeparadorDecimal), reg.P[10].ToString(SeparadorDecimal), reg.P[11].ToString(SeparadorDecimal));
+        }
+
+        private void GravaNoCSV(string Arquivo, string Horario, string P, string Q, string S, string Va, string Vb, string Vc, string Ia, string Ib, string Ic, string No, string To, string Te)
+        {
+            StreamWriter sw = new StreamWriter(Arquivo,true);
+            sw.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", Horario, P, Q, S, Va, Vb, Vc, Ia, Ib, Ic, No, To, Te, Global.SeparadorCSV);
+            sw.Close();
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -309,6 +344,9 @@ namespace InterfaceDesktop
                         return;
                     }
                 }
+
+               // string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath,"DB_*.csv");
+               // MessageBox.Show(ListaDeArquivos.Length.ToString());
             }
             // Buscar índices no servidor:
             string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
@@ -360,8 +398,8 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("| {0} registros na memória ", Registros.Count);
-            lblMEM.Text += string.Format("| Memória utilizada = {0:#,#0} MB ", Processo.PeakPagedMemorySize64 / 1024 / 1024);
+            lblMEM.Text = string.Format("{0} registros na memória ", Registros.Count);
+            lblMEM.Text += string.Format("| Memória RAM utilizada = {0:#,#0} MB ", Processo.PeakPagedMemorySize64 / 1024 / 1024);
         }
 
         // Atualiza os gráficos

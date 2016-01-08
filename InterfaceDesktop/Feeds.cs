@@ -33,6 +33,6 @@ namespace InterfaceDesktop
     class RegistroDB
     {
         public UInt32 Horario { get; set; }
-        public float[] P = new float[Global.strCategoria.Length];//{ get; set; }
+        public float[] P = new float[Global.strCategoria.Length];
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic; //Formulários e controles
 using System.Data.SQLite; // Banco de dados
 using System.IO; // Sistema de arquivos
 using System.Security.Cryptography; // sistema de criptografia
 using System.Text; //Codificação de texto
-using System.Windows.Forms; //Formulários e controles
+using System.Windows.Forms;
+using System.Linq;
 namespace InterfaceDesktop
 {
     class Uteis
@@ -73,9 +75,15 @@ namespace InterfaceDesktop
             SqlComando.CommandText = Global.strCriarTabelaConfig;
             SqlComando.ExecuteNonQuery();
             // Cria a tabela de dados
-            //SqlComando.CommandText = Global.strCriarTabelaDados;
-            //SqlComando.ExecuteNonQuery();
+            SqlComando.CommandText = Global.strCriarTabelaDados;
+            SqlComando.ExecuteNonQuery();
             sqlConexao.Close();
+        }
+
+        public static void SalvarCSV(string Arquivo, List<RegistroDB> Registros)
+        {
+            Registros=Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>(); // Classifica por horário
+
         }
     }
 }

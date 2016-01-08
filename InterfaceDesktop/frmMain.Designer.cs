@@ -552,7 +552,7 @@
             // picStatus
             // 
             this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Amarelo;
-            this.picStatus.Location = new System.Drawing.Point(230, 15);
+            this.picStatus.Location = new System.Drawing.Point(230, 18);
             this.picStatus.Name = "picStatus";
             this.picStatus.Size = new System.Drawing.Size(16, 16);
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

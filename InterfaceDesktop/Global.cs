@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 
 namespace InterfaceDesktop
 {
@@ -159,18 +160,25 @@ namespace InterfaceDesktop
         public const string strComandoConfig = "INSERT INTO '" + TabelaConfig + "' " +
             "('Servidor','Username','APIKEY') " +
             "VALUES(@Servidor, @Username, @APIKEY)";
-        /*/// <summary>Criar a tabela de dados (adaptar essas configurações)</summary>
-        public static string strCriarTabelaDados = "CREATE TABLE IF NOT EXISTS '" + TabelaDados + "' (" +
+        /// <summary>Criar a tabela de dados (adaptar essas configurações)</summary>
+        public const string strCriarTabelaDados = "CREATE TABLE IF NOT EXISTS '" + TabelaDados + "' (" +
              "'ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
              "'Horario' INTEGER," + // Horário (UNIX)
              "'VA' NUMERIC," + "'VB' NUMERIC," + "'VC' NUMERIC" + //Tensões por fase(a definir)
              "'IA' NUMERIC," + "'IB' NUMERIC," + "'IC' NUMERIC," + //Correntes por fase
              "'P' NUMERIC," + "'Q' NUMERIC," + "'S' NUMERIC," + // Potências
              "'Nivel' NUMERIC," + "'TOleo' NUMERIC," + "'TEnrol' NUMERIC" + // Nível do óleo e temperatura
-             ");";//*/
-        /*public static string strComandoDados = "INSERT INTO '" + TabelaDados + "' " +
+             ");";
+        public const string strComandoDados = "INSERT INTO '" + TabelaDados + "' " +
             "('Horario','VA','VB','VC','IA','IB','IC','P','Q','S','Nivel','TOleo','TEnrol') " +
-            "VALUES(@Horario,@VA,@VB,@VC,@IA,@IB,@IC,@P,@Q,@S,@Nivel,@TOleo,@TEnrol)";//*/
+            "VALUES(@Horario,@VA,@VB,@VC,@IA,@IB,@IC,@P,@Q,@S,@Nivel,@TOleo,@TEnrol)";
         #endregion
+        #region Arquivos CSV
+        public static string ArquivoCSV(DateTime Data)
+        {
+            return "DB_" + Data.Year.ToString() + "_" + Data.Month.ToString() + "_" + Data.Day.ToString() + ".csv";
+        }
+        #endregion
+
     }
 }

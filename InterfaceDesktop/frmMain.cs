@@ -139,22 +139,27 @@ namespace InterfaceDesktop
             {
                 Registros.RemoveAt(0);
             }
-            SuspendLayout();
+            SuspendLayout(); chartTemperatura.Series.SuspendUpdates();
             for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
             {
                 chartTemperatura.Series[jj].XValueType = ChartValueType.Auto;//bug do .NET
             }
-            System.Diagnostics.Stopwatch A = new System.Diagnostics.Stopwatch();
+            //System.Diagnostics.Stopwatch A = new System.Diagnostics.Stopwatch();
             for (int mm = 0; mm < Registros.Count; mm++)
             {
                 if (Registros[mm].Horario >= Start)
                     if (Registros[mm].Horario > End)
                     {
-                        break;
+                        break; // Os dados estão em ordem cronológica
                     }
                     else
                     {
-                        AdicionaPonto(Registros[mm]);
+                        string[] strTodas = Global.strTodas();
+                        DateTime Horario = Uteis.Unix2time(Registros[mm].Horario);
+                        for (int kk = 0; kk < Global.intIndiceRegistro.Length; kk++)
+                        {
+                            chartTemperatura.Series[strTodas[kk]].Points.AddXY(Horario, Registros[mm].P[Global.intIndiceRegistro[kk]]);
+                        }
                     }
             }
             for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
@@ -168,17 +173,7 @@ namespace InterfaceDesktop
                     chartTemperatura.Series[jj].XValueType = ChartValueType.Time;
                 }
             }
-            ResumeLayout();
-        }
-        // Adiciona pontos ao gráfico
-        private void AdicionaPonto(RegistroDB registro)
-        {
-            string[] strTodas = Global.strTodas();
-            DateTime Horario = Uteis.Unix2time(registro.Horario);
-            for (int mm = 0; mm < Global.intIndiceRegistro.Length; mm++)
-            {
-                chartTemperatura.Series[strTodas[mm]].Points.AddXY(Horario, registro.P[Global.intIndiceRegistro[mm]]);
-            }
+            ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
 
         // Busca todas as informações do intervalo informado
@@ -201,12 +196,12 @@ namespace InterfaceDesktop
             // Busca o comando mais recente armazenado no servidor
 
 
-
             //lista de índices
             string[] strTodas = Global.striTodas();
             // para cada variável do servidor:
-            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
             List<int> Salvar = new List<int>();
+
+
 
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
@@ -214,58 +209,93 @@ namespace InterfaceDesktop
                 string strTemp = GetCSV(Global.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
 
                 List<RegistroCSV> Dados = CSV2Matriz(strTemp);
+                int LastIndex = 0; // pequeno ajuste na busca
+
                 for (int kk = 0; kk < Dados.Count; kk++)
                 {
                     UInt32 Horario_ = Dados[kk].timeUnix();
-                    int indice = Registros.FindIndex(x => x.Horario == Horario_); //2,5s
+
+                    int indice = Registros.FindIndex(LastIndex, x => x.Horario == Horario_); //2,5s
+
+                    //int indice = BuscaIndice(Horario_);
+
                     //int indice = Registros.IndexOf(new RegistroDB() { Horario = Horario_ }); //8 segundos
                     //int indice = Registros.TakeWhile(hora => hora.Horario !=Horario_ ).Count(); // 3,5s
                     if (indice < 0) // se não existe vamos criar um novo
-                    //if (indice >= Registros.Count) ;
                     {
                         Registros.Add(new RegistroDB());
                         indice = Registros.Count - 1;
                         Salvar.Add(indice); // salvar no banco de dados o item atual
                     }
+                    else
+                    {
+                        LastIndex = indice;
+                    }
                     Registros[indice].Horario = Horario_;
                     Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
                 }
             }
-            for (int mm = 0; mm < Salvar.Count; mm++)
+            if (Salvar.Count > 0)
             {
-                SalvarCSV(Registros[Salvar[mm]]);
+                DateTime Data = new DateTime(1970, 1, 1);
+                DateTime DataNova = Uteis.Unix2time(Registros[Salvar[0]].Horario);
+                string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(DataNova));
+                //string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
+                StreamWriter Gravar;// = new StreamWriter(Arquivo, true);
+                if (!(new FileInfo(Arquivo).Exists))
+                {
+                    Gravar = new StreamWriter(Arquivo, true);
+                    // Gera Arquivo CSV com cabeçalho
+                    Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", "Horário",
+                        Global.strP, Global.strQ, Global.strS,
+                        Global.strVa, Global.strVb, Global.strVc,
+                        Global.strIa, Global.strIb, Global.strIc,
+                        Global.strNo, Global.strTo, Global.strTe, Global.SeparadorCSV);
+                }
+                else
+                {
+                    Gravar = new StreamWriter(Arquivo, true);
+                }
+                for (int mm = 0; mm < Salvar.Count; mm++)
+                {
+                    DataNova = Uteis.Unix2time(Registros[Salvar[mm]].Horario);
+                    if (Data.Date != DataNova.Date)
+                    {
+                        Data = DataNova;
+                        Gravar.Dispose();
+                        Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Data));
+                        if (!(new FileInfo(Arquivo).Exists))
+                        {
+                            Gravar = new StreamWriter(Arquivo, true);
+                            // Gera Arquivo CSV com cabeçalho
+                            Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", "Horário",
+                                Global.strP, Global.strQ, Global.strS,
+                                Global.strVa, Global.strVb, Global.strVc,
+                                Global.strIa, Global.strIb, Global.strIc,
+                                Global.strNo, Global.strTo, Global.strTe, Global.SeparadorCSV);
+                        }
+                        else
+                        {
+                            Gravar = new StreamWriter(Arquivo, true);
+                        }
+                    }
+                    SalvarCSV(Registros[Salvar[mm]], Gravar);
+
+                }
+                Gravar.Close();
             }
-            //sw.Stop(); Text = "Total " + sw.ElapsedMilliseconds.ToString() + " ms.";
         }
 
         /// <summary>Salva num arquivo CSV os dados</summary>
-        private void SalvarCSV(RegistroDB reg)
+        private void SalvarCSV(RegistroDB reg, StreamWriter Gravar)
         {
             //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-            // Verifica a existência do arquivo e cria o arquivo se necessário
-            string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
-            if (!(new FileInfo(Arquivo).Exists))
-            {
-                // Gera Arquivo CSV com horário
-                GravaNoCSV(Arquivo, "Horário",
-                    Global.strP, Global.strQ, Global.strS,
-                    Global.strVa, Global.strVb, Global.strVc,
-                    Global.strIa, Global.strIb, Global.strIc,
-                    Global.strNo, Global.strTo, Global.strTe);
-            }
             System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
-            GravaNoCSV(Arquivo, reg.Horario.ToString(),
+            Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", reg.Horario.ToString(),
                 reg.P[0].ToString(SeparadorDecimal), reg.P[1].ToString(SeparadorDecimal), reg.P[2].ToString(SeparadorDecimal),
                 reg.P[3].ToString(SeparadorDecimal), reg.P[4].ToString(SeparadorDecimal), reg.P[5].ToString(SeparadorDecimal),
                 reg.P[6].ToString(SeparadorDecimal), reg.P[7].ToString(SeparadorDecimal), reg.P[8].ToString(SeparadorDecimal),
-                reg.P[9].ToString(SeparadorDecimal), reg.P[10].ToString(SeparadorDecimal), reg.P[11].ToString(SeparadorDecimal));
-        }
-
-        private void GravaNoCSV(string Arquivo, string Horario, string P, string Q, string S, string Va, string Vb, string Vc, string Ia, string Ib, string Ic, string No, string To, string Te)
-        {
-            StreamWriter sw = new StreamWriter(Arquivo,true);
-            sw.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", Horario, P, Q, S, Va, Vb, Vc, Ia, Ib, Ic, No, To, Te, Global.SeparadorCSV);
-            sw.Close();
+                reg.P[9].ToString(SeparadorDecimal), reg.P[10].ToString(SeparadorDecimal), reg.P[11].ToString(SeparadorDecimal), Global.SeparadorCSV);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -284,22 +314,7 @@ namespace InterfaceDesktop
 
         private void btnConfig_Click(object sender, EventArgs e)
         {
-            // Botão "Configurações"
-            Form frmconfig1 = new frmConfig();
-            this.Hide();
-            Global.restart = false;
-            Global.ConfigObriatoria = false;
-            frmconfig1.ShowDialog();
-            if (Global.restart)
-            {
-                Global.restart = false;
-                MessageBox.Show("É necessário nova autenticação");
-                this.Close();
-            }
-            else
-            {
-                this.Show();
-            }
+
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -563,42 +578,7 @@ namespace InterfaceDesktop
             }
             return Registros;
         }
-
-        private void chkPotencia_CheckedChanged(object sender, EventArgs e)
-        {
-            chkP.Checked = chkQ.Checked = chkS.Checked = chkPotencia.Checked;
-        }
-
-        private void chkTensao_CheckedChanged(object sender, EventArgs e)
-        {
-            chkVa.Checked = chkVb.Checked = chkVc.Checked = chkTensao.Checked;
-        }
-
-        private void chkCorrente_CheckedChanged(object sender, EventArgs e)
-        {
-            chkIa.Checked = chkIb.Checked = chkIc.Checked = chkCorrente.Checked;
-        }
-
-        private void chkETC_CheckedChanged(object sender, EventArgs e)
-        {
-            chkNo.Checked = chkTo.Checked = chkTe.Checked = chkETC.Checked;
-        }
-
-        private void btnGraficos_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("falta essa parte ainda...");
-        }
-
-        private void btnExportar_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("falta essa parte ainda...");
-        }
-
-        private void btnExcel_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("falta essa parte ainda...");
-        }
-
+        
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if (rd7d.Checked)
@@ -651,6 +631,26 @@ namespace InterfaceDesktop
                 {
                     chartTemperatura.Series[jj].XValueType = Escala;
                 }
+            }
+        }
+
+        private void tooConfig_Click(object sender, EventArgs e)
+        {
+            // Botão "Configurações"
+            Form frmconfig1 = new frmConfig();
+            this.Hide();
+            Global.restart = false;
+            Global.ConfigObriatoria = false;
+            frmconfig1.ShowDialog();
+            if (Global.restart)
+            {
+                Global.restart = false;
+                MessageBox.Show("É necessário nova autenticação");
+                this.Close();
+            }
+            else
+            {
+                this.Show();
             }
         }
     }

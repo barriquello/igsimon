@@ -107,10 +107,7 @@
             this.lblTo2 = new System.Windows.Forms.Label();
             this.picStatus2 = new System.Windows.Forms.PictureBox();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.t1s = new System.Windows.Forms.ToolStripButton();
-            this.t1d = new System.Windows.Forms.ToolStripButton();
-            this.t12h = new System.Windows.Forms.ToolStripButton();
-            this.t1h = new System.Windows.Forms.ToolStripButton();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -128,7 +125,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(171, 14);
+            this.button1.Location = new System.Drawing.Point(17, 451);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(87, 34);
             this.button1.TabIndex = 0;
@@ -589,7 +586,7 @@
             this.chartTemperatura.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartTemperatura.Location = new System.Drawing.Point(3, 19);
             this.chartTemperatura.Name = "chartTemperatura";
-            this.chartTemperatura.Size = new System.Drawing.Size(688, 411);
+            this.chartTemperatura.Size = new System.Drawing.Size(688, 419);
             this.chartTemperatura.TabIndex = 0;
             this.chartTemperatura.Text = "chart1";
             this.chartTemperatura.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chartTemperatura_CursorPositionChanged);
@@ -640,15 +637,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.chartTemperatura);
             this.groupBox5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(308, 12);
+            this.groupBox5.Location = new System.Drawing.Point(308, 184);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(694, 433);
+            this.groupBox5.Size = new System.Drawing.Size(694, 441);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
             // groupBox6
             // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox6.Controls.Add(this.aTe);
             this.groupBox6.Controls.Add(this.aTo);
@@ -663,7 +660,7 @@
             this.groupBox6.Controls.Add(this.lblTo);
             this.groupBox6.Controls.Add(this.picStatus);
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox6.Location = new System.Drawing.Point(311, 449);
+            this.groupBox6.Location = new System.Drawing.Point(308, 12);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(696, 176);
             this.groupBox6.TabIndex = 5;
@@ -978,49 +975,23 @@
             // 
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.t1s,
-            this.t1d,
-            this.t12h,
-            this.t1h});
-            this.toolStrip2.Location = new System.Drawing.Point(12, 449);
+            this.toolStripComboBox1});
+            this.toolStrip2.Location = new System.Drawing.Point(17, 488);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(200, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(168, 27);
             this.toolStrip2.TabIndex = 9;
             this.toolStrip2.Text = "toolStrip2";
             // 
-            // t1s
+            // toolStripComboBox1
             // 
-            this.t1s.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.t1s.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.t1s.Name = "t1s";
-            this.t1s.Size = new System.Drawing.Size(58, 22);
-            this.t1s.Text = "1 Semana";
-            // 
-            // t1d
-            // 
-            this.t1d.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.t1d.Image = ((System.Drawing.Image)(resources.GetObject("t1d.Image")));
-            this.t1d.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.t1d.Name = "t1d";
-            this.t1d.Size = new System.Drawing.Size(35, 22);
-            this.t1d.Text = "1 Dia";
-            // 
-            // t12h
-            // 
-            this.t12h.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.t12h.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.t12h.Name = "t12h";
-            this.t12h.Size = new System.Drawing.Size(54, 22);
-            this.t12h.Text = "12 Horas";
-            // 
-            // t1h
-            // 
-            this.t1h.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.t1h.Image = ((System.Drawing.Image)(resources.GetObject("t1h.Image")));
-            this.t1h.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.t1h.Name = "t1h";
-            this.t1h.Size = new System.Drawing.Size(43, 22);
-            this.t1h.Text = "1 Hora";
+            this.toolStripComboBox1.Items.AddRange(new object[] {
+            "1 Semana",
+            "1 Dia",
+            "12 Horas",
+            "1 Hora"});
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 27);
+            this.toolStripComboBox1.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
             // 
             // frmMain
             // 
@@ -1028,13 +999,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1016, 650);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -1151,9 +1122,6 @@
         private System.Windows.Forms.Label lblTo2;
         private System.Windows.Forms.PictureBox picStatus2;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton t1s;
-        private System.Windows.Forms.ToolStripButton t1d;
-        private System.Windows.Forms.ToolStripButton t12h;
-        private System.Windows.Forms.ToolStripButton t1h;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
     }
 }

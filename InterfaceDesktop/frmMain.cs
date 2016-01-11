@@ -433,7 +433,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {0:#,#0} Mb", Registros.Count, Processo.PeakPagedMemorySize64 / 1024 / 1024);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:#,#0} Mb", Registros.Count, Processo.PeakPagedMemorySize64 / 1024 / 1024);
         }
 
         // Atualiza os gráficos
@@ -709,6 +709,57 @@ namespace InterfaceDesktop
         private void chkTe2_CheckedChanged(object sender, EventArgs e)
         {
             chkTe.Checked = chkTe2.Checked;
+        }
+
+        private void toolStripComboBox1_TextChanged(object sender, EventArgs e)
+        {
+            // Converter o texto para intervalo de tempo
+            try
+            {
+                // Horário[0] = 1, //horário[1] = Hora
+                string[] horario = toolStripComboBox1.Text.ToString().ToLower().Split(' ');
+                int dia = 0; int hora = 0; int minuto = 0; int segundo = 0;
+                double detectado = Convert.ToDouble(horario[0]);
+                if (horario[1].StartsWith("mes") | horario[1].StartsWith("mês"))
+                {
+                    dia = (int)Math.Floor(detectado * 30);
+                }
+                else
+                    if (horario[1].StartsWith("semana"))
+                    {
+                        dia = (int)Math.Floor(detectado * 7);
+                    }
+                    else
+                        if (horario[1].StartsWith("dia"))
+                        {
+                            dia = (int)Math.Floor(detectado);
+                            hora = (int)Math.Floor((detectado - dia) * 24);
+                        }
+                        else
+                            if (horario[1].StartsWith("hora"))
+                            {
+                                hora = (int)Math.Floor(detectado);
+                                minuto = (int)Math.Floor((detectado - hora) * 60);
+                            }
+                            else
+                                if (horario[1].StartsWith("minuto"))
+                                {
+                                    minuto = (int)Math.Floor(detectado);
+                                    segundo = (int)Math.Floor((detectado - minuto) * 60);
+                                }
+                                else
+                                    toolStripComboBox1.BackColor = System.Drawing.Color.RosyBrown;
+
+
+                //JanelaDeTempo = 
+                Text =
+                new TimeSpan(dia, hora, minuto, segundo).ToString();
+                toolStripComboBox1.BackColor = System.Drawing.Color.White;
+            }
+            catch
+            {
+                toolStripComboBox1.BackColor = System.Drawing.Color.RosyBrown;
+            }
         }
     }
 }

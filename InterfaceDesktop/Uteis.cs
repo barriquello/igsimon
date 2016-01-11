@@ -80,10 +80,10 @@ namespace InterfaceDesktop
             sqlConexao.Close();
         }
 
-        public static void SalvarCSV(string Arquivo, List<RegistroDB> Registros)
+      /*  public static void SalvarCSV(string Arquivo, List<RegistroDB> Registros)
         {
             Registros=Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>(); // Classifica por horário
 
-        }
+        }*/
     }
 }

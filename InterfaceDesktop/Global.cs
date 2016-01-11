@@ -14,9 +14,9 @@ namespace InterfaceDesktop
         public const int NOleoAlto = 7;
         public const int NOleoBaixo = 3;
         // Numero máximo de registros a manter na memória
-        public const int RegistrosMAXIMO = 7 * 24 * 60 * 2; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
+        public const int RegistrosMAXIMO = 7 * 24 * 60 * 2 *4; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
         // Intervalo entre comunicações com o servidor web
-        public static int intTaxaAtualizacao = 5000;  //ms
+        public static int intTaxaAtualizacao = 15000;  //ms
         #endregion
 
         #region Configurações relativas ao comportamento do formulário de configurações

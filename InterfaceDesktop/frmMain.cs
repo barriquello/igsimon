@@ -21,7 +21,6 @@ namespace InterfaceDesktop
         //SQLiteConnection SQLDBTemp;
         // Janela de tempo
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
-        //UInt32 JanelaDeTempo = Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1));
 
         List<RegistroDB> Registros = new List<RegistroDB>();
 
@@ -51,8 +50,18 @@ namespace InterfaceDesktop
                 chartTemperatura.Legends[jj].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
                 chartTemperatura.Legends[jj].LegendStyle = LegendStyle.Column; // legendas em uma coluna
             }
+
             for (int kk = 0; kk < chartTemperatura.ChartAreas.Count; kk++)
             {
+                // Habilita os cursores
+                chartTemperatura.ChartAreas[kk].CursorX.IsUserEnabled = true;
+                chartTemperatura.ChartAreas[kk].CursorX.LineWidth = 2;
+                chartTemperatura.ChartAreas[kk].CursorX.LineColor = System.Drawing.Color.Red;
+                chartTemperatura.ChartAreas[kk].CursorX.LineDashStyle = ChartDashStyle.Dot;
+                chartTemperatura.ChartAreas[kk].CursorX.SelectionColor = System.Drawing.Color.DeepSkyBlue;
+                // Melhoras no visual
+                chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.Size = 10;
+
                 // Habilita o zoom
                 chartTemperatura.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
                 // Resolução máxima
@@ -86,6 +95,10 @@ namespace InterfaceDesktop
             // Linhas entre os valores adjacentes:
             chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.Interval = Global.NOleoAlto - Global.NOleoBaixo; // Com essa técnica, se o número que indica o nível do óleo >= diferença entre nível alto e baixo outra(s) linha(s) aparece(m)
             chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.IntervalOffset = Global.NOleoBaixo;
+            // Limites absolutos
+            chartTemperatura.ChartAreas["N"].AxisY.Minimum = 0;
+            chartTemperatura.ChartAreas["N"].AxisY.Maximum = 10;
+
             // Posiciona as várias chartáreas:
             //chartTemperatura.Legends["P"].DockedToChartArea = "P";
             // talvez seja necessário rever esses valores:
@@ -112,8 +125,8 @@ namespace InterfaceDesktop
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
                 Series srSerie = new Series(strSeries[jj]); // nova série
-                srSerie.ChartArea =
-                    srSerie.Legend = Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
+                srSerie.Legend = //"LegendaOculta";
+                    srSerie.ChartArea = Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
                 //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
                 srSerie.XValueType = ChartValueType.Time; //
                 srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
@@ -173,6 +186,19 @@ namespace InterfaceDesktop
                     chartTemperatura.Series[jj].XValueType = ChartValueType.Time;
                 }
             }
+            chartTemperatura.Series[Global.strP].Enabled = chkP.Checked;
+            chartTemperatura.Series[Global.strQ].Enabled = chkQ.Checked;
+            chartTemperatura.Series[Global.strS].Enabled = chkS.Checked;
+            chartTemperatura.Series[Global.strVa].Enabled = chkVa.Checked;
+            chartTemperatura.Series[Global.strVb].Enabled = chkVb.Checked;
+            chartTemperatura.Series[Global.strVc].Enabled = chkVc.Checked;
+            chartTemperatura.Series[Global.strIa].Enabled = chkIa.Checked;
+            chartTemperatura.Series[Global.strIb].Enabled = chkIb.Checked;
+            chartTemperatura.Series[Global.strIc].Enabled = chkIc.Checked;
+            chartTemperatura.Series[Global.strNo].Enabled = chkNo.Checked;
+            chartTemperatura.Series[Global.strTo].Enabled = chkTo.Checked;
+            chartTemperatura.Series[Global.strTe].Enabled = chkTe.Checked;
+
             ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
 
@@ -202,21 +228,17 @@ namespace InterfaceDesktop
             List<int> Salvar = new List<int>();
 
 
-
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
                 // Busca todos os valores do servidor
                 string strTemp = GetCSV(Global.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
 
                 List<RegistroCSV> Dados = CSV2Matriz(strTemp);
-                int LastIndex = 0; // pequeno ajuste na busca
-
                 for (int kk = 0; kk < Dados.Count; kk++)
                 {
                     UInt32 Horario_ = Dados[kk].timeUnix();
 
-                    int indice = Registros.FindIndex(LastIndex, x => x.Horario == Horario_); //2,5s
-
+                    int indice = Registros.FindIndex(x => x.Horario == Horario_); //2,5s
                     //int indice = BuscaIndice(Horario_);
 
                     //int indice = Registros.IndexOf(new RegistroDB() { Horario = Horario_ }); //8 segundos
@@ -226,10 +248,6 @@ namespace InterfaceDesktop
                         Registros.Add(new RegistroDB());
                         indice = Registros.Count - 1;
                         Salvar.Add(indice); // salvar no banco de dados o item atual
-                    }
-                    else
-                    {
-                        LastIndex = indice;
                     }
                     Registros[indice].Horario = Horario_;
                     Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
@@ -268,7 +286,7 @@ namespace InterfaceDesktop
                         {
                             Gravar = new StreamWriter(Arquivo, true);
                             // Gera Arquivo CSV com cabeçalho
-                            Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", "Horário",
+                            Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", "Horario",
                                 Global.strP, Global.strQ, Global.strS,
                                 Global.strVa, Global.strVb, Global.strVc,
                                 Global.strIa, Global.strIb, Global.strIc,
@@ -360,8 +378,8 @@ namespace InterfaceDesktop
                     }
                 }
 
-               // string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath,"DB_*.csv");
-               // MessageBox.Show(ListaDeArquivos.Length.ToString());
+                // string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath,"DB_*.csv");
+                // MessageBox.Show(ListaDeArquivos.Length.ToString());
             }
             // Buscar índices no servidor:
             string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
@@ -406,6 +424,8 @@ namespace InterfaceDesktop
                 frmMain_Load(sender, e);
                 return;
             }
+            radioButton1_CheckedChanged(new object(), new EventArgs());
+            tmrGraficos.Enabled = true;
         }
 
         private void timerRelogio_Tick(object sender, EventArgs e)
@@ -413,8 +433,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória ", Registros.Count);
-            lblMEM.Text += string.Format("| Memória RAM utilizada = {0:#,#0} MB ", Processo.PeakPagedMemorySize64 / 1024 / 1024);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {0:#,#0} Mb", Registros.Count, Processo.PeakPagedMemorySize64 / 1024 / 1024);
         }
 
         // Atualiza os gráficos
@@ -476,12 +495,12 @@ namespace InterfaceDesktop
             lblP.Text = registroDB.P[0].ToString(); lblQ.Text = registroDB.P[1].ToString(); lblS.Text = registroDB.P[2].ToString();
             lblVa.Text = registroDB.P[3].ToString(); lblVb.Text = registroDB.P[4].ToString(); lblVc.Text = registroDB.P[5].ToString();
             lblIa.Text = registroDB.P[6].ToString(); lblIb.Text = registroDB.P[7].ToString(); lblIc.Text = registroDB.P[8].ToString();
-            lblNo.Text = registroDB.P[9].ToString(); lblTo.Text = registroDB.P[10].ToString(); lblTe.Text = registroDB.P[11].ToString();
+            lblNo.Text = lblNo2.Text = registroDB.P[9].ToString(); lblTo.Text = lblTo2.Text = registroDB.P[10].ToString(); lblTe.Text = lblTe2.Text = registroDB.P[11].ToString();
             // Ponteiros
             aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
             // "Led"
             int Noleo = Convert.ToInt32(registroDB.P[9]);
-            picStatus.Image = ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto)) ? picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho : picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
+            picStatus.Image = picStatus2.Image = ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto)) ? picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho : picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
         }
 
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
@@ -578,7 +597,7 @@ namespace InterfaceDesktop
             }
             return Registros;
         }
-        
+
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if (rd7d.Checked)
@@ -602,7 +621,7 @@ namespace InterfaceDesktop
         private void chartTemperatura_AxisViewChanged(object sender, ViewEventArgs e)
         {
             ChartValueType Escala; //Nova escala (data ou hora)
-            if (e.NewSize<double.MaxValue) // se não houver reset no zoom
+            if (e.NewSize < double.MaxValue) // se não houver reset no zoom
             {
                 if (e.NewSize <= 1) // se a janela for menor que ou igual a um dia
                 {
@@ -615,7 +634,7 @@ namespace InterfaceDesktop
             }
             else // se houver reset no zoom
             {
-                if (JanelaDeTempo.TotalDays>1)
+                if (JanelaDeTempo.TotalDays > 1)
                 {
                     Escala = ChartValueType.DateTime;
                 }
@@ -652,6 +671,44 @@ namespace InterfaceDesktop
             {
                 this.Show();
             }
+        }
+
+        private void chartTemperatura_CursorPositionChanged(object sender, CursorEventArgs e)
+        {
+            if (!(double.IsNaN(e.NewPosition)))
+            {
+                Text = string.Format("{0} - {1}", DateTime.FromOADate(e.NewPosition).ToString(), Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition)));
+            }
+        }
+
+        private void chkP_CheckedChanged(object sender, EventArgs e)
+        {
+            string[] Todas = Global.strTodas();
+            try
+            {
+                CheckBox Sender = (CheckBox)sender;
+                chartTemperatura.Series[Todas[Convert.ToInt32(Sender.Tag)]].Enabled = Sender.Checked;
+            }
+            catch { }
+            chkNo2.Checked = chkNo.Checked;
+            chkTo2.Checked = chkTo.Checked;
+            chkTe2.Checked = chkTe.Checked;
+
+        }
+
+        private void chkNo2_CheckedChanged(object sender, EventArgs e)
+        {
+            chkNo.Checked = chkNo2.Checked;
+        }
+
+        private void chkTo2_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTo.Checked = chkTo2.Checked;
+        }
+
+        private void chkTe2_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTe.Checked = chkTe2.Checked;
         }
     }
 }

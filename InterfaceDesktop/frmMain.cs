@@ -2,7 +2,7 @@
 using System.Net; // Comunicação web
 using System.Text; // Codificação de texto
 using System.Windows.Forms; // Formulários
-using Newtonsoft.Json; // JSON
+//using Newtonsoft.Json; // JSON
 using System.Collections.Generic; // Variáveis anonimas (json)
 using System.Data.SQLite; // Bancos de dados
 using System.Windows.Forms.DataVisualization.Charting; //Gráficos
@@ -61,7 +61,7 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas[kk].CursorX.SelectionColor = System.Drawing.Color.DeepSkyBlue;
                 // Melhoras no visual
                 chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.Size = 10;
-
+                chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.IsPositionedInside = false;
                 // Habilita o zoom
                 chartTemperatura.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
                 // Resolução máxima
@@ -75,6 +75,8 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["V"].AxisX.ScrollBar.Enabled =
                 chartTemperatura.ChartAreas["I"].AxisX.ScrollBar.Enabled =
                 chartTemperatura.ChartAreas["T"].AxisX.ScrollBar.Enabled = false;
+            // Remove o botão zoom out
+            //chartTemperatura.ChartAreas["N"].AxisX.ScrollBar.ButtonStyle -= ScrollBarButtonStyles.ResetZoom;
 
             // Desabilita a escala no eixo X para quase todos os gráficos (exceto no gráfico do nível de óleo, esse fica na parte inferior)
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
@@ -131,8 +133,18 @@ namespace InterfaceDesktop
                 srSerie.XValueType = ChartValueType.Time; //
                 srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
                 srSerie.BorderWidth = 2; // tamanho da linha
-
-                chartTemperatura.Series.Add(srSerie); // adiciona a série de dados ao gráfico
+                try
+                {
+                    chartTemperatura.Series.Add(srSerie); // adiciona a série de dados ao gráfico
+                }
+                catch
+                {
+                    MessageBox.Show("Erro ao gerar o gráfico, verifique se há algum nome de variável repetido");
+                    frmConfig Config = new frmConfig();
+                    Config.ShowDialog();
+                    this.Close();
+                    return;
+                }
             }
         }
 
@@ -209,7 +221,7 @@ namespace InterfaceDesktop
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
             //Verifica qual é o último registro no servidor
             string strTime = GetCSV(Global.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
-            UInt32 Ultimo = Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
+            UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime));// Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
             UInt32 _Final = Final;
             if (Final == 0) // especificação de data opcional
             {
@@ -321,7 +333,7 @@ namespace InterfaceDesktop
             // rotina para ser executada apenas uma vez
             // Pegar o "time" mais recente:
             string strTime = GetCSV(Global.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
-            tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
+            tUltimaAtualizacao = DTData2DateTime(strTime); //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
             BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
             GerarGrafico();
@@ -384,10 +396,11 @@ namespace InterfaceDesktop
             // Buscar índices no servidor:
             string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
 
-            try
+           // try
             {
                 Requisicao = Servidor.DownloadString(Requisicao);
-                List<Feed> Fdd = JsonConvert.DeserializeObject<List<Feed>>(Requisicao);
+                List<Feed> Fdd = json2Feed(Requisicao);
+                //List<Feed> Fdd = JsonConvert.DeserializeObject<List<Feed>>(Requisicao);
                 for (int kk = 0; kk < Fdd.Count; kk++)
                 {
                     if (Fdd[kk].name == Global.strP) Global.striP = Fdd[kk].id;
@@ -404,19 +417,20 @@ namespace InterfaceDesktop
                     if (Fdd[kk].name == Global.strTe) Global.striTe = Fdd[kk].id;
                 }
             }
-            catch (Exception Erro)
+       //     catch (Exception Erro)
             {
                 // Trocar para um alerta na barra inferior
-                MessageBox.Show(Erro.Message);
+     //           MessageBox.Show(Erro.Message);
             }
             // Verifica se alguma variável não está associada a um índice
             if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
             {
                 Global.ConfigObriatoria = true;
+                frmConfig Config = new frmConfig();
                 while (!Global.restart)
                 {
+                    Config = new frmConfig();
                     MessageBox.Show("Verifique os nomes das variáveis");
-                    frmConfig Config = new frmConfig();
                     Config.ShowDialog();
                 }
                 Global.ConfigObriatoria = false;
@@ -426,6 +440,54 @@ namespace InterfaceDesktop
             }
             radioButton1_CheckedChanged(new object(), new EventArgs());
             tmrGraficos.Enabled = true;
+        }
+
+        private List<Feed> json2Feed(string Requisicao)
+        {
+            const string strListaRemover = "[{\":,}]";
+            // Requisição = [{campo:valor, campo:valor, ...}, {campo:valor, ...},...]
+            List<Feed> FDD = new List<Feed>();
+            string[] Linha = Requisicao.Split('}'); //Linha = {campo:valor, campo:valor, ...}
+            for (int jj = 0; jj < Linha.Length; jj++)
+            {
+                string [] Campo = Linha[jj].Split(','); // Campo = campo:valor
+                for (int kk = 0; kk < Linha.Length;kk++ )
+                {
+                    string[] Elemento = Campo[kk].Split(':'); // Elemento = campo ou valor
+                    for (int mm = 0; mm < Elemento.Length; mm++)
+                    {
+                        for (int nn = 0; nn < strListaRemover.Length; nn++)  //remover caracteres especiais
+                        {
+                            Elemento[mm] = Elemento[mm].Replace(strListaRemover.Substring(nn,1), "");
+                        }
+                    }
+                    // Adicionar elementos ao feed
+
+                    Erro
+                        //verificar toda essa parte
+                    Feed Fdd = new Feed();
+                    int Verificador = 0;
+                    for (int nn = 0; nn < Elemento.Length; nn = nn + 2)
+                    {
+                        if (Elemento[nn] == "id")
+                        {
+                            Fdd.id = Elemento[nn + 1];
+                            Verificador++;
+                        }
+                        if (Elemento[nn]=="name")
+                        {
+                            Fdd.name = Elemento[nn+1];
+                            Verificador+=2;
+                        }
+                        if (Verificador == 3)
+                        {
+                            FDD.Add(Fdd);
+                            break;
+                        }
+                    }
+                }
+            }
+            return FDD;
         }
 
         private void timerRelogio_Tick(object sender, EventArgs e)
@@ -444,7 +506,8 @@ namespace InterfaceDesktop
             string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
             DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
             if (strTime.Length > 1)
-                tUltimaAtualizacao = Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
+                    tUltimaAtualizacao = DTData2DateTime(strTime);
+//                        Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             else
                 return;
             tmrGraficos.Enabled = false;
@@ -484,6 +547,26 @@ namespace InterfaceDesktop
 
             tmrGraficos.Interval = Global.intTaxaAtualizacao;
             tmrGraficos.Enabled = true;
+        }
+
+        private DateTime DTData2DateTime(string strTime)
+        {
+            if (strTime.Length > 1)
+            {
+                if (strTime.Contains('-'))
+                {
+                    // Formato de data = "2015-12-30 03:57:57"
+                    return DateTime.Parse(strTime, System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+                }
+                else
+                {
+                    // formato unix
+                    return Uteis.Unix2time(Convert.ToUInt32(strTime));
+                }
+            }
+            else
+                //qualquer coisa
+                return DateTime.Now;
         }
 
         private void AtualizaLabels(RegistroDB registroDB)
@@ -759,6 +842,16 @@ namespace InterfaceDesktop
             catch
             {
                 toolStripComboBox1.BackColor = System.Drawing.Color.RosyBrown;
+            }
+        }
+
+        private void chartTemperatura_MouseUp(object sender, MouseEventArgs e)
+        {
+            // botão direito
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (chartTemperatura.ChartAreas["N"].AxisX.ScaleView.IsZoomed)
+                    chartTemperatura.ChartAreas["N"].AxisX.ScaleView.ZoomReset();
             }
         }
     }

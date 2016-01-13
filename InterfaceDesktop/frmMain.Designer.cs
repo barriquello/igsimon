@@ -591,6 +591,7 @@
             this.chartTemperatura.Text = "chart1";
             this.chartTemperatura.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chartTemperatura_CursorPositionChanged);
             this.chartTemperatura.AxisViewChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.ViewEventArgs>(this.chartTemperatura_AxisViewChanged);
+            this.chartTemperatura.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chartTemperatura_MouseUp);
             // 
             // statusStrip1
             // 
@@ -978,19 +979,24 @@
             this.toolStripComboBox1});
             this.toolStrip2.Location = new System.Drawing.Point(17, 488);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(168, 27);
+            this.toolStrip2.Size = new System.Drawing.Size(166, 25);
             this.toolStrip2.TabIndex = 9;
             this.toolStrip2.Text = "toolStrip2";
             // 
             // toolStripComboBox1
             // 
+            this.toolStripComboBox1.AutoCompleteCustomSource.AddRange(new string[] {
+            "Horas",
+            "Dias",
+            "Semanas"});
             this.toolStripComboBox1.Items.AddRange(new object[] {
             "1 Semana",
             "1 Dia",
             "12 Horas",
             "1 Hora"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 27);
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBox1.Text = "1 Hora";
             this.toolStripComboBox1.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
             // 
             // frmMain

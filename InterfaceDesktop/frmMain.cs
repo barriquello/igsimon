@@ -396,7 +396,7 @@ namespace InterfaceDesktop
             // Buscar índices no servidor:
             string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
 
-           // try
+            try
             {
                 Requisicao = Servidor.DownloadString(Requisicao);
                 List<Feed> Fdd = json2Feed(Requisicao);
@@ -417,10 +417,10 @@ namespace InterfaceDesktop
                     if (Fdd[kk].name == Global.strTe) Global.striTe = Fdd[kk].id;
                 }
             }
-       //     catch (Exception Erro)
+            catch (Exception Erro)
             {
                 // Trocar para um alerta na barra inferior
-     //           MessageBox.Show(Erro.Message);
+                MessageBox.Show(Erro.Message);
             }
             // Verifica se alguma variável não está associada a um índice
             if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
@@ -450,44 +450,47 @@ namespace InterfaceDesktop
             string[] Linha = Requisicao.Split('}'); //Linha = {campo:valor, campo:valor, ...}
             for (int jj = 0; jj < Linha.Length; jj++)
             {
-                string [] Campo = Linha[jj].Split(','); // Campo = campo:valor
-                for (int kk = 0; kk < Linha.Length;kk++ )
+                string[] Campo = Linha[jj].Split(','); // Campo = campo:valor
+                // Adicionar elementos ao feed
+                Feed Fdd = new Feed();
+                int Verificador = 0;
+                for (int kk = 0; kk < Campo.Length; kk++)
                 {
                     string[] Elemento = Campo[kk].Split(':'); // Elemento = campo ou valor
-                    for (int mm = 0; mm < Elemento.Length; mm++)
+                    if (Elemento.Length == 2)
                     {
-                        for (int nn = 0; nn < strListaRemover.Length; nn++)  //remover caracteres especiais
                         {
-                            Elemento[mm] = Elemento[mm].Replace(strListaRemover.Substring(nn,1), "");
+                            if (Elemento[0].Contains("\"id\""))
+                            {
+                                for (int mm = 0; mm < strListaRemover.Length; mm++)  //remover caracteres especiais
+                                {
+                                    Elemento[1] = Elemento[1].Replace(strListaRemover.Substring(mm, 1), "");
+                                }
+                                Fdd.id = Elemento[1];
+                                Verificador += 5;
+                            }
+                            if (Elemento[0].Contains("\"name\""))
+                            {
+                                for (int mm = 0; mm < strListaRemover.Length; mm++)  //remover caracteres especiais
+                                {
+                                    Elemento[1] = Elemento[1].Replace(strListaRemover.Substring(mm, 1), "");
+                                }
+                                Fdd.name = Elemento[1];
+                                Verificador += 7;
+                            }
                         }
-                    }
-                    // Adicionar elementos ao feed
-
-                    Erro
-                        //verificar toda essa parte
-                    Feed Fdd = new Feed();
-                    int Verificador = 0;
-                    for (int nn = 0; nn < Elemento.Length; nn = nn + 2)
-                    {
-                        if (Elemento[nn] == "id")
-                        {
-                            Fdd.id = Elemento[nn + 1];
-                            Verificador++;
-                        }
-                        if (Elemento[nn]=="name")
-                        {
-                            Fdd.name = Elemento[nn+1];
-                            Verificador+=2;
-                        }
-                        if (Verificador == 3)
+                        if (Verificador == 5 + 7)
                         {
                             FDD.Add(Fdd);
+                            Verificador = 0;
+                            Fdd = new Feed();
                             break;
                         }
                     }
                 }
             }
             return FDD;
+
         }
 
         private void timerRelogio_Tick(object sender, EventArgs e)
@@ -800,7 +803,7 @@ namespace InterfaceDesktop
             try
             {
                 // Horário[0] = 1, //horário[1] = Hora
-                string[] horario = toolStripComboBox1.Text.ToString().ToLower().Split(' ');
+                string[] horario = cmbJanela.Text.ToString().ToLower().Split(' ');
                 int dia = 0; int hora = 0; int minuto = 0; int segundo = 0;
                 double detectado = Convert.ToDouble(horario[0]);
                 if (horario[1].StartsWith("mes") | horario[1].StartsWith("mês"))
@@ -831,17 +834,16 @@ namespace InterfaceDesktop
                                     segundo = (int)Math.Floor((detectado - minuto) * 60);
                                 }
                                 else
-                                    toolStripComboBox1.BackColor = System.Drawing.Color.RosyBrown;
+                                    cmbJanela.BackColor = System.Drawing.Color.RosyBrown;
 
 
-                //JanelaDeTempo = 
-                Text =
-                new TimeSpan(dia, hora, minuto, segundo).ToString();
-                toolStripComboBox1.BackColor = System.Drawing.Color.White;
+                JanelaDeTempo = new TimeSpan(dia, hora, minuto, segundo);
+                
+                cmbJanela.BackColor = System.Drawing.Color.White;
             }
             catch
             {
-                toolStripComboBox1.BackColor = System.Drawing.Color.RosyBrown;
+                cmbJanela.BackColor = System.Drawing.Color.RosyBrown;
             }
         }
 

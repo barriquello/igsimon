@@ -95,6 +95,7 @@
             this.toolGraficos = new System.Windows.Forms.ToolStripButton();
             this.toolComparar = new System.Windows.Forms.ToolStripButton();
             this.toolExcel = new System.Windows.Forms.ToolStripButton();
+            this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.chkTe2 = new System.Windows.Forms.CheckBox();
             this.chkNo2 = new System.Windows.Forms.CheckBox();
@@ -106,8 +107,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.lblTo2 = new System.Windows.Forms.Label();
             this.picStatus2 = new System.Windows.Forms.PictureBox();
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -120,7 +120,6 @@
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus2)).BeginInit();
-            this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -793,11 +792,13 @@
             this.toolStripSeparator1,
             this.toolGraficos,
             this.toolComparar,
-            this.toolExcel});
+            this.toolExcel,
+            this.toolStripSeparator2,
+            this.cmbJanela});
             this.toolStrip1.Location = new System.Drawing.Point(12, 12);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(153, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(282, 39);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "Ações";
             // 
@@ -842,6 +843,18 @@
             this.toolExcel.Name = "toolExcel";
             this.toolExcel.Size = new System.Drawing.Size(36, 36);
             this.toolExcel.Text = "toolStripButton1";
+            // 
+            // cmbJanela
+            // 
+            this.cmbJanela.Items.AddRange(new object[] {
+            "1 Semana",
+            "1 Dia",
+            "12 Horas",
+            "1 Hora"});
+            this.cmbJanela.Name = "cmbJanela";
+            this.cmbJanela.Size = new System.Drawing.Size(121, 39);
+            this.cmbJanela.Text = "1 Hora";
+            this.cmbJanela.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
             // 
             // groupBox7
             // 
@@ -972,32 +985,10 @@
             this.picStatus2.TabIndex = 4;
             this.picStatus2.TabStop = false;
             // 
-            // toolStrip2
+            // toolStripSeparator2
             // 
-            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBox1});
-            this.toolStrip2.Location = new System.Drawing.Point(17, 488);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(166, 25);
-            this.toolStrip2.TabIndex = 9;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // toolStripComboBox1
-            // 
-            this.toolStripComboBox1.AutoCompleteCustomSource.AddRange(new string[] {
-            "Horas",
-            "Dias",
-            "Semanas"});
-            this.toolStripComboBox1.Items.AddRange(new object[] {
-            "1 Semana",
-            "1 Dia",
-            "12 Horas",
-            "1 Hora"});
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
-            this.toolStripComboBox1.Text = "1 Hora";
-            this.toolStripComboBox1.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
             // 
             // frmMain
             // 
@@ -1006,7 +997,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1016, 650);
             this.Controls.Add(this.groupBox6);
-            this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox2);
@@ -1042,8 +1032,6 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus2)).EndInit();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1127,7 +1115,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lblTo2;
         private System.Windows.Forms.PictureBox picStatus2;
-        private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.ToolStripComboBox cmbJanela;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

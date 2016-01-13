@@ -438,7 +438,7 @@ namespace InterfaceDesktop
                 frmMain_Load(sender, e);
                 return;
             }
-            radioButton1_CheckedChanged(new object(), new EventArgs());
+            toolStripComboBox1_TextChanged(new object(), new EventArgs());
             tmrGraficos.Enabled = true;
         }
 
@@ -498,7 +498,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:#,#0} Mb", Registros.Count, Processo.PeakPagedMemorySize64 / 1024 / 1024);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
         }
 
         // Atualiza os gráficos
@@ -684,26 +684,6 @@ namespace InterfaceDesktop
             return Registros;
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rd7d.Checked)
-            {
-                JanelaDeTempo = new TimeSpan(7, 0, 0, 0);
-            }
-            if (rd1d.Checked)
-            {
-                JanelaDeTempo = new TimeSpan(1, 0, 0, 0, 0);
-            }
-            if (rd12h.Checked)
-            {
-                JanelaDeTempo = new TimeSpan(12, 0, 0);
-            }
-            if (rd1h.Checked)
-            {
-                JanelaDeTempo = new TimeSpan(1, 0, 0);
-            }
-        }
-
         private void chartTemperatura_AxisViewChanged(object sender, ViewEventArgs e)
         {
             ChartValueType Escala; //Nova escala (data ou hora)
@@ -779,7 +759,62 @@ namespace InterfaceDesktop
             chkNo2.Checked = chkNo.Checked;
             chkTo2.Checked = chkTo.Checked;
             chkTe2.Checked = chkTe.Checked;
+            // Reajustar gráfico no caso de uma chartárea vazia
+            chartTemperatura.ChartAreas["P"].Visible = chkP.Checked | chkQ.Checked | chkS.Checked;
+            chartTemperatura.ChartAreas["V"].Visible = chkVa.Checked | chkVb.Checked | chkVc.Checked;
+            chartTemperatura.ChartAreas["I"].Visible = chkIa.Checked | chkIb.Checked | chkIc.Checked;
+            chartTemperatura.ChartAreas["T"].Visible = chkTe.Checked | chkTo.Checked;
+            chartTemperatura.ChartAreas["N"].Visible = chkNo.Checked;
+            ReposicionaChartAreas();
+        }
 
+        private void ReposicionaChartAreas()
+        {
+            // Altura das chartareas (%)
+            float AlturaP = chartTemperatura.ChartAreas["P"].Visible ? 20 : 0;
+            float AlturaV = chartTemperatura.ChartAreas["V"].Visible ? 20 : 0;
+            float AlturaI = chartTemperatura.ChartAreas["I"].Visible ? 20 : 0;
+            float AlturaT = chartTemperatura.ChartAreas["T"].Visible ? 20 : 0;
+            float AlturaN = chartTemperatura.ChartAreas["N"].Visible ? 20 : 0;
+            float AlturaTotal = AlturaP + AlturaV + AlturaI + AlturaT + AlturaN; // = 100%, se todas visiveis
+            // Nova altura
+            AlturaP *= 100 / AlturaTotal;
+            AlturaV *= 100 / AlturaTotal;
+            AlturaI *= 100 / AlturaTotal;
+            AlturaT *= 100 / AlturaTotal;
+            AlturaN *= 100 / AlturaTotal;
+            // Posiciona as chartAreas
+            chartTemperatura.ChartAreas["P"].Position.Y = 0;
+            chartTemperatura.ChartAreas["P"].Position.Height = AlturaP;
+            chartTemperatura.ChartAreas["V"].Position.Y = AlturaP;
+            chartTemperatura.ChartAreas["V"].Position.Height = AlturaV;
+            chartTemperatura.ChartAreas["I"].Position.Y = AlturaP + AlturaV;
+            chartTemperatura.ChartAreas["I"].Position.Height = AlturaI;
+            chartTemperatura.ChartAreas["T"].Position.Y = AlturaP + AlturaV + AlturaI;
+            chartTemperatura.ChartAreas["T"].Position.Height = AlturaT;
+            chartTemperatura.ChartAreas["N"].Position.Y = AlturaP + AlturaV + AlturaI + AlturaT;
+            chartTemperatura.ChartAreas["N"].Position.Height = AlturaN;
+
+            for (int mm = 0; mm < chartTemperatura.ChartAreas.Count; mm++)
+            {
+                chartTemperatura.Legends[chartTemperatura.ChartAreas[mm].Name].Position.Y = chartTemperatura.ChartAreas[mm].Position.Y;
+                chartTemperatura.Legends[chartTemperatura.ChartAreas[mm].Name].Position.Height = chartTemperatura.ChartAreas[mm].Position.Height;
+                chartTemperatura.Legends[chartTemperatura.ChartAreas[mm].Name].Enabled = chartTemperatura.ChartAreas[mm].Visible;
+            }
+            // Scrollbar apenas no gráfico debaixo
+            string Ordem = "NTIVP";
+            string Alinhamento = "N";
+            for (int mm = 1; mm < Ordem.Length; mm++)
+            {
+                chartTemperatura.ChartAreas[Ordem.Substring(mm, 1)].AxisX.ScrollBar.Enabled =
+                    chartTemperatura.ChartAreas[Ordem.Substring(mm - 1, 1)].AxisX.ScrollBar.Enabled & (!(chartTemperatura.ChartAreas[Ordem.Substring(mm - 1, 1)].Visible));
+                Alinhamento = chartTemperatura.ChartAreas[Ordem.Substring(mm, 1)].AxisX.ScrollBar.Enabled ? Ordem.Substring(mm, 1) : Alinhamento;
+            }
+
+            for (int mm = 0; mm < Ordem.Length; mm++)
+            {
+                chartTemperatura.ChartAreas[mm].AlignWithChartArea = Alinhamento;
+            }
         }
 
         private void chkNo2_CheckedChanged(object sender, EventArgs e)
@@ -811,35 +846,55 @@ namespace InterfaceDesktop
                     dia = (int)Math.Floor(detectado * 30);
                 }
                 else
+                {
                     if (horario[1].StartsWith("semana"))
                     {
                         dia = (int)Math.Floor(detectado * 7);
                     }
                     else
+                    {
                         if (horario[1].StartsWith("dia"))
                         {
                             dia = (int)Math.Floor(detectado);
                             hora = (int)Math.Floor((detectado - dia) * 24);
                         }
                         else
+                        {
                             if (horario[1].StartsWith("hora"))
                             {
                                 hora = (int)Math.Floor(detectado);
                                 minuto = (int)Math.Floor((detectado - hora) * 60);
                             }
                             else
+                            {
                                 if (horario[1].StartsWith("minuto"))
                                 {
                                     minuto = (int)Math.Floor(detectado);
                                     segundo = (int)Math.Floor((detectado - minuto) * 60);
                                 }
                                 else
+                                {
                                     cmbJanela.BackColor = System.Drawing.Color.RosyBrown;
-
-
-                JanelaDeTempo = new TimeSpan(dia, hora, minuto, segundo);
-                
-                cmbJanela.BackColor = System.Drawing.Color.White;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (dia + hora + minuto + segundo != 0)
+                {
+                    TimeSpan NovaJanela = new TimeSpan(dia, hora, minuto, segundo);
+                    if (NovaJanela != JanelaDeTempo)
+                    {
+                        Text = string.Format("Antiga = {0}, Nova = {1}", JanelaDeTempo, NovaJanela);
+                        JanelaDeTempo = NovaJanela;// new TimeSpan(dia, hora, minuto, segundo);
+                        // Atualizar tudo
+                    }
+                    cmbJanela.BackColor = System.Drawing.Color.White;
+                }
+                else
+                {
+                    cmbJanela.BackColor = System.Drawing.Color.RosyBrown;
+                }
             }
             catch
             {

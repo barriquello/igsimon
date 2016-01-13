@@ -84,17 +84,13 @@
             this.chkNo = new System.Windows.Forms.CheckBox();
             this.lblNo = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.rd1h = new System.Windows.Forms.RadioButton();
-            this.rd12h = new System.Windows.Forms.RadioButton();
-            this.rd1d = new System.Windows.Forms.RadioButton();
-            this.rd7d = new System.Windows.Forms.RadioButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tooConfig = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolGraficos = new System.Windows.Forms.ToolStripButton();
             this.toolComparar = new System.Windows.Forms.ToolStripButton();
             this.toolExcel = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.chkTe2 = new System.Windows.Forms.CheckBox();
@@ -107,7 +103,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.lblTo2 = new System.Windows.Forms.Label();
             this.picStatus2 = new System.Windows.Forms.PictureBox();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -116,7 +111,6 @@
             this.statusStrip1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus2)).BeginInit();
@@ -124,7 +118,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(17, 451);
+            this.button1.Location = new System.Drawing.Point(15, 588);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(87, 34);
             this.button1.TabIndex = 0;
@@ -161,9 +155,9 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 114);
+            this.groupBox1.Location = new System.Drawing.Point(12, 54);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(290, 82);
+            this.groupBox1.Size = new System.Drawing.Size(290, 80);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Potência";
@@ -173,7 +167,7 @@
             this.chkS.AutoSize = true;
             this.chkS.Checked = true;
             this.chkS.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkS.Location = new System.Drawing.Point(269, 60);
+            this.chkS.Location = new System.Drawing.Point(269, 58);
             this.chkS.Name = "chkS";
             this.chkS.Size = new System.Drawing.Size(15, 14);
             this.chkS.TabIndex = 3;
@@ -186,7 +180,7 @@
             this.chkQ.AutoSize = true;
             this.chkQ.Checked = true;
             this.chkQ.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkQ.Location = new System.Drawing.Point(269, 39);
+            this.chkQ.Location = new System.Drawing.Point(269, 38);
             this.chkQ.Name = "chkQ";
             this.chkQ.Size = new System.Drawing.Size(15, 14);
             this.chkQ.TabIndex = 3;
@@ -211,7 +205,7 @@
             // 
             this.lblS.AutoSize = true;
             this.lblS.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblS.Location = new System.Drawing.Point(154, 60);
+            this.lblS.Location = new System.Drawing.Point(154, 58);
             this.lblS.Name = "lblS";
             this.lblS.Size = new System.Drawing.Size(17, 16);
             this.lblS.TabIndex = 1;
@@ -221,7 +215,7 @@
             // 
             this.lblQ.AutoSize = true;
             this.lblQ.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblQ.Location = new System.Drawing.Point(154, 39);
+            this.lblQ.Location = new System.Drawing.Point(154, 38);
             this.lblQ.Name = "lblQ";
             this.lblQ.Size = new System.Drawing.Size(18, 16);
             this.lblQ.TabIndex = 1;
@@ -241,7 +235,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.label5.Location = new System.Drawing.Point(7, 60);
+            this.label5.Location = new System.Drawing.Point(7, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(130, 16);
             this.label5.TabIndex = 0;
@@ -251,7 +245,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.label3.Location = new System.Drawing.Point(7, 39);
+            this.label3.Location = new System.Drawing.Point(7, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(119, 16);
             this.label3.TabIndex = 0;
@@ -279,9 +273,9 @@
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.groupBox2.Location = new System.Drawing.Point(12, 196);
+            this.groupBox2.Location = new System.Drawing.Point(12, 140);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(290, 82);
+            this.groupBox2.Size = new System.Drawing.Size(290, 80);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tensão";
@@ -291,7 +285,7 @@
             this.chkVc.AutoSize = true;
             this.chkVc.Checked = true;
             this.chkVc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkVc.Location = new System.Drawing.Point(268, 60);
+            this.chkVc.Location = new System.Drawing.Point(269, 58);
             this.chkVc.Name = "chkVc";
             this.chkVc.Size = new System.Drawing.Size(15, 14);
             this.chkVc.TabIndex = 3;
@@ -304,7 +298,7 @@
             this.chkVb.AutoSize = true;
             this.chkVb.Checked = true;
             this.chkVb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkVb.Location = new System.Drawing.Point(269, 39);
+            this.chkVb.Location = new System.Drawing.Point(269, 38);
             this.chkVb.Name = "chkVb";
             this.chkVb.Size = new System.Drawing.Size(15, 14);
             this.chkVb.TabIndex = 3;
@@ -329,7 +323,7 @@
             // 
             this.lblVc.AutoSize = true;
             this.lblVc.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVc.Location = new System.Drawing.Point(153, 60);
+            this.lblVc.Location = new System.Drawing.Point(153, 58);
             this.lblVc.Name = "lblVc";
             this.lblVc.Size = new System.Drawing.Size(25, 16);
             this.lblVc.TabIndex = 1;
@@ -339,7 +333,7 @@
             // 
             this.lblVb.AutoSize = true;
             this.lblVb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVb.Location = new System.Drawing.Point(154, 39);
+            this.lblVb.Location = new System.Drawing.Point(154, 38);
             this.lblVb.Name = "lblVb";
             this.lblVb.Size = new System.Drawing.Size(25, 16);
             this.lblVb.TabIndex = 1;
@@ -359,7 +353,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(7, 60);
+            this.label10.Location = new System.Drawing.Point(7, 58);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(78, 16);
             this.label10.TabIndex = 0;
@@ -369,7 +363,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(7, 39);
+            this.label11.Location = new System.Drawing.Point(7, 38);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(78, 16);
             this.label11.TabIndex = 0;
@@ -397,9 +391,9 @@
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(12, 278);
+            this.groupBox3.Location = new System.Drawing.Point(12, 226);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(290, 82);
+            this.groupBox3.Size = new System.Drawing.Size(290, 80);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Corrente";
@@ -409,7 +403,7 @@
             this.chkIc.AutoSize = true;
             this.chkIc.Checked = true;
             this.chkIc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIc.Location = new System.Drawing.Point(268, 60);
+            this.chkIc.Location = new System.Drawing.Point(269, 58);
             this.chkIc.Name = "chkIc";
             this.chkIc.Size = new System.Drawing.Size(15, 14);
             this.chkIc.TabIndex = 3;
@@ -422,7 +416,7 @@
             this.chkIb.AutoSize = true;
             this.chkIb.Checked = true;
             this.chkIb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIb.Location = new System.Drawing.Point(269, 39);
+            this.chkIb.Location = new System.Drawing.Point(269, 38);
             this.chkIb.Name = "chkIb";
             this.chkIb.Size = new System.Drawing.Size(15, 14);
             this.chkIb.TabIndex = 3;
@@ -447,7 +441,7 @@
             // 
             this.lblIc.AutoSize = true;
             this.lblIc.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIc.Location = new System.Drawing.Point(153, 60);
+            this.lblIc.Location = new System.Drawing.Point(153, 58);
             this.lblIc.Name = "lblIc";
             this.lblIc.Size = new System.Drawing.Size(21, 16);
             this.lblIc.TabIndex = 1;
@@ -457,7 +451,7 @@
             // 
             this.lblIb.AutoSize = true;
             this.lblIb.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIb.Location = new System.Drawing.Point(154, 39);
+            this.lblIb.Location = new System.Drawing.Point(154, 38);
             this.lblIb.Name = "lblIb";
             this.lblIb.Size = new System.Drawing.Size(21, 16);
             this.lblIb.TabIndex = 1;
@@ -477,7 +471,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(7, 60);
+            this.label16.Location = new System.Drawing.Point(7, 58);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(83, 16);
             this.label16.TabIndex = 0;
@@ -487,7 +481,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(7, 39);
+            this.label17.Location = new System.Drawing.Point(7, 38);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(83, 16);
             this.label17.TabIndex = 0;
@@ -585,7 +579,7 @@
             this.chartTemperatura.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartTemperatura.Location = new System.Drawing.Point(3, 19);
             this.chartTemperatura.Name = "chartTemperatura";
-            this.chartTemperatura.Size = new System.Drawing.Size(688, 419);
+            this.chartTemperatura.Size = new System.Drawing.Size(688, 425);
             this.chartTemperatura.TabIndex = 0;
             this.chartTemperatura.Text = "chart1";
             this.chartTemperatura.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chartTemperatura_CursorPositionChanged);
@@ -637,9 +631,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.chartTemperatura);
             this.groupBox5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(308, 184);
+            this.groupBox5.Location = new System.Drawing.Point(308, 178);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(694, 441);
+            this.groupBox5.Size = new System.Drawing.Size(694, 447);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
@@ -662,7 +656,7 @@
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(308, 12);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(696, 176);
+            this.groupBox6.Size = new System.Drawing.Size(696, 170);
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Nível / Temperatura";
@@ -674,7 +668,7 @@
             this.aTe.Location = new System.Drawing.Point(382, 58);
             this.aTe.Margin = new System.Windows.Forms.Padding(5);
             this.aTe.Name = "aTe";
-            this.aTe.Size = new System.Drawing.Size(220, 110);
+            this.aTe.Size = new System.Drawing.Size(214, 107);
             this.aTe.TabIndex = 8;
             this.aTe.TabStop = false;
             // 
@@ -685,7 +679,7 @@
             this.aTo.Location = new System.Drawing.Point(63, 58);
             this.aTo.Margin = new System.Windows.Forms.Padding(4);
             this.aTo.Name = "aTo";
-            this.aTo.Size = new System.Drawing.Size(220, 110);
+            this.aTo.Size = new System.Drawing.Size(214, 107);
             this.aTo.TabIndex = 8;
             this.aTo.TabStop = false;
             // 
@@ -721,66 +715,6 @@
             this.label24.Size = new System.Drawing.Size(94, 16);
             this.label24.TabIndex = 4;
             this.label24.Text = "Nível do Óleo";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.rd1h);
-            this.groupBox4.Controls.Add(this.rd12h);
-            this.groupBox4.Controls.Add(this.rd1d);
-            this.groupBox4.Controls.Add(this.rd7d);
-            this.groupBox4.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(12, 54);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(290, 58);
-            this.groupBox4.TabIndex = 5;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Intervalo do gráfico";
-            // 
-            // rd1h
-            // 
-            this.rd1h.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rd1h.Checked = true;
-            this.rd1h.Location = new System.Drawing.Point(224, 22);
-            this.rd1h.Name = "rd1h";
-            this.rd1h.Size = new System.Drawing.Size(59, 26);
-            this.rd1h.TabIndex = 0;
-            this.rd1h.TabStop = true;
-            this.rd1h.Text = "1 Hora";
-            this.rd1h.UseVisualStyleBackColor = true;
-            this.rd1h.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            // 
-            // rd12h
-            // 
-            this.rd12h.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rd12h.Location = new System.Drawing.Point(145, 22);
-            this.rd12h.Name = "rd12h";
-            this.rd12h.Size = new System.Drawing.Size(74, 26);
-            this.rd12h.TabIndex = 0;
-            this.rd12h.Text = "12 Horas";
-            this.rd12h.UseVisualStyleBackColor = true;
-            this.rd12h.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            // 
-            // rd1d
-            // 
-            this.rd1d.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rd1d.Location = new System.Drawing.Point(91, 22);
-            this.rd1d.Name = "rd1d";
-            this.rd1d.Size = new System.Drawing.Size(49, 26);
-            this.rd1d.TabIndex = 0;
-            this.rd1d.Text = "1 Dia";
-            this.rd1d.UseVisualStyleBackColor = true;
-            this.rd1d.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            // 
-            // rd7d
-            // 
-            this.rd7d.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rd7d.Location = new System.Drawing.Point(5, 22);
-            this.rd7d.Name = "rd7d";
-            this.rd7d.Size = new System.Drawing.Size(81, 26);
-            this.rd7d.TabIndex = 0;
-            this.rd7d.Text = "1 Semana";
-            this.rd7d.UseVisualStyleBackColor = true;
-            this.rd7d.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // toolStrip1
             // 
@@ -844,6 +778,11 @@
             this.toolExcel.Size = new System.Drawing.Size(36, 36);
             this.toolExcel.Text = "toolStripButton1";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
+            // 
             // cmbJanela
             // 
             this.cmbJanela.Items.AddRange(new object[] {
@@ -869,9 +808,9 @@
             this.groupBox7.Controls.Add(this.lblTo2);
             this.groupBox7.Controls.Add(this.picStatus2);
             this.groupBox7.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox7.Location = new System.Drawing.Point(12, 366);
+            this.groupBox7.Location = new System.Drawing.Point(12, 312);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(290, 79);
+            this.groupBox7.Size = new System.Drawing.Size(290, 80);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Nível / Temperatura";
@@ -881,7 +820,7 @@
             this.chkTe2.AutoSize = true;
             this.chkTe2.Checked = true;
             this.chkTe2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTe2.Location = new System.Drawing.Point(268, 60);
+            this.chkTe2.Location = new System.Drawing.Point(269, 58);
             this.chkTe2.Name = "chkTe2";
             this.chkTe2.Size = new System.Drawing.Size(15, 14);
             this.chkTe2.TabIndex = 3;
@@ -894,7 +833,7 @@
             this.chkNo2.AutoSize = true;
             this.chkNo2.Checked = true;
             this.chkNo2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNo2.Location = new System.Drawing.Point(268, 18);
+            this.chkNo2.Location = new System.Drawing.Point(269, 18);
             this.chkNo2.Name = "chkNo2";
             this.chkNo2.Size = new System.Drawing.Size(15, 14);
             this.chkNo2.TabIndex = 7;
@@ -916,7 +855,7 @@
             // 
             this.lblTe2.AutoSize = true;
             this.lblTe2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTe2.Location = new System.Drawing.Point(153, 60);
+            this.lblTe2.Location = new System.Drawing.Point(153, 58);
             this.lblTe2.Name = "lblTe2";
             this.lblTe2.Size = new System.Drawing.Size(25, 16);
             this.lblTe2.TabIndex = 1;
@@ -927,7 +866,7 @@
             this.chkTo2.AutoSize = true;
             this.chkTo2.Checked = true;
             this.chkTo2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTo2.Location = new System.Drawing.Point(268, 38);
+            this.chkTo2.Location = new System.Drawing.Point(269, 38);
             this.chkTo2.Name = "chkTo2";
             this.chkTo2.Size = new System.Drawing.Size(15, 14);
             this.chkTo2.TabIndex = 3;
@@ -949,7 +888,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(7, 60);
+            this.label7.Location = new System.Drawing.Point(7, 58);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(142, 16);
             this.label7.TabIndex = 0;
@@ -985,11 +924,6 @@
             this.picStatus2.TabIndex = 4;
             this.picStatus2.TabStop = false;
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1002,7 +936,6 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
@@ -1026,7 +959,6 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -1092,11 +1024,6 @@
         private System.Windows.Forms.Label label24;
         private InterfaceDesktop.Analogico aTo;
         private Analogico aTe;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.RadioButton rd1h;
-        private System.Windows.Forms.RadioButton rd12h;
-        private System.Windows.Forms.RadioButton rd1d;
-        private System.Windows.Forms.RadioButton rd7d;
         private System.Windows.Forms.ToolStripStatusLabel lblMEM;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tooConfig;

@@ -103,6 +103,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.lblTo2 = new System.Windows.Forms.Label();
             this.picStatus2 = new System.Windows.Forms.PictureBox();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -591,6 +592,7 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblMensagens,
             this.lblMEM,
+            this.toolStripProgressBar1,
             this.lblSpring,
             this.lblHora});
             this.statusStrip1.Location = new System.Drawing.Point(0, 628);
@@ -614,7 +616,7 @@
             // lblSpring
             // 
             this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(981, 17);
+            this.lblSpring.Size = new System.Drawing.Size(879, 17);
             this.lblSpring.Spring = true;
             this.lblSpring.Text = " ";
             // 
@@ -924,6 +926,11 @@
             this.picStatus2.TabIndex = 4;
             this.picStatus2.TabStop = false;
             // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1044,5 +1051,6 @@
         private System.Windows.Forms.PictureBox picStatus2;
         private System.Windows.Forms.ToolStripComboBox cmbJanela;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }

@@ -104,9 +104,9 @@ namespace InterfaceDesktop
             // Posiciona as várias chartáreas:
             //chartTemperatura.Legends["P"].DockedToChartArea = "P";
             // talvez seja necessário rever esses valores:
-            float fTamanhoLegenda = 100f;
-            float fLarguraLegenda = 20f;
-            float fLargura = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
+            //float fTamanhoLegenda = 100f;
+            float fLarguraLegenda = 15f; //%
+            float fLargura = 100 - fLarguraLegenda; // = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
             chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, 20f)); // 80% da largura e 20 % da altura do chart
             chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, 20f)); //20 % da largura e 20% da altura
 
@@ -133,6 +133,7 @@ namespace InterfaceDesktop
                 srSerie.XValueType = ChartValueType.Time; //
                 srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
                 srSerie.BorderWidth = 2; // tamanho da linha
+                srSerie.Color = Global.Cores[jj];
                 try
                 {
                     chartTemperatura.Series.Add(srSerie); // adiciona a série de dados ao gráfico
@@ -238,10 +239,10 @@ namespace InterfaceDesktop
             string[] strTodas = Global.striTodas();
             // para cada variável do servidor:
             List<int> Salvar = new List<int>();
-
-
+            toolStripProgressBar1.Maximum = Global.strCategoria.Length + 1;
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
             {
+                toolStripProgressBar1.Value = jj;
                 // Busca todos os valores do servidor
                 string strTemp = GetCSV(Global.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
 
@@ -265,6 +266,7 @@ namespace InterfaceDesktop
                     Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
                 }
             }
+            toolStripProgressBar1.Value = 0;
             if (Salvar.Count > 0)
             {
                 DateTime Data = new DateTime(1970, 1, 1);
@@ -885,9 +887,10 @@ namespace InterfaceDesktop
                     TimeSpan NovaJanela = new TimeSpan(dia, hora, minuto, segundo);
                     if (NovaJanela != JanelaDeTempo)
                     {
-                        Text = string.Format("Antiga = {0}, Nova = {1}", JanelaDeTempo, NovaJanela);
+                        //Text = string.Format("Antiga = {0}, Nova = {1}", JanelaDeTempo, NovaJanela);
                         JanelaDeTempo = NovaJanela;// new TimeSpan(dia, hora, minuto, segundo);
                         // Atualizar tudo
+                        timerRelogio_Tick(new object(), new EventArgs());
                     }
                     cmbJanela.BackColor = System.Drawing.Color.White;
                 }

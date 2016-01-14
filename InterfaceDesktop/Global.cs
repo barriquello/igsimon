@@ -1,10 +1,31 @@
 ﻿using System;
 using System.Data.SQLite;
-
+using System.Drawing;
 namespace InterfaceDesktop
 {
     class Global
     {
+
+        #region Cores dos gráficos
+        public static Color[] Cores = 
+        {
+            Color.Red,
+            Color.Blue,
+            Color.Green,
+            Color.Red,
+            Color.Blue,
+            Color.Green,
+            Color.Red,
+            Color.Blue,
+            Color.Green,
+            Color.Red,
+            Color.Blue,
+            Color.Green,
+            Color.Red,
+            Color.Blue,
+            Color.Green
+        };
+        #endregion
         #region Informações uteis
         // Separador de campo do CSV
         public const char SeparadorCSV = ',';// '\t';

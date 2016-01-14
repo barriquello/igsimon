@@ -197,7 +197,7 @@ namespace InterfaceDesktop
         #region Arquivos CSV
         public static string ArquivoCSV(DateTime Data)
         {
-            return "DB_" + Data.Year.ToString() + "_" + Data.Month.ToString() + "_" + Data.Day.ToString() + ".csv";
+            return "DB_" + Data.Year.ToString("D4") + "_" + Data.Month.ToString("D2") + "_" + Data.Day.ToString("D2") + ".csv";
         }
         #endregion
 

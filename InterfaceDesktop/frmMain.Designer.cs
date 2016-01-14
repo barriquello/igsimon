@@ -76,6 +76,7 @@
             this.lblMensagens = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblMEM = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSpring = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -103,7 +104,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.lblTo2 = new System.Windows.Forms.Label();
             this.picStatus2 = new System.Windows.Forms.PictureBox();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -592,8 +592,8 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblMensagens,
             this.lblMEM,
-            this.toolStripProgressBar1,
             this.lblSpring,
+            this.toolStripProgressBar1,
             this.lblHora});
             this.statusStrip1.Location = new System.Drawing.Point(0, 628);
             this.statusStrip1.Name = "statusStrip1";
@@ -616,9 +616,14 @@
             // lblSpring
             // 
             this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(879, 17);
+            this.lblSpring.Size = new System.Drawing.Size(848, 17);
             this.lblSpring.Spring = true;
             this.lblSpring.Text = " ";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // lblHora
             // 
@@ -925,11 +930,6 @@
             this.picStatus2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picStatus2.TabIndex = 4;
             this.picStatus2.TabStop = false;
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // frmMain
             // 

@@ -234,7 +234,6 @@ namespace InterfaceDesktop
             }
             // Busca o comando mais recente armazenado no servidor
 
-
             //lista de índices
             string[] strTodas = Global.striTodas();
             // para cada variável do servidor:
@@ -261,8 +260,8 @@ namespace InterfaceDesktop
                         Registros.Add(new RegistroDB());
                         indice = Registros.Count - 1;
                         Salvar.Add(indice); // salvar no banco de dados o item atual
+                        Registros[indice].Horario = Horario_;
                     }
-                    Registros[indice].Horario = Horario_;
                     Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
                 }
             }
@@ -392,8 +391,20 @@ namespace InterfaceDesktop
                     }
                 }
 
-                 string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath,"DB_*.csv");
-                 MessageBox.Show(ListaDeArquivos.Length.ToString());
+                string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
+                if (ListaDeArquivos.Length > 0)
+                {
+                    tUltimaAtualizacao = DateTime.Now.AddDays(-7);
+                    // Ler os ultimos 7 dias
+                    for (int jj = -7; jj < 1; jj++)
+                    {
+                        string Arquivo = Global.ArquivoCSV(DateTime.Now.AddDays(jj));
+                        Registros.AddRange(LeituraCSVs(Arquivo));
+                        //Registros = LeituraCSVs(ListaDeArquivos[ListaDeArquivos.Length - 1]);
+                    }
+                    if (Registros.Count > 0)
+                        tUltimaAtualizacao = Uteis.Unix2time(Registros[Registros.Count - 1].Horario);
+                }
             }
             // Buscar índices no servidor:
             string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
@@ -402,7 +413,6 @@ namespace InterfaceDesktop
             {
                 Requisicao = Servidor.DownloadString(Requisicao);
                 List<Feed> Fdd = json2Feed(Requisicao);
-                //List<Feed> Fdd = JsonConvert.DeserializeObject<List<Feed>>(Requisicao);
                 for (int kk = 0; kk < Fdd.Count; kk++)
                 {
                     if (Fdd[kk].name == Global.strP) Global.striP = Fdd[kk].id;
@@ -442,6 +452,52 @@ namespace InterfaceDesktop
             }
             toolStripComboBox1_TextChanged(new object(), new EventArgs());
             tmrGraficos.Enabled = true;
+        }
+
+        private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
+        {
+            List<RegistroDB> Regs = new List<RegistroDB>();
+            using (StreamReader strRead = new StreamReader(strArquivoCSV))
+            {
+                string[] Todas = Global.strTodas();
+                int[] iCampos = new int[Todas.Length];
+                bool cabecalho = true;
+                if (!strRead.EndOfStream)
+                    while (!strRead.EndOfStream)
+                    {
+                        RegistroDB Reg = new RegistroDB();
+                        string Linha = strRead.ReadLine();
+                        string[] Campos = Linha.Split(Global.SeparadorCSV);
+
+                        if (cabecalho)
+                        {
+                            cabecalho = false;
+                            for (int mm = 1; mm < Campos.Length; mm++)
+                            {
+                                for (int jj = 0; jj < Todas.Length; jj++)
+                                {
+                                    if (Campos[mm] == Todas[jj])
+                                    {
+                                        iCampos[jj] = mm; // Procura pelo campo e retorna o índice
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Reg.Horario = Convert.ToUInt32(Campos[0]);
+                            //1     2       3   4       5       6       7   8       9       10      11    12
+                            //strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe 
+                            for (int jj = 0; jj < Todas.Length; jj++)
+                            {
+                                Reg.P[jj] = Convert.ToSingle(Campos[iCampos[jj]].Replace('.', ','));
+                            }
+                            Regs.Add(Reg);
+                        }
+                    }
+            }
+            return Regs;
         }
 
         private List<Feed> json2Feed(string Requisicao)
@@ -511,8 +567,8 @@ namespace InterfaceDesktop
             string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
             DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
             if (strTime.Length > 1)
-                    tUltimaAtualizacao = DTData2DateTime(strTime);
-//                        Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
+                tUltimaAtualizacao = DTData2DateTime(strTime);
+            //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             else
                 return;
             tmrGraficos.Enabled = false;
@@ -520,6 +576,7 @@ namespace InterfaceDesktop
             {
                 // Primeira execução
                 BuscaDados(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
+                //BuscaDados(VelhaUltimaAtualizacao, tUltimaAtualizacao);
                 GerarGrafico();
                 if (Registros.Count > 0)
                     Plotar = true;
@@ -600,15 +657,6 @@ namespace InterfaceDesktop
         {
             BuscaDados(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
         }
-
-        /*private void NovoPontoNoGrafico(string Grafico, string Ponto)
-        {
-            // Redesenhar todas as séries
-            chartTemperatura.Series[Grafico].Points.Clear();
-            chartTemperatura.Series[Grafico].Points.AddXY(tUltimaAtualizacao, Convert.ToDouble(Ponto));
-            //chartTemperatura.Series[Grafico].Points.RemoveAt(0);
-        }//*/
-
 
         // Esta rotina deve ser utilizada considerando um intervalo de tempo limitado
         /// <summary>Retorna um arquivo CSV</summary>
@@ -891,17 +939,24 @@ namespace InterfaceDesktop
                         JanelaDeTempo = NovaJanela;// new TimeSpan(dia, hora, minuto, segundo);
                         // Atualizar tudo
                         timerRelogio_Tick(new object(), new EventArgs());
+                        LimpaSeries();
+                        try
+                        {
+                            PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
+                        }
+                        catch
+                        { }
                     }
                     cmbJanela.BackColor = System.Drawing.Color.White;
                 }
                 else
                 {
-                    cmbJanela.BackColor = System.Drawing.Color.RosyBrown;
+                    cmbJanela.BackColor = System.Drawing.Color.Yellow;
                 }
             }
             catch
             {
-                cmbJanela.BackColor = System.Drawing.Color.RosyBrown;
+                cmbJanela.BackColor = System.Drawing.Color.Yellow;
             }
         }
 

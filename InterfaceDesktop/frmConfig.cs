@@ -36,7 +36,8 @@ namespace InterfaceDesktop
             if (Global.ConfigObriatoria)
             {
                 // Encerra o programa
-                Application.Exit();
+               // Application.Exit();
+                this.Close();
             }
             else
             {
@@ -223,6 +224,7 @@ namespace InterfaceDesktop
                         }
                     }
                 }
+                this.Show();
             }
         }
     }

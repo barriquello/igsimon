@@ -392,8 +392,8 @@ namespace InterfaceDesktop
                     }
                 }
 
-                // string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath,"DB_*.csv");
-                // MessageBox.Show(ListaDeArquivos.Length.ToString());
+                 string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath,"DB_*.csv");
+                 MessageBox.Show(ListaDeArquivos.Length.ToString());
             }
             // Buscar índices no servidor:
             string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
@@ -428,12 +428,12 @@ namespace InterfaceDesktop
             if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
             {
                 Global.ConfigObriatoria = true;
-                frmConfig Config = new frmConfig();
                 while (!Global.restart)
                 {
-                    Config = new frmConfig();
+                    frmConfig Config = new frmConfig();
                     MessageBox.Show("Verifique os nomes das variáveis");
                     Config.ShowDialog();
+                    Config.Dispose();
                 }
                 Global.ConfigObriatoria = false;
                 Global.restart = false;

@@ -1,14 +1,6 @@
 ﻿using System;
 namespace InterfaceDesktop
 {
-    // Utilizado em conjunto com a biblioteca para a des-serialização de strings JSON
-    class Feed
-    {
-        public string id { get; set; }
-        public string name { get; set; }
-        public string tag { get; set; }
-    }
-
     // Converte um registro CSV em DateTime e double
     class RegistroCSV
     {

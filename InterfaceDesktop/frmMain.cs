@@ -122,6 +122,21 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f)); // gráfico do nível do óleo menor por conta da escala
             chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 80f, fLarguraLegenda - 0.2f, 20f));
 
+
+            //Título nas legendas
+            chartTemperatura.Legends["P"].Title = "Potência";
+            chartTemperatura.Legends["P"].TitleAlignment = System.Drawing.StringAlignment.Near;
+            chartTemperatura.Legends["V"].Title = "Tensão";
+            chartTemperatura.Legends["I"].Title = "Corrente";
+            chartTemperatura.Legends["T"].Title = "Temperatura";
+            chartTemperatura.Legends["N"].Title = "Nível";
+            for (int mm = 0; mm < chartTemperatura.Legends.Count; mm++)
+            {
+                // Alinhamento do título da legenda
+                chartTemperatura.Legends[mm].TitleAlignment = System.Drawing.StringAlignment.Near;
+                // linha separando o título da legenda
+                chartTemperatura.Legends[mm].TitleSeparator = LegendSeparatorStyle.Line;
+            }
             string[] strSeries = Global.strTodas();
 
             for (int jj = 0; jj < Global.strCategoria.Length; jj++)
@@ -221,7 +236,7 @@ namespace InterfaceDesktop
             // Medir performance:
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
             //Verifica qual é o último registro no servidor
-            string strTime = GetCSV(Global.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
             UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime));// Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
             UInt32 _Final = Final;
             if (Final == 0) // especificação de data opcional
@@ -243,7 +258,7 @@ namespace InterfaceDesktop
             {
                 toolStripProgressBar1.Value = jj;
                 // Busca todos os valores do servidor
-                string strTemp = GetCSV(Global.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
+                string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
 
                 List<RegistroCSV> Dados = CSV2Matriz(strTemp);
                 for (int kk = 0; kk < Dados.Count; kk++)
@@ -270,7 +285,7 @@ namespace InterfaceDesktop
             {
                 DateTime Data = new DateTime(1970, 1, 1);
                 DateTime DataNova = Uteis.Unix2time(Registros[Salvar[0]].Horario);
-                string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(DataNova));
+                string Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(DataNova));
                 //string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
                 StreamWriter Gravar;// = new StreamWriter(Arquivo, true);
                 if (!(new FileInfo(Arquivo).Exists))
@@ -294,7 +309,7 @@ namespace InterfaceDesktop
                     {
                         Data = DataNova;
                         Gravar.Dispose();
-                        Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Data));
+                        Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(Data));
                         if (!(new FileInfo(Arquivo).Exists))
                         {
                             Gravar = new StreamWriter(Arquivo, true);
@@ -333,7 +348,7 @@ namespace InterfaceDesktop
         {
             // rotina para ser executada apenas uma vez
             // Pegar o "time" mais recente:
-            string strTime = GetCSV(Global.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
             tUltimaAtualizacao = DTData2DateTime(strTime); //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
             BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
@@ -398,7 +413,7 @@ namespace InterfaceDesktop
                     // Ler os ultimos 7 dias
                     for (int jj = -7; jj < 1; jj++)
                     {
-                        string Arquivo = Global.ArquivoCSV(DateTime.Now.AddDays(jj));
+                        string Arquivo = ComandosCSV.ArquivoCSV(DateTime.Now.AddDays(jj));
                         Registros.AddRange(LeituraCSVs(Arquivo));
                         //Registros = LeituraCSVs(ListaDeArquivos[ListaDeArquivos.Length - 1]);
                     }
@@ -407,7 +422,7 @@ namespace InterfaceDesktop
                 }
             }
             // Buscar índices no servidor:
-            string Requisicao = Global.Servidor + Global.strComandoFeedList + Global.APIKey;
+            string Requisicao = Global.Servidor + ComandosCSV.strComandoFeedList + Global.APIKey;
 
             try
             {
@@ -457,45 +472,48 @@ namespace InterfaceDesktop
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
         {
             List<RegistroDB> Regs = new List<RegistroDB>();
-            using (StreamReader strRead = new StreamReader(strArquivoCSV))
+            if (new FileInfo(strArquivoCSV).Exists)
             {
-                string[] Todas = Global.strTodas();
-                int[] iCampos = new int[Todas.Length];
-                bool cabecalho = true;
-                if (!strRead.EndOfStream)
-                    while (!strRead.EndOfStream)
-                    {
-                        RegistroDB Reg = new RegistroDB();
-                        string Linha = strRead.ReadLine();
-                        string[] Campos = Linha.Split(Global.SeparadorCSV);
-
-                        if (cabecalho)
+                using (StreamReader strRead = new StreamReader(strArquivoCSV))
+                {
+                    string[] Todas = Global.strTodas();
+                    int[] iCampos = new int[Todas.Length];
+                    bool cabecalho = true;
+                    if (!strRead.EndOfStream)
+                        while (!strRead.EndOfStream)
                         {
-                            cabecalho = false;
-                            for (int mm = 1; mm < Campos.Length; mm++)
+                            RegistroDB Reg = new RegistroDB();
+                            string Linha = strRead.ReadLine();
+                            string[] Campos = Linha.Split(Global.SeparadorCSV);
+
+                            if (cabecalho)
                             {
-                                for (int jj = 0; jj < Todas.Length; jj++)
+                                cabecalho = false;
+                                for (int mm = 1; mm < Campos.Length; mm++)
                                 {
-                                    if (Campos[mm] == Todas[jj])
+                                    for (int jj = 0; jj < Todas.Length; jj++)
                                     {
-                                        iCampos[jj] = mm; // Procura pelo campo e retorna o índice
-                                        break;
+                                        if (Campos[mm] == Todas[jj])
+                                        {
+                                            iCampos[jj] = mm; // Procura pelo campo e retorna o índice
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            Reg.Horario = Convert.ToUInt32(Campos[0]);
-                            //1     2       3   4       5       6       7   8       9       10      11    12
-                            //strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe 
-                            for (int jj = 0; jj < Todas.Length; jj++)
+                            else
                             {
-                                Reg.P[jj] = Convert.ToSingle(Campos[iCampos[jj]].Replace('.', ','));
+                                Reg.Horario = Convert.ToUInt32(Campos[0]);
+                                //1     2       3   4       5       6       7   8       9       10      11    12
+                                //strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe 
+                                for (int jj = 0; jj < Todas.Length; jj++)
+                                {
+                                    Reg.P[jj] = Convert.ToSingle(Campos[iCampos[jj]].Replace('.', ','));
+                                }
+                                Regs.Add(Reg);
                             }
-                            Regs.Add(Reg);
                         }
-                    }
+                }
             }
             return Regs;
         }
@@ -564,7 +582,7 @@ namespace InterfaceDesktop
         {
             bool Plotar = false;
             // Rotina para buscar novas informações no servidor e exibir na tela
-            string strTime = GetCSV(Global.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
+            string strTime = GetCSV(ComandosCSV.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
             DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
             if (strTime.Length > 1)
                 tUltimaAtualizacao = DTData2DateTime(strTime);
@@ -820,6 +838,8 @@ namespace InterfaceDesktop
 
         private void ReposicionaChartAreas()
         {
+            // remove o zoom:
+            chartTemperatura.ChartAreas["N"].AxisX.ScaleView.ZoomReset();
             // Altura das chartareas (%)
             float AlturaP = chartTemperatura.ChartAreas["P"].Visible ? 20 : 0;
             float AlturaV = chartTemperatura.ChartAreas["V"].Visible ? 20 : 0;

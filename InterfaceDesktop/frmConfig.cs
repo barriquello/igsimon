@@ -13,19 +13,8 @@ namespace InterfaceDesktop
         private void btnOK_Click(object sender, EventArgs e)
         {
             // Salva as configurações
-            ComandoSQL.INSERT("INSERT INTO " + Global.TabelaConfig +
-                " (Servidor, Username, " +
-                "Node_P, Node_Q, Node_S, " +
-                "Node_Va, Node_Vb, Node_Vc, " +
-                "Node_Ia, Node_Ib, Node_Ic, " +
-                "Node_No, Node_To, Node_Te, " +
-                "APIKEY) VALUES ('" +
-                txtServidor.Text + "', '" + Global.Username + "', '" +
-                txtP.Text + "', '" + txtQ.Text + "', '" + txtS.Text + "', '" +
-                txtVa.Text + "', '" + txtVb.Text + "', '" + txtVc.Text + "', '" +
-                txtIa.Text + "', '" + txtIb.Text + "', '" + txtIc.Text + "', '" +
-                txtNo.Text + "', '" + txtTo.Text + "', '" + txtTe.Text + "', '" +
-                txtAPIKEY.Text + "')");
+            //Properties.Settings.Default.sEP = 
+            Properties.Settings.Default.Save();
             Global.restart = true;
             this.Close();
         }
@@ -36,7 +25,6 @@ namespace InterfaceDesktop
             if (Global.ConfigObriatoria)
             {
                 // Encerra o programa
-               // Application.Exit();
                 this.Close();
             }
             else
@@ -176,54 +164,56 @@ namespace InterfaceDesktop
             else
             {
                 // Nome de usuário igual ao do usuário atual para troca de senha
-                txtNome.Text = Global.Username;
+                //txtNome.Text = Global.Username;
                 // Carrega as configurações
-                string sqlComando = "SELECT * FROM " + Global.TabelaConfig + " ORDER BY ID DESC LIMIT 0,1";
-                using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
-                {
-                    Con.Open();
-                    using (SQLiteCommand Comando = new SQLiteCommand(sqlComando, Con))
-                    {
-                        SQLiteDataReader Leitor = Comando.ExecuteReader();
-                        if (Leitor.Read())
-                        {
-                            txtServidor.Text = Convert.ToString(Leitor["Servidor"]);
-                            txtAPIKEY.Text = Convert.ToString(Leitor["APIKEY"]);
-                            txtP.Text = Convert.ToString(Leitor["Node_P"]);
-                            txtQ.Text = Convert.ToString(Leitor["Node_Q"]);
-                            txtS.Text = Convert.ToString(Leitor["Node_S"]);
-                            txtVa.Text = Convert.ToString(Leitor["Node_Va"]);
-                            txtVb.Text = Convert.ToString(Leitor["Node_Vb"]);
-                            txtVc.Text = Convert.ToString(Leitor["Node_Vc"]);
-                            txtIa.Text = Convert.ToString(Leitor["Node_Ia"]);
-                            txtIb.Text = Convert.ToString(Leitor["Node_Ib"]);
-                            txtIc.Text = Convert.ToString(Leitor["Node_Ic"]);
-                            txtNo.Text = Convert.ToString(Leitor["Node_No"]);
-                            txtTo.Text = Convert.ToString(Leitor["Node_To"]);
-                            txtTe.Text = Convert.ToString(Leitor["Node_Te"]);
-                        }
-                        else
-                        {
-                            //configurações padrão
-                            txtAPIKEY.Text = "";
-                            txtServidor.Text = "http://";
-                            txtP.Text = "P";
-                            txtQ.Text = "Q";
-                            txtS.Text = "S";
-                            txtVa.Text = "Va";
-                            txtVb.Text = "Vb";
-                            txtVc.Text = "Vc";
-                            txtIa.Text = "Ia";
-                            txtIb.Text = "Ib";
-                            txtIc.Text = "Ic";
-                            txtNo.Text = "No";
-                            txtTo.Text = "To";
-                            txtTe.Text = "Te";
-                            btnCancelar.Enabled = false;
+                txtAPIKEY.Text = Properties.Settings.Default.APIKEY;
 
-                        }
-                    }
-                }
+                //string sqlComando = "SELECT * FROM " + Global.TabelaConfig + " ORDER BY ID DESC LIMIT 0,1";
+                //using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
+                //{
+                    //Con.Open();
+                    //using (SQLiteCommand Comando = new SQLiteCommand(sqlComando, Con))
+                    //{
+                        //SQLiteDataReader Leitor = Comando.ExecuteReader();
+                        //if (Leitor.Read())
+                        //{
+                        //    txtServidor.Text = Convert.ToString(Leitor["Servidor"]);
+                        //    txtAPIKEY.Text = Convert.ToString(Leitor["APIKEY"]);
+                        //    txtP.Text = Convert.ToString(Leitor["Node_P"]);
+                        //    txtQ.Text = Convert.ToString(Leitor["Node_Q"]);
+                        //    txtS.Text = Convert.ToString(Leitor["Node_S"]);
+                        //    txtVa.Text = Convert.ToString(Leitor["Node_Va"]);
+                        //    txtVb.Text = Convert.ToString(Leitor["Node_Vb"]);
+                        //    txtVc.Text = Convert.ToString(Leitor["Node_Vc"]);
+                        //    txtIa.Text = Convert.ToString(Leitor["Node_Ia"]);
+                        //    txtIb.Text = Convert.ToString(Leitor["Node_Ib"]);
+                        //    txtIc.Text = Convert.ToString(Leitor["Node_Ic"]);
+                        //    txtNo.Text = Convert.ToString(Leitor["Node_No"]);
+                        //    txtTo.Text = Convert.ToString(Leitor["Node_To"]);
+                        //    txtTe.Text = Convert.ToString(Leitor["Node_Te"]);
+                        //}
+                        //else
+                        //{
+                        //    //configurações padrão
+                        //    txtAPIKEY.Text = "";
+                        //    txtServidor.Text = "http://";
+                        //    txtP.Text = "P";
+                        //    txtQ.Text = "Q";
+                        //    txtS.Text = "S";
+                        //    txtVa.Text = "Va";
+                        //    txtVb.Text = "Vb";
+                        //    txtVc.Text = "Vc";
+                        //    txtIa.Text = "Ia";
+                        //    txtIb.Text = "Ib";
+                        //    txtIc.Text = "Ic";
+                        //    txtNo.Text = "No";
+                        //    txtTo.Text = "To";
+                        //    txtTe.Text = "Te";
+                        //    btnCancelar.Enabled = false;
+
+                        //}
+                    //}
+                //}
                 this.Show();
             }
         }

@@ -616,7 +616,7 @@
             // lblSpring
             // 
             this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(848, 17);
+            this.lblSpring.Size = new System.Drawing.Size(879, 17);
             this.lblSpring.Spring = true;
             this.lblSpring.Text = " ";
             // 
@@ -663,7 +663,7 @@
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(308, 12);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(696, 170);
+            this.groupBox6.Size = new System.Drawing.Size(694, 170);
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Nível / Temperatura";

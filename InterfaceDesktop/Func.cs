@@ -10,23 +10,24 @@ namespace InterfaceDesktop
     {
         /// <summary>Potência (ativa, reativa, aparente...)</summary>
         Po,
+        Po0, //0 = não plotar
         /// <summary>Tensão de fase (Van...)</summary>
-        Vf,
+        Vf, Vf0,
         /// <summary>Tensão de linha (Vab...)</summary>
-        Vl,
+        Vl, Vl0,
         /// <summary>Corrent (Ia...)</summary>
-        Il,
+        Il, Il0,
         /// <summary>Fator de potência</summary>
-        FP,
+        FP, FP0,
         /// <summary>Frequência</summary>
-        Fr,
+        Fr, Fr0,
         /// <summary>Nível do óleo</summary>
-        Ni,
+        Ni, Ni0,
         /// <summary>Temperaturas</summary>
-        Te,
+        Te, Te0,
         /// <summary>Válvula de alivio de pressão</summary>
-        Pr,
+        Pr, Pr0,
         /// <summary>Energia</summary>
-        En
+        En, En0
     }
 }

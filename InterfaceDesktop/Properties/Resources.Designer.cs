@@ -63,16 +63,6 @@ namespace InterfaceDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Amarelo {
-            get {
-                object obj = ResourceManager.GetObject("Amarelo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Comparacoes {
             get {
                 object obj = ResourceManager.GetObject("Comparacoes", resourceCulture);

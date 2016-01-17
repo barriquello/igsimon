@@ -141,25 +141,28 @@ namespace InterfaceDesktop
             func[] Tipos = new func[] { func.En, func.FP, func.Fr, func.Il, func.Ni, func.Po, func.Pr, func.Te, func.Vf, func.Vl };
             for (int jj = 0; jj < strSeries.Length; jj++) //Tipos.Length;jj++)// Global.strCategoria.Length; jj++)
             {
-                Series srSerie = new Series(strSeries[jj].NomeFeed); // nova série
-                srSerie.Legend = //"LegendaOculta";
-                    srSerie.ChartArea = Func2str(strSeries[jj].Funcao);// Tipos[jj].ToString();// Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
-                //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
-                srSerie.XValueType = ChartValueType.Time; //
-                srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
-                srSerie.BorderWidth = 2; // tamanho da linha
-                srSerie.Color = Global.Cores[jj];
-                try
+                if (Func2str(strSeries[jj].Funcao) != "")
                 {
-                    chartTemperatura.Series.Add(srSerie); // adiciona a série de dados ao gráfico
-                }
-                catch
-                {
-                    MessageBox.Show("Erro ao gerar o gráfico, verifique se há algum nome de variável repetido");
-                    frmConfig Config = new frmConfig();
-                    Config.ShowDialog();
-                    this.Close();
-                    return;
+                    Series srSerie = new Series(strSeries[jj].NomeFeed); // nova série
+                    srSerie.Legend = //"LegendaOculta";
+                        srSerie.ChartArea = Func2str(strSeries[jj].Funcao);// Tipos[jj].ToString();// Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
+                    //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
+                    srSerie.XValueType = ChartValueType.Time; //
+                    srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
+                    srSerie.BorderWidth = 2; // tamanho da linha
+                    srSerie.Color = Global.Cores[jj];
+                    try
+                    {
+                        chartTemperatura.Series.Add(srSerie); // adiciona a série de dados ao gráfico
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Erro ao gerar o gráfico, verifique se há algum nome de variável repetido");
+                        frmConfig Config = new frmConfig();
+                        Config.ShowDialog();
+                        this.Close();
+                        return;
+                    }
                 }
             }
         }
@@ -176,7 +179,7 @@ namespace InterfaceDesktop
             if (funcao == func.Te) return "T";
             if (funcao == func.Vf) return "V";
             if (funcao == func.Vl) return "V";
-            return "X";
+            return "";
 
         }
 
@@ -202,6 +205,7 @@ namespace InterfaceDesktop
                 chartTemperatura.Series[jj].XValueType = ChartValueType.Auto;//bug do .NET
             }
             //System.Diagnostics.Stopwatch A = new System.Diagnostics.Stopwatch();
+            FeedServidor[] strTodas = Variaveis.strVariaveis();
             for (int mm = 0; mm < Registros.Count; mm++)
             {
                 if (Registros[mm].Horario >= Start)
@@ -211,34 +215,27 @@ namespace InterfaceDesktop
                     }
                     else
                     {
-                        FeedServidor[] strTodas = Variaveis.strVariaveis();
                         DateTime Horario = Uteis.Unix2time(Registros[mm].Horario);
                         for (int kk = 0; kk < strTodas.Length; kk++)
                         {
-                            chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[strTodas[kk].indice]);
+                            if (Func2str(strTodas[kk].Funcao)!="")
+                                chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[strTodas[kk].indice]);
                         }
                     }
             }
+            ChartValueType TipoJanela;
+            if ((End - Start) > Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1)))
+            {
+                TipoJanela = ChartValueType.DateTime;
+            }
+            else
+            {
+                TipoJanela = ChartValueType.Time;
+            }
             for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
             {
-                if ((End - Start) > Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1))) // Se o intervalo for maior que 24 horas, considerar a escala em data, se não for, considerar como hora
-                {
-                    chartTemperatura.Series[jj].XValueType = ChartValueType.DateTime;
-                }
-                else
-                {
-                    chartTemperatura.Series[jj].XValueType = ChartValueType.Time;
-                }
+                chartTemperatura.Series[jj].XValueType = TipoJanela;
             }
-            chartTemperatura.Series[Variaveis.fP.NomeFeed].Enabled = chkP.Checked;
-            chartTemperatura.Series[Variaveis.fQ.NomeFeed].Enabled = chkQ.Checked;
-            chartTemperatura.Series[Variaveis.fS.NomeFeed].Enabled = chkS.Checked;
-            chartTemperatura.Series[Variaveis.fVan.NomeFeed].Enabled = chkVa.Checked;
-            chartTemperatura.Series[Variaveis.fVbn.NomeFeed].Enabled = chkVb.Checked;
-            chartTemperatura.Series[Variaveis.fVcn.NomeFeed].Enabled = chkVc.Checked;
-            chartTemperatura.Series[Variaveis.fIa.NomeFeed].Enabled = chkIa.Checked;
-            chartTemperatura.Series[Variaveis.fIb.NomeFeed].Enabled = chkIb.Checked;
-            chartTemperatura.Series[Variaveis.fIc.NomeFeed].Enabled = chkIc.Checked;
             chartTemperatura.Series[Variaveis.fNivelOleo.NomeFeed].Enabled = chkNo.Checked;
             chartTemperatura.Series[Variaveis.fTOleo.NomeFeed].Enabled = chkTo.Checked;
             chartTemperatura.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled = chkTe.Checked;
@@ -376,6 +373,8 @@ namespace InterfaceDesktop
             PlotaGrafico(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
             //chartTemperatura.Printing.PrintPreview();
             //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
+            tv1.ExpandAll();
+            tv1.SelectedNode = tv1.Nodes[0];
         }
 
         private void btnConfig_Click(object sender, EventArgs e)
@@ -616,8 +615,8 @@ namespace InterfaceDesktop
 
             //tmrGraficos.Enabled = false; return;
             //strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
-            DateTime NovaAtualizaco = Uteis.Unix2time(Convert.ToUInt32(strTime));
-
+            DateTime NovaAtualizaco = DTData2DateTime(strTime);// Uteis.Unix2time(Convert.ToUInt32(strTime));
+            ResumeLayout();
             tmrGraficos.Interval = Global.intTaxaAtualizacao;
             tmrGraficos.Enabled = true;
         }
@@ -644,19 +643,185 @@ namespace InterfaceDesktop
 
         private void AtualizaLabels(RegistroDB registroDB)
         {
-            //{ 0       1   2       3       4   5       6       7       8   9       10      11
-            //{ strP, strQ, strS, strVa, strVb, strVc, strIa, strIb, strIc, strNo, strTo, strTe };
-            // Exibe na tela:
-            // Texto
-            lblP.Text = registroDB.P[0].ToString(); lblQ.Text = registroDB.P[1].ToString(); lblS.Text = registroDB.P[2].ToString();
-            lblVa.Text = registroDB.P[3].ToString(); lblVb.Text = registroDB.P[4].ToString(); lblVc.Text = registroDB.P[5].ToString();
-            lblIa.Text = registroDB.P[6].ToString(); lblIb.Text = registroDB.P[7].ToString(); lblIc.Text = registroDB.P[8].ToString();
-            lblNo.Text = lblNo2.Text = registroDB.P[9].ToString(); lblTo.Text = lblTo2.Text = registroDB.P[10].ToString(); lblTe.Text = lblTe2.Text = registroDB.P[11].ToString();
-            // Ponteiros
+            // relóginhos
             aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
+            aTo.Value(registroDB.P[Variaveis.fTOleo.indice]); aTe.Value(registroDB.P[Variaveis.fTEnrolamento.indice]);
+            tv1.SuspendLayout();
+            if (tv1.Nodes.Count == 0)
+            {
+                tv1.Nodes.Add("ve", "Variáveis Elétricas");
+                {
+                    tv1.Nodes["ve"].Nodes.Add("gi", "Grandezas instantâneas");
+                    {
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("i", "Corrente");
+                        {
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIa.NodeTv1, FormataTexto(Variaveis.fIa, registroDB)).Tag=Variaveis.fIa.NomeFeed;// string.Format(Variaveis.fIa.formato, Registros[Registros.Count - 1].P[Variaveis.fIa.indice]));
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIb.NodeTv1, FormataTexto(Variaveis.fIb, registroDB)).Tag = Variaveis.fIb.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIc.NodeTv1, FormataTexto(Variaveis.fIc, registroDB)).Tag=Variaveis.fIc.NomeFeed;
+                        }
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("v", "Tensões");
+                        {
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add(Variaveis.fVab.NodeTv1, FormataTexto(Variaveis.fVab, registroDB)).Tag=Variaveis.fVab.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add(Variaveis.fVbc.NodeTv1, FormataTexto(Variaveis.fVbc, registroDB)).Tag=Variaveis.fVbc.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add(Variaveis.fVca.NodeTv1, FormataTexto(Variaveis.fVca, registroDB)).Tag=Variaveis.fVca.NomeFeed;
+
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add(Variaveis.fVan.NodeTv1, FormataTexto(Variaveis.fVan, registroDB)).Tag=Variaveis.fVan.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add(Variaveis.fVbn.NodeTv1, FormataTexto(Variaveis.fVbn, registroDB)).Tag=Variaveis.fVbn.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add(Variaveis.fVcn.NodeTv1, FormataTexto(Variaveis.fVcn, registroDB)).Tag=Variaveis.fVcn.NomeFeed;
+                        }
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add(Variaveis.fFreq.NodeTv1, FormataTexto(Variaveis.fFreq, registroDB)).Tag=Variaveis.fFreq.NomeFeed;
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("p", "Potência");
+                        {
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fP.NodeTv1, FormataTexto(Variaveis.fP, registroDB)).Tag=Variaveis.fP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fQ.NodeTv1, FormataTexto(Variaveis.fQ, registroDB)).Tag=Variaveis.fQ.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fS.NodeTv1, FormataTexto(Variaveis.fS, registroDB)).Tag=Variaveis.fS.NomeFeed;
+                        }
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add(Variaveis.fFatorPotencia.NodeTv1, FormataTexto(Variaveis.fFatorPotencia, registroDB)).Tag=Variaveis.fFatorPotencia.NomeFeed;
+                    }
+                    tv1.Nodes["ve"].Nodes.Add("ve", "Valores de Energia");
+                    {
+                        tv1.Nodes["ve"].Nodes["ve"].Nodes.Add(Variaveis.fEP.NodeTv1, FormataTexto(Variaveis.fEP, registroDB)).Tag=Variaveis.fEP.NomeFeed;
+                        tv1.Nodes["ve"].Nodes["ve"].Nodes.Add(Variaveis.fEQ.NodeTv1, FormataTexto(Variaveis.fEQ, registroDB)).Tag=Variaveis.fEQ.NomeFeed;
+                        tv1.Nodes["ve"].Nodes["ve"].Nodes.Add(Variaveis.fES.NodeTv1, FormataTexto(Variaveis.fES, registroDB)).Tag=Variaveis.fES.NomeFeed;
+                    }
+                    tv1.Nodes["ve"].Nodes.Add("vd", "Valores de Demanda (Média)");
+                    {
+                        tv1.Nodes["ve"].Nodes["vd"].Nodes.Add("c", "Corrente IM");
+                        {
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes.Add(Variaveis.fIMa.NodeTv1, FormataTexto(Variaveis.fIMa, registroDB)).Tag=Variaveis.fIMa.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes.Add(Variaveis.fIMb.NodeTv1, FormataTexto(Variaveis.fIMb, registroDB)).Tag=Variaveis.fIMb.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes.Add(Variaveis.fIMc.NodeTv1, FormataTexto(Variaveis.fIMc, registroDB)).Tag=Variaveis.fIMc.NomeFeed;
+                        }
+                        tv1.Nodes["ve"].Nodes["vd"].Nodes.Add("p", "Potência");
+                        {
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes.Add(Variaveis.fPM.NodeTv1, FormataTexto(Variaveis.fPM, registroDB)).Tag=Variaveis.fPM.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes.Add(Variaveis.fQM.NodeTv1, FormataTexto(Variaveis.fQM, registroDB)).Tag=Variaveis.fQM.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes.Add(Variaveis.fSM.NodeTv1, FormataTexto(Variaveis.fSM, registroDB)).Tag=Variaveis.fSM.NomeFeed;
+                        }
+                    }
+                    tv1.Nodes["ve"].Nodes.Add("vm", "Valores de Demanda Máxima");
+                    {
+                        tv1.Nodes["ve"].Nodes["vm"].Nodes.Add("c", "Corrente Máxima");
+                        {
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes.Add(Variaveis.fIPa.NodeTv1, FormataTexto(Variaveis.fIPa, registroDB)).Tag=Variaveis.fIPa.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes.Add(Variaveis.fIPb.NodeTv1, FormataTexto(Variaveis.fIPb, registroDB)).Tag=Variaveis.fIPb.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes.Add(Variaveis.fIPc.NodeTv1, FormataTexto(Variaveis.fIPc, registroDB)).Tag=Variaveis.fIPc.NomeFeed;
+                        }
+                        tv1.Nodes["ve"].Nodes["vm"].Nodes.Add("p", "Potência");
+                        {
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes.Add(Variaveis.fPP.NodeTv1, FormataTexto(Variaveis.fPP, registroDB)).Tag=Variaveis.fPP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes.Add(Variaveis.fQP.NodeTv1, FormataTexto(Variaveis.fQP, registroDB)).Tag=Variaveis.fQP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes.Add(Variaveis.fSP.NodeTv1, FormataTexto(Variaveis.fSP, registroDB)).Tag=Variaveis.fSP.NomeFeed;
+                        }
+                    }
+                }
+                tv1.Nodes.Add("ov", "Outras Variáveis");
+                {
+                    tv1.Nodes["ov"].Nodes.Add("te", "Temperatura");
+                    {
+                        tv1.Nodes["ov"].Nodes["te"].Nodes.Add(Variaveis.fTEnrolamento.NodeTv1, FormataTexto(Variaveis.fTEnrolamento, registroDB)).Tag=Variaveis.fTEnrolamento.NomeFeed;
+                        tv1.Nodes["ov"].Nodes["te"].Nodes.Add(Variaveis.fTOleo.NodeTv1, FormataTexto(Variaveis.fTOleo, registroDB)).Tag=Variaveis.fTOleo.NomeFeed;
+                    }
+                    tv1.Nodes["ov"].Nodes.Add(Variaveis.fNivelOleo.NodeTv1, ((registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo) ? "Nível baixo" : ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) ? "Nível alto" : "Nível normal"))).Tag=Variaveis.fNivelOleo.NomeFeed;
+                    tv1.Nodes["ov"].Nodes.Add(Variaveis.fValvulaPressao.NodeTv1, ((registroDB.P[Variaveis.fValvulaPressao.indice] == 0) ? "Válvula em condições normais" : "Válvula acionada"));
+
+                }
+                MarcarTodas(tv1.Nodes);
+                tv1.ExpandAll();
+            }
+            else
+            {
+
+
+
+                {
+                    {
+                        {
+                            {
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIa.NodeTv1].Text = FormataTexto(Variaveis.fIa, registroDB);// string.Format(Variaveis.fIa.formato, Registros[Registros.Count - 1].P[Variaveis.fIa.indice]));
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIb.NodeTv1].Text = FormataTexto(Variaveis.fIb, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIc.NodeTv1].Text = FormataTexto(Variaveis.fIc, registroDB);
+                            }
+                            {
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes[Variaveis.fVab.NodeTv1].Text = FormataTexto(Variaveis.fVab, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes[Variaveis.fVbc.NodeTv1].Text = FormataTexto(Variaveis.fVbc, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes[Variaveis.fVca.NodeTv1].Text = FormataTexto(Variaveis.fVca, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes[Variaveis.fVan.NodeTv1].Text = FormataTexto(Variaveis.fVan, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes[Variaveis.fVbn.NodeTv1].Text = FormataTexto(Variaveis.fVbn, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes[Variaveis.fVcn.NodeTv1].Text = FormataTexto(Variaveis.fVcn, registroDB);
+                            }
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes[Variaveis.fFreq.NodeTv1].Text = FormataTexto(Variaveis.fFreq, registroDB);
+                            {
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes[Variaveis.fP.NodeTv1].Text = FormataTexto(Variaveis.fP, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes[Variaveis.fQ.NodeTv1].Text = FormataTexto(Variaveis.fQ, registroDB);
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes[Variaveis.fS.NodeTv1].Text = FormataTexto(Variaveis.fS, registroDB);
+                            }
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes[Variaveis.fFatorPotencia.NodeTv1].Text = FormataTexto(Variaveis.fFatorPotencia, registroDB);
+                        }
+                        {
+                            tv1.Nodes["ve"].Nodes["ve"].Nodes[Variaveis.fEP.NodeTv1].Text = FormataTexto(Variaveis.fEP, registroDB);
+                            tv1.Nodes["ve"].Nodes["ve"].Nodes[Variaveis.fEQ.NodeTv1].Text = FormataTexto(Variaveis.fEQ, registroDB);
+                            tv1.Nodes["ve"].Nodes["ve"].Nodes[Variaveis.fES.NodeTv1].Text = FormataTexto(Variaveis.fES, registroDB);
+                        }
+                        {
+                            {
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes[Variaveis.fIMa.NodeTv1].Text = FormataTexto(Variaveis.fIMa, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes[Variaveis.fIMb.NodeTv1].Text = FormataTexto(Variaveis.fIMb, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes[Variaveis.fIMc.NodeTv1].Text = FormataTexto(Variaveis.fIMc, registroDB);
+                            }
+                            {
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes[Variaveis.fPM.NodeTv1].Text = FormataTexto(Variaveis.fPM, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes[Variaveis.fQM.NodeTv1].Text = FormataTexto(Variaveis.fQM, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes[Variaveis.fSM.NodeTv1].Text = FormataTexto(Variaveis.fSM, registroDB);
+                            }
+                        }
+                        {
+                            {
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes[Variaveis.fIPa.NodeTv1].Text = FormataTexto(Variaveis.fIPa, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes[Variaveis.fIPb.NodeTv1].Text = FormataTexto(Variaveis.fIPb, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes[Variaveis.fIPc.NodeTv1].Text = FormataTexto(Variaveis.fIPc, registroDB);
+                            }
+                            {
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes[Variaveis.fPP.NodeTv1].Text = FormataTexto(Variaveis.fPP, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes[Variaveis.fQP.NodeTv1].Text = FormataTexto(Variaveis.fQP, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes[Variaveis.fSP.NodeTv1].Text = FormataTexto(Variaveis.fSP, registroDB);
+                            }
+                        }
+                    }
+                    {
+                        {
+                            tv1.Nodes["ov"].Nodes["te"].Nodes[Variaveis.fTEnrolamento.NodeTv1].Text = FormataTexto(Variaveis.fTEnrolamento, registroDB);
+                            tv1.Nodes["ov"].Nodes["te"].Nodes[Variaveis.fTOleo.NodeTv1].Text = FormataTexto(Variaveis.fTOleo, registroDB);
+                        }
+                        tv1.Nodes["ov"].Nodes[Variaveis.fNivelOleo.NodeTv1].Text = ((registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo) ? "Nível baixo" : ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) ? "Nível alto" : "Nível normal"));
+                        tv1.Nodes["ov"].Nodes[Variaveis.fValvulaPressao.NodeTv1].Text = ((registroDB.P[Variaveis.fValvulaPressao.indice] == 0f) ? "Válvula em condições normais" : "Válvula acionada");
+                    }
+                }
+
+            }
+            //tv1.ExpandAll();
+            //tv1.SelectedNode = tv1.Nodes[0];
+            tv1.ResumeLayout();
+
+            // Ponteiros
             // "Led"
             int Noleo = Convert.ToInt32(registroDB.P[9]);
-            picStatus.Image = picStatus2.Image = ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto)) ? picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho : picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
+            picStatus.Image = ((Noleo < Global.NOleoBaixo) | (Noleo > Global.NOleoAlto)) ? picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho : picStatus.Image = InterfaceDesktop.Properties.Resources.Verde;
+        }
+        // Rotina recursiva para marcar todas as checkbox do treeview
+        private void MarcarTodas(TreeNodeCollection treeNodeCollection)
+        {
+            foreach (TreeNode No in treeNodeCollection)
+            {
+                if (No.Nodes.Count > 0)
+                    MarcarTodas(No.Nodes);
+                No.Checked = true;
+            }
+        }
+
+        private string FormataTexto(FeedServidor feedServidor, RegistroDB REG)
+        {
+            return string.Format(feedServidor.formato, REG.P[feedServidor.indice]);        
         }
 
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
@@ -818,15 +983,15 @@ namespace InterfaceDesktop
                 chartTemperatura.Series[Todas[Convert.ToInt32(Sender.Tag)].NomeFeed].Enabled = Sender.Checked;
             }
             catch { }
-            chkNo2.Checked = chkNo.Checked;
-            chkTo2.Checked = chkTo.Checked;
-            chkTe2.Checked = chkTe.Checked;
-            // Reajustar gráfico no caso de uma chartárea vazia
-            chartTemperatura.ChartAreas["P"].Visible = chkP.Checked | chkQ.Checked | chkS.Checked;
-            chartTemperatura.ChartAreas["V"].Visible = chkVa.Checked | chkVb.Checked | chkVc.Checked;
-            chartTemperatura.ChartAreas["I"].Visible = chkIa.Checked | chkIb.Checked | chkIc.Checked;
-            chartTemperatura.ChartAreas["T"].Visible = chkTe.Checked | chkTo.Checked;
-            chartTemperatura.ChartAreas["N"].Visible = chkNo.Checked;
+            //chkNo2.Checked = chkNo.Checked;
+            //chkTo2.Checked = chkTo.Checked;
+            //chkTe2.Checked = chkTe.Checked;
+            //// Reajustar gráfico no caso de uma chartárea vazia
+            //chartTemperatura.ChartAreas["P"].Visible = chkP.Checked | chkQ.Checked | chkS.Checked;
+            //chartTemperatura.ChartAreas["V"].Visible = chkVa.Checked | chkVb.Checked | chkVc.Checked;
+            //chartTemperatura.ChartAreas["I"].Visible = chkIa.Checked | chkIb.Checked | chkIc.Checked;
+            //chartTemperatura.ChartAreas["T"].Visible = chkTe.Checked | chkTo.Checked;
+            //chartTemperatura.ChartAreas["N"].Visible = chkNo.Checked;
             ReposicionaChartAreas();
         }
 
@@ -879,21 +1044,6 @@ namespace InterfaceDesktop
             {
                 chartTemperatura.ChartAreas[mm].AlignWithChartArea = Alinhamento;
             }
-        }
-
-        private void chkNo2_CheckedChanged(object sender, EventArgs e)
-        {
-            chkNo.Checked = chkNo2.Checked;
-        }
-
-        private void chkTo2_CheckedChanged(object sender, EventArgs e)
-        {
-            chkTo.Checked = chkTo2.Checked;
-        }
-
-        private void chkTe2_CheckedChanged(object sender, EventArgs e)
-        {
-            chkTe.Checked = chkTe2.Checked;
         }
 
         private void toolStripComboBox1_TextChanged(object sender, EventArgs e)
@@ -982,6 +1132,15 @@ namespace InterfaceDesktop
                 if (chartTemperatura.ChartAreas["N"].AxisX.ScaleView.IsZoomed)
                     chartTemperatura.ChartAreas["N"].AxisX.ScaleView.ZoomReset();
             }
+        }
+
+        private void tv1_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            try
+            {
+                chartTemperatura.Series[e.Node.Tag.ToString()].Enabled = e.Node.Checked;
+            }
+            catch { }
         }
     }
 }

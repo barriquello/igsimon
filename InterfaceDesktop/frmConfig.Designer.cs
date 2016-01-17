@@ -39,6 +39,7 @@
             this.txtVca = new System.Windows.Forms.ComboBox();
             this.txtVcn = new System.Windows.Forms.ComboBox();
             this.txtSM = new System.Windows.Forms.ComboBox();
+            this.txtSP = new System.Windows.Forms.ComboBox();
             this.txtS = new System.Windows.Forms.ComboBox();
             this.txtTo = new System.Windows.Forms.ComboBox();
             this.txtEQ = new System.Windows.Forms.ComboBox();
@@ -49,6 +50,7 @@
             this.txtVbn = new System.Windows.Forms.ComboBox();
             this.txtFreq = new System.Windows.Forms.ComboBox();
             this.txtFatorPotencia = new System.Windows.Forms.ComboBox();
+            this.txtValvulaPressao = new System.Windows.Forms.ComboBox();
             this.txtNo = new System.Windows.Forms.ComboBox();
             this.txtEP = new System.Windows.Forms.ComboBox();
             this.txtIMa = new System.Windows.Forms.ComboBox();
@@ -57,6 +59,7 @@
             this.txtVab = new System.Windows.Forms.ComboBox();
             this.txtVan = new System.Windows.Forms.ComboBox();
             this.txtPM = new System.Windows.Forms.ComboBox();
+            this.txtPP = new System.Windows.Forms.ComboBox();
             this.txtP = new System.Windows.Forms.ComboBox();
             this.txtServidor = new System.Windows.Forms.TextBox();
             this.txtAPIKEY = new System.Windows.Forms.TextBox();
@@ -68,6 +71,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -78,7 +82,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -88,14 +94,17 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtQM = new System.Windows.Forms.ComboBox();
+            this.txtQP = new System.Windows.Forms.ComboBox();
             this.lbl1 = new System.Windows.Forms.Label();
             this.txtQ = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -110,15 +119,6 @@
             this.btnAddUser = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.txtQP = new System.Windows.Forms.ComboBox();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.txtPP = new System.Windows.Forms.ComboBox();
-            this.txtSP = new System.Windows.Forms.ComboBox();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.txtValvulaPressao = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -291,6 +291,13 @@
             this.txtSM.Size = new System.Drawing.Size(137, 21);
             this.txtSM.TabIndex = 4;
             // 
+            // txtSP
+            // 
+            this.txtSP.Location = new System.Drawing.Point(290, 499);
+            this.txtSP.Name = "txtSP";
+            this.txtSP.Size = new System.Drawing.Size(137, 21);
+            this.txtSP.TabIndex = 4;
+            // 
             // txtS
             // 
             this.txtS.Location = new System.Drawing.Point(288, 211);
@@ -361,6 +368,13 @@
             this.txtFatorPotencia.Size = new System.Drawing.Size(137, 21);
             this.txtFatorPotencia.TabIndex = 14;
             // 
+            // txtValvulaPressao
+            // 
+            this.txtValvulaPressao.Location = new System.Drawing.Point(220, 555);
+            this.txtValvulaPressao.Name = "txtValvulaPressao";
+            this.txtValvulaPressao.Size = new System.Drawing.Size(206, 21);
+            this.txtValvulaPressao.TabIndex = 14;
+            // 
             // txtNo
             // 
             this.txtNo.Location = new System.Drawing.Point(6, 555);
@@ -416,6 +430,13 @@
             this.txtPM.Name = "txtPM";
             this.txtPM.Size = new System.Drawing.Size(137, 21);
             this.txtPM.TabIndex = 2;
+            // 
+            // txtPP
+            // 
+            this.txtPP.Location = new System.Drawing.Point(6, 499);
+            this.txtPP.Name = "txtPP";
+            this.txtPP.Size = new System.Drawing.Size(137, 21);
+            this.txtPP.TabIndex = 2;
             // 
             // txtP
             // 
@@ -510,6 +531,15 @@
             this.label31.TabIndex = 0;
             this.label31.Text = "Potência Aparente (SM)";
             // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(290, 483);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(140, 13);
+            this.label38.TabIndex = 0;
+            this.label38.Text = "Potência Aparente (SP)";
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -600,6 +630,15 @@
             this.label30.TabIndex = 0;
             this.label30.Text = "Potência Reativa (QM)";
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(147, 483);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(132, 13);
+            this.label37.TabIndex = 0;
+            this.label37.Text = "Potência Reativa (QP)";
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -608,6 +647,15 @@
             this.label5.Size = new System.Drawing.Size(125, 13);
             this.label5.TabIndex = 0;
             this.label5.Text = "Potência Reativa (Q)";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(220, 539);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(168, 13);
+            this.label40.TabIndex = 0;
+            this.label40.Text = "Válvula de alívio de pressão";
             // 
             // label17
             // 
@@ -690,6 +738,15 @@
             this.label32.TabIndex = 0;
             this.label32.Text = "Valores de Demanda Máxima (de pico)";
             // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(6, 523);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(106, 13);
+            this.label39.TabIndex = 0;
+            this.label39.Text = "Demais variáveis";
+            // 
             // label25
             // 
             this.label25.AutoSize = true;
@@ -744,6 +801,15 @@
             this.label29.TabIndex = 0;
             this.label29.Text = "Potência Ativa (PM)";
             // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(6, 483);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(116, 13);
+            this.label36.TabIndex = 0;
+            this.label36.Text = "Potência Ativa (PP)";
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -759,6 +825,13 @@
             this.txtQM.Name = "txtQM";
             this.txtQM.Size = new System.Drawing.Size(137, 21);
             this.txtQM.TabIndex = 3;
+            // 
+            // txtQP
+            // 
+            this.txtQP.Location = new System.Drawing.Point(147, 499);
+            this.txtQP.Name = "txtQP";
+            this.txtQP.Size = new System.Drawing.Size(137, 21);
+            this.txtQP.TabIndex = 3;
             // 
             // lbl1
             // 
@@ -790,7 +863,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(464, 513);
+            this.tabPage2.Size = new System.Drawing.Size(447, 619);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trocar senha";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -902,79 +975,6 @@
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // txtQP
-            // 
-            this.txtQP.Location = new System.Drawing.Point(147, 499);
-            this.txtQP.Name = "txtQP";
-            this.txtQP.Size = new System.Drawing.Size(137, 21);
-            this.txtQP.TabIndex = 3;
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(6, 483);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(116, 13);
-            this.label36.TabIndex = 0;
-            this.label36.Text = "Potência Ativa (PP)";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(147, 483);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(132, 13);
-            this.label37.TabIndex = 0;
-            this.label37.Text = "Potência Reativa (QP)";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(290, 483);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(140, 13);
-            this.label38.TabIndex = 0;
-            this.label38.Text = "Potência Aparente (SP)";
-            // 
-            // txtPP
-            // 
-            this.txtPP.Location = new System.Drawing.Point(6, 499);
-            this.txtPP.Name = "txtPP";
-            this.txtPP.Size = new System.Drawing.Size(137, 21);
-            this.txtPP.TabIndex = 2;
-            // 
-            // txtSP
-            // 
-            this.txtSP.Location = new System.Drawing.Point(290, 499);
-            this.txtSP.Name = "txtSP";
-            this.txtSP.Size = new System.Drawing.Size(137, 21);
-            this.txtSP.TabIndex = 4;
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(6, 523);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(106, 13);
-            this.label39.TabIndex = 0;
-            this.label39.Text = "Demais variáveis";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(220, 539);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(168, 13);
-            this.label40.TabIndex = 0;
-            this.label40.Text = "Válvula de alívio de pressão";
-            // 
-            // txtValvulaPressao
-            // 
-            this.txtValvulaPressao.Location = new System.Drawing.Point(220, 555);
-            this.txtValvulaPressao.Name = "txtValvulaPressao";
-            this.txtValvulaPressao.Size = new System.Drawing.Size(206, 21);
-            this.txtValvulaPressao.TabIndex = 14;
             // 
             // frmConfig
             // 

@@ -124,9 +124,6 @@
   <data name="LogoRomagnole" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\RES\LogoRomagnole.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Amarelo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\RES\Amarelo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Verde" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\RES\Verde.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

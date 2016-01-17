@@ -217,7 +217,15 @@ namespace InterfaceDesktop
             {
                 WebClient ServidorWeb = new WebClient();
                 string Requisicao = txtServidor.Text + ComandosCSV.strComandoFeedList + txtAPIKEY.Text;
-                Requisicao = ServidorWeb.DownloadString(Requisicao);
+                try
+                {
+                    Requisicao = ServidorWeb.DownloadString(Requisicao);
+                }
+                catch (Exception erro)
+                {
+                    MessageBox.Show("Erro na requisição:\n"+erro.Message);
+                    return;
+                }
                 List<Feed> Fdd = json.json2Feed(Requisicao);
                 string[] strVariaveis = new string[Fdd.Count];
                 for (int kk = 0; kk < Fdd.Count; kk++)

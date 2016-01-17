@@ -85,6 +85,8 @@ namespace InterfaceDesktop
         public const int RegistrosMAXIMO = 7 * 24 * 60 * 2 *4; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
         /// <summary>Intervalo entre comunicações com o servidor web
         public static int intTaxaAtualizacao = 15000;  //ms
+        /// <summary>Precisão de exibição de dados na tela</summary>
+        public const string strPrecisao = "{0}";
         #endregion
 
         #region Configurações relativas ao comportamento do formulário de configurações

@@ -13,6 +13,13 @@ namespace InterfaceDesktop
             Funcao = funcao;
             indice = Indice;
         }
+        public FeedServidor(func funcao, int Indice, string Node, string Formato)
+        {
+            formato = Formato;
+            NodeTv1 = Node;
+            Funcao = funcao;
+            indice = Indice;
+        }
         /// <summary>Função da variável (Po, Vf, Vl, Il, FP, Fr, Ni, Te, Pr</summary>
         public func Funcao;
         /// <summary>Nome do feed</summary>
@@ -21,5 +28,9 @@ namespace InterfaceDesktop
         public string IndiceFeed = "";
         /// <summary>Índice da variável no banco de dados local (Registro)</summary>
         public int indice = 0;
+        /// <summary>Índice do feed no treeview1</summary>
+        public string NodeTv1 = "";
+        /// <summary>Formato de exibição</summary>
+        public string formato = "";
     }
 }

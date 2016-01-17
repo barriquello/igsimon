@@ -2,9 +2,7 @@
 using System.Net; // Comunicação web
 using System.Text; // Codificação de texto
 using System.Windows.Forms; // Formulários
-//using Newtonsoft.Json; // JSON
 using System.Collections.Generic; // Variáveis anonimas (json)
-using System.Data.SQLite; // Bancos de dados
 using System.Windows.Forms.DataVisualization.Charting; //Gráficos
 using System.Linq;
 using System.IO;
@@ -14,7 +12,7 @@ namespace InterfaceDesktop
     public partial class frmMain : Form
     {
         /// <summary>Componente para comunicação via internet</summary>
-        WebClient Servidor = new WebClient();
+        WebClient ServidorWeb = new WebClient();
         /// <summary>Data do registro mais recente no servidor</summary>
         DateTime tUltimaAtualizacao;
         // Banco de dados temporário
@@ -42,6 +40,7 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas.Add("I");
             chartTemperatura.ChartAreas.Add("N");
             chartTemperatura.ChartAreas.Add("T");
+            chartTemperatura.ChartAreas.Add("X").Visible = false;
             // Adiciona legendas
             for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
             {
@@ -137,13 +136,14 @@ namespace InterfaceDesktop
                 // linha separando o título da legenda
                 chartTemperatura.Legends[mm].TitleSeparator = LegendSeparatorStyle.Line;
             }
-            string[] strSeries = Global.strTodas();
+            FeedServidor[] strSeries = Variaveis.strVariaveis();
 
-            for (int jj = 0; jj < Global.strCategoria.Length; jj++)
+            func[] Tipos = new func[] { func.En, func.FP, func.Fr, func.Il, func.Ni, func.Po, func.Pr, func.Te, func.Vf, func.Vl };
+            for (int jj = 0; jj < strSeries.Length; jj++) //Tipos.Length;jj++)// Global.strCategoria.Length; jj++)
             {
-                Series srSerie = new Series(strSeries[jj]); // nova série
+                Series srSerie = new Series(strSeries[jj].NomeFeed); // nova série
                 srSerie.Legend = //"LegendaOculta";
-                    srSerie.ChartArea = Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
+                    srSerie.ChartArea = Func2str(strSeries[jj].Funcao);// Tipos[jj].ToString();// Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
                 //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
                 srSerie.XValueType = ChartValueType.Time; //
                 srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
@@ -162,6 +162,22 @@ namespace InterfaceDesktop
                     return;
                 }
             }
+        }
+
+        private string Func2str(func funcao)
+        {
+            //if (funcao == func.En) return "E";
+            //if (funcao == func.FP) return "E";
+            //if (funcao == func.Fr) return "E";
+            if (funcao == func.Il) return "I";
+            if (funcao == func.Ni) return "N";
+            if (funcao == func.Po) return "P";
+            //if (funcao == func.Pr) return "Pr";
+            if (funcao == func.Te) return "T";
+            if (funcao == func.Vf) return "V";
+            if (funcao == func.Vl) return "V";
+            return "X";
+
         }
 
         private void LimpaSeries()
@@ -195,11 +211,11 @@ namespace InterfaceDesktop
                     }
                     else
                     {
-                        string[] strTodas = Global.strTodas();
+                        FeedServidor[] strTodas = Variaveis.strVariaveis();
                         DateTime Horario = Uteis.Unix2time(Registros[mm].Horario);
-                        for (int kk = 0; kk < Global.intIndiceRegistro.Length; kk++)
+                        for (int kk = 0; kk < strTodas.Length; kk++)
                         {
-                            chartTemperatura.Series[strTodas[kk]].Points.AddXY(Horario, Registros[mm].P[Global.intIndiceRegistro[kk]]);
+                            chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[strTodas[kk].indice]);
                         }
                     }
             }
@@ -214,18 +230,18 @@ namespace InterfaceDesktop
                     chartTemperatura.Series[jj].XValueType = ChartValueType.Time;
                 }
             }
-            chartTemperatura.Series[Global.strP].Enabled = chkP.Checked;
-            chartTemperatura.Series[Global.strQ].Enabled = chkQ.Checked;
-            chartTemperatura.Series[Global.strS].Enabled = chkS.Checked;
-            chartTemperatura.Series[Global.strVa].Enabled = chkVa.Checked;
-            chartTemperatura.Series[Global.strVb].Enabled = chkVb.Checked;
-            chartTemperatura.Series[Global.strVc].Enabled = chkVc.Checked;
-            chartTemperatura.Series[Global.strIa].Enabled = chkIa.Checked;
-            chartTemperatura.Series[Global.strIb].Enabled = chkIb.Checked;
-            chartTemperatura.Series[Global.strIc].Enabled = chkIc.Checked;
-            chartTemperatura.Series[Global.strNo].Enabled = chkNo.Checked;
-            chartTemperatura.Series[Global.strTo].Enabled = chkTo.Checked;
-            chartTemperatura.Series[Global.strTe].Enabled = chkTe.Checked;
+            chartTemperatura.Series[Variaveis.fP.NomeFeed].Enabled = chkP.Checked;
+            chartTemperatura.Series[Variaveis.fQ.NomeFeed].Enabled = chkQ.Checked;
+            chartTemperatura.Series[Variaveis.fS.NomeFeed].Enabled = chkS.Checked;
+            chartTemperatura.Series[Variaveis.fVan.NomeFeed].Enabled = chkVa.Checked;
+            chartTemperatura.Series[Variaveis.fVbn.NomeFeed].Enabled = chkVb.Checked;
+            chartTemperatura.Series[Variaveis.fVcn.NomeFeed].Enabled = chkVc.Checked;
+            chartTemperatura.Series[Variaveis.fIa.NomeFeed].Enabled = chkIa.Checked;
+            chartTemperatura.Series[Variaveis.fIb.NomeFeed].Enabled = chkIb.Checked;
+            chartTemperatura.Series[Variaveis.fIc.NomeFeed].Enabled = chkIc.Checked;
+            chartTemperatura.Series[Variaveis.fNivelOleo.NomeFeed].Enabled = chkNo.Checked;
+            chartTemperatura.Series[Variaveis.fTOleo.NomeFeed].Enabled = chkTo.Checked;
+            chartTemperatura.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled = chkTe.Checked;
 
             ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
@@ -236,7 +252,7 @@ namespace InterfaceDesktop
             // Medir performance:
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
             //Verifica qual é o último registro no servidor
-            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
             UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime));// Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
             UInt32 _Final = Final;
             if (Final == 0) // especificação de data opcional
@@ -250,15 +266,15 @@ namespace InterfaceDesktop
             // Busca o comando mais recente armazenado no servidor
 
             //lista de índices
-            string[] strTodas = Global.striTodas();
+            FeedServidor[] strTodas = Variaveis.strVariaveis();
             // para cada variável do servidor:
             List<int> Salvar = new List<int>();
-            toolStripProgressBar1.Maximum = Global.strCategoria.Length + 1;
-            for (int jj = 0; jj < Global.strCategoria.Length; jj++)
+            toolStripProgressBar1.Maximum = strTodas.Length + 1;
+            for (int jj = 0; jj < strTodas.Length; jj++)
             {
                 toolStripProgressBar1.Value = jj;
                 // Busca todos os valores do servidor
-                string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio, Ultimo, strTodas[jj]);
+                string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio, Ultimo, strTodas[jj].IndiceFeed);
 
                 List<RegistroCSV> Dados = CSV2Matriz(strTemp);
                 for (int kk = 0; kk < Dados.Count; kk++)
@@ -277,7 +293,7 @@ namespace InterfaceDesktop
                         Salvar.Add(indice); // salvar no banco de dados o item atual
                         Registros[indice].Horario = Horario_;
                     }
-                    Registros[indice].P[Global.intIndiceRegistro[jj]] = (float)Dados[kk].valor();
+                    Registros[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();
                 }
             }
             toolStripProgressBar1.Value = 0;
@@ -288,15 +304,17 @@ namespace InterfaceDesktop
                 string Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(DataNova));
                 //string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
                 StreamWriter Gravar;// = new StreamWriter(Arquivo, true);
+                string strLinha = "";
                 if (!(new FileInfo(Arquivo).Exists))
                 {
                     Gravar = new StreamWriter(Arquivo, true);
                     // Gera Arquivo CSV com cabeçalho
-                    Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", "Horário",
-                        Global.strP, Global.strQ, Global.strS,
-                        Global.strVa, Global.strVb, Global.strVc,
-                        Global.strIa, Global.strIb, Global.strIc,
-                        Global.strNo, Global.strTo, Global.strTe, Global.SeparadorCSV);
+                    strLinha = "Horario";
+                    for (int mmm = 0; mmm < strTodas.Length; mmm++)
+                    {
+                        strLinha += Global.SeparadorCSV + strTodas[mmm].NomeFeed;
+                    }
+                    Gravar.WriteLine(strLinha);
                 }
                 else
                 {
@@ -314,11 +332,12 @@ namespace InterfaceDesktop
                         {
                             Gravar = new StreamWriter(Arquivo, true);
                             // Gera Arquivo CSV com cabeçalho
-                            Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", "Horario",
-                                Global.strP, Global.strQ, Global.strS,
-                                Global.strVa, Global.strVb, Global.strVc,
-                                Global.strIa, Global.strIb, Global.strIc,
-                                Global.strNo, Global.strTo, Global.strTe, Global.SeparadorCSV);
+                            strLinha = "Horario";
+                            for (int mmm = 0; mmm < strTodas.Length; mmm++)
+                            {
+                                strLinha += Global.SeparadorCSV + strTodas[mmm].NomeFeed;
+                            }
+                            Gravar.WriteLine(strLinha);
                         }
                         else
                         {
@@ -337,18 +356,19 @@ namespace InterfaceDesktop
         {
             //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
-            Gravar.WriteLine("{0}{13}{1}{13}{2}{13}{3}{13}{4}{13}{5}{13}{6}{13}{7}{13}{8}{13}{9}{13}{10}{13}{11}{13}{12}", reg.Horario.ToString(),
-                reg.P[0].ToString(SeparadorDecimal), reg.P[1].ToString(SeparadorDecimal), reg.P[2].ToString(SeparadorDecimal),
-                reg.P[3].ToString(SeparadorDecimal), reg.P[4].ToString(SeparadorDecimal), reg.P[5].ToString(SeparadorDecimal),
-                reg.P[6].ToString(SeparadorDecimal), reg.P[7].ToString(SeparadorDecimal), reg.P[8].ToString(SeparadorDecimal),
-                reg.P[9].ToString(SeparadorDecimal), reg.P[10].ToString(SeparadorDecimal), reg.P[11].ToString(SeparadorDecimal), Global.SeparadorCSV);
+            string Linha = reg.Horario.ToString();
+            for (int jj = 0; jj < reg.P.Length; jj++)
+            {
+                Linha += Global.SeparadorCSV+ reg.P[jj].ToString(SeparadorDecimal);
+            }
+            Gravar.WriteLine(Linha);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             // rotina para ser executada apenas uma vez
             // Pegar o "time" mais recente:
-            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
+            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
             tUltimaAtualizacao = DTData2DateTime(strTime); //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToString();
             BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
@@ -366,46 +386,6 @@ namespace InterfaceDesktop
         private void frmMain_Load(object sender, EventArgs e)
         {
             // Lê as configurações armazenadas no banco de dados
-            using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
-            {
-                Con.Open();
-                string sqlComando = "SELECT * FROM " + Global.TabelaConfig + " ORDER BY ID DESC LIMIT 0,1";
-                using (SQLiteCommand Comando = new SQLiteCommand(sqlComando, Con))
-                {
-                    SQLiteDataReader Leitor = Comando.ExecuteReader();
-                    if (Leitor.Read())
-                    {
-                        Global.Servidor = Convert.ToString(Leitor["Servidor"]);
-                        Global.APIKey = Convert.ToString(Leitor["APIKEY"]);
-                        Global.strP = Convert.ToString(Leitor["Node_P"]);
-                        Global.strQ = Convert.ToString(Leitor["Node_Q"]);
-                        Global.strS = Convert.ToString(Leitor["Node_S"]);
-                        Global.strVa = Convert.ToString(Leitor["Node_Va"]);
-                        Global.strVb = Convert.ToString(Leitor["Node_Vb"]);
-                        Global.strVc = Convert.ToString(Leitor["Node_Vc"]);
-                        Global.strIa = Convert.ToString(Leitor["Node_Ia"]);
-                        Global.strIb = Convert.ToString(Leitor["Node_Ib"]);
-                        Global.strIc = Convert.ToString(Leitor["Node_Ic"]);
-                        Global.strNo = Convert.ToString(Leitor["Node_No"]);
-                        Global.strTo = Convert.ToString(Leitor["Node_To"]);
-                        Global.strTe = Convert.ToString(Leitor["Node_Te"]);
-                    }
-                    else
-                    {
-                        while (!Global.restart)
-                        {
-                            Global.ConfigObriatoria = true;
-                            frmConfig Config = new frmConfig();
-                            Config.ShowDialog();
-                        }
-                        Global.ConfigObriatoria = false;
-                        // Reinicia a rotina para [tentar] carregar as configurações
-                        frmMain_Load(new object(), new EventArgs());
-                        Global.restart = false;
-                        return;
-                    }
-                }
-
                 string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
                 if (ListaDeArquivos.Length > 0)
                 {
@@ -414,34 +394,92 @@ namespace InterfaceDesktop
                     for (int jj = -7; jj < 1; jj++)
                     {
                         string Arquivo = ComandosCSV.ArquivoCSV(DateTime.Now.AddDays(jj));
-                        Registros.AddRange(LeituraCSVs(Arquivo));
+                        try
+                        {
+                            Registros.AddRange(LeituraCSVs(Arquivo));
+                        }
+                        catch { }
                         //Registros = LeituraCSVs(ListaDeArquivos[ListaDeArquivos.Length - 1]);
                     }
                     if (Registros.Count > 0)
                         tUltimaAtualizacao = Uteis.Unix2time(Registros[Registros.Count - 1].Horario);
                 }
-            }
             // Buscar índices no servidor:
-            string Requisicao = Global.Servidor + ComandosCSV.strComandoFeedList + Global.APIKey;
+            string Requisicao = Servidor.Server+ ComandosCSV.strComandoFeedList + Servidor.APIKey;
 
             try
             {
-                Requisicao = Servidor.DownloadString(Requisicao);
-                List<Feed> Fdd = json2Feed(Requisicao);
+                Requisicao = ServidorWeb.DownloadString(Requisicao);
+                List<Feed> Fdd = json.json2Feed(Requisicao);
                 for (int kk = 0; kk < Fdd.Count; kk++)
                 {
-                    if (Fdd[kk].name == Global.strP) Global.striP = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strQ) Global.striQ = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strS) Global.striS = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strVa) Global.striVa = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strVb) Global.striVb = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strVc) Global.striVc = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strIa) Global.striIa = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strIb) Global.striIb = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strIc) Global.striIc = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strNo) Global.striNo = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strTo) Global.striTo = Fdd[kk].id;
-                    if (Fdd[kk].name == Global.strTe) Global.striTe = Fdd[kk].id;
+
+                    if (Fdd[kk].Nome == Variaveis.fEP.NomeFeed)
+                        Variaveis.fEP.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fEQ.NomeFeed)
+                        Variaveis.fEQ.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fES.NomeFeed)
+                        Variaveis.fES.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fFatorPotencia.NomeFeed)
+                        Variaveis.fFatorPotencia.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fFreq.NomeFeed)
+                        Variaveis.fFreq.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIa.NomeFeed)
+                        Variaveis.fIa.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIb.NomeFeed)
+                        Variaveis.fIb.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIc.NomeFeed)
+                        Variaveis.fIc.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIMa.NomeFeed)
+                        Variaveis.fIMa.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIMb.NomeFeed)
+                        Variaveis.fIMb.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIMc.NomeFeed)
+                        Variaveis.fIMc.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIPa.NomeFeed)
+                        Variaveis.fIPa.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIPb.NomeFeed)
+                        Variaveis.fIPb.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fIPc.NomeFeed)
+                        Variaveis.fIPc.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fNivelOleo.NomeFeed)
+                        Variaveis.fNivelOleo.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fP.NomeFeed)
+                        Variaveis.fP.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fPM.NomeFeed)
+                        Variaveis.fPM.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fPP.NomeFeed)
+                        Variaveis.fPP.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fQ.NomeFeed)
+                        Variaveis.fQ.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fQM.NomeFeed)
+                        Variaveis.fQM.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fQP.NomeFeed)
+                        Variaveis.fQP.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fS.NomeFeed)
+                        Variaveis.fS.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fSM.NomeFeed)
+                        Variaveis.fSM.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fSP.NomeFeed)
+                        Variaveis.fSP.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fTEnrolamento.NomeFeed)
+                        Variaveis.fTEnrolamento.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fTOleo.NomeFeed)
+                        Variaveis.fTOleo.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fVab.NomeFeed)
+                        Variaveis.fVab.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fValvulaPressao.NomeFeed)
+                        Variaveis.fValvulaPressao.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fVan.NomeFeed)
+                        Variaveis.fVan.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fVbc.NomeFeed)
+                        Variaveis.fVbc.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fVbn.NomeFeed)
+                        Variaveis.fVbn.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fVca.NomeFeed)
+                        Variaveis.fVca.IndiceFeed = Fdd[kk].id;
+                    if (Fdd[kk].Nome == Variaveis.fVcn.NomeFeed)
+                        Variaveis.fVcn.IndiceFeed = Fdd[kk].id;
                 }
             }
             catch (Exception Erro)
@@ -450,7 +488,12 @@ namespace InterfaceDesktop
                 MessageBox.Show(Erro.Message);
             }
             // Verifica se alguma variável não está associada a um índice
-            if ((Global.striP == "") | (Global.striQ == "") | (Global.striS == "") | (Global.striVa == "") | (Global.striVb == "") | (Global.striVc == "") | (Global.striIa == "") | (Global.striIb == "") | (Global.striIc == "") | (Global.striNo == "") | (Global.striTo == "") | (Global.striTe == ""))
+            bool VarSemIndice = false;
+            FeedServidor[] strTodas = Variaveis.strVariaveis();
+            for (int jj = 0; jj < strTodas.Length; jj++)
+                if (strTodas[jj].IndiceFeed == "")
+                    VarSemIndice = true;
+            if (VarSemIndice)
             {
                 Global.ConfigObriatoria = true;
                 while (!Global.restart)
@@ -476,7 +519,7 @@ namespace InterfaceDesktop
             {
                 using (StreamReader strRead = new StreamReader(strArquivoCSV))
                 {
-                    string[] Todas = Global.strTodas();
+                    FeedServidor [] Todas =Variaveis.strVariaveis();
                     int[] iCampos = new int[Todas.Length];
                     bool cabecalho = true;
                     if (!strRead.EndOfStream)
@@ -493,7 +536,7 @@ namespace InterfaceDesktop
                                 {
                                     for (int jj = 0; jj < Todas.Length; jj++)
                                     {
-                                        if (Campos[mm] == Todas[jj])
+                                        if (Campos[mm] == Todas[jj].NomeFeed)
                                         {
                                             iCampos[jj] = mm; // Procura pelo campo e retorna o índice
                                             break;
@@ -518,56 +561,6 @@ namespace InterfaceDesktop
             return Regs;
         }
 
-        private List<Feed> json2Feed(string Requisicao)
-        {
-            const string strListaRemover = "[{\":,}]";
-            // Requisição = [{campo:valor, campo:valor, ...}, {campo:valor, ...},...]
-            List<Feed> FDD = new List<Feed>();
-            string[] Linha = Requisicao.Split('}'); //Linha = {campo:valor, campo:valor, ...}
-            for (int jj = 0; jj < Linha.Length; jj++)
-            {
-                string[] Campo = Linha[jj].Split(','); // Campo = campo:valor
-                // Adicionar elementos ao feed
-                Feed Fdd = new Feed();
-                int Verificador = 0;
-                for (int kk = 0; kk < Campo.Length; kk++)
-                {
-                    string[] Elemento = Campo[kk].Split(':'); // Elemento = campo ou valor
-                    if (Elemento.Length == 2)
-                    {
-                        {
-                            if (Elemento[0].Contains("\"id\""))
-                            {
-                                for (int mm = 0; mm < strListaRemover.Length; mm++)  //remover caracteres especiais
-                                {
-                                    Elemento[1] = Elemento[1].Replace(strListaRemover.Substring(mm, 1), "");
-                                }
-                                Fdd.id = Elemento[1];
-                                Verificador += 5;
-                            }
-                            if (Elemento[0].Contains("\"name\""))
-                            {
-                                for (int mm = 0; mm < strListaRemover.Length; mm++)  //remover caracteres especiais
-                                {
-                                    Elemento[1] = Elemento[1].Replace(strListaRemover.Substring(mm, 1), "");
-                                }
-                                Fdd.name = Elemento[1];
-                                Verificador += 7;
-                            }
-                        }
-                        if (Verificador == 5 + 7)
-                        {
-                            FDD.Add(Fdd);
-                            Verificador = 0;
-                            Fdd = new Feed();
-                            break;
-                        }
-                    }
-                }
-            }
-            return FDD;
-
-        }
 
         private void timerRelogio_Tick(object sender, EventArgs e)
         {
@@ -582,7 +575,7 @@ namespace InterfaceDesktop
         {
             bool Plotar = false;
             // Rotina para buscar novas informações no servidor e exibir na tela
-            string strTime = GetCSV(ComandosCSV.strComandoHorario, 0, 0, Global.striP).Replace("\"", "");
+            string strTime = GetCSV(ComandosCSV.strComandoHorario, 0, 0, Variaveis.fP.IndiceFeed).Replace("\"", "");
             DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
             if (strTime.Length > 1)
                 tUltimaAtualizacao = DTData2DateTime(strTime);
@@ -687,10 +680,10 @@ namespace InterfaceDesktop
         {
             try
             {
-                string strComando = Global.Servidor + Comando + ID +
+                string strComando = Servidor.Server + Comando + ID +
                     "&start=" + Inicio.ToString() +
                     "&end=" + Fim.ToString() +
-                    "&apikey=" + Global.APIKey + "&interval=1&timeformat=0";
+                    "&apikey=" + Servidor.APIKey + "&interval=1&timeformat=0";
                 WebClient Web = new WebClient();
                 strComando = Web.DownloadString(strComando);
                 // Verifica a APIKey
@@ -817,11 +810,12 @@ namespace InterfaceDesktop
 
         private void chkP_CheckedChanged(object sender, EventArgs e)
         {
-            string[] Todas = Global.strTodas();
+            FeedServidor[] Todas = Variaveis.strVariaveis();
             try
             {
                 CheckBox Sender = (CheckBox)sender;
-                chartTemperatura.Series[Todas[Convert.ToInt32(Sender.Tag)]].Enabled = Sender.Checked;
+                // Ajustar SENDER.TAG
+                chartTemperatura.Series[Todas[Convert.ToInt32(Sender.Tag)].NomeFeed].Enabled = Sender.Checked;
             }
             catch { }
             chkNo2.Checked = chkNo.Checked;

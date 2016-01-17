@@ -11,6 +11,25 @@ namespace InterfaceDesktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             CarregaConfig();
+
+            while (Servidor.Username == "")
+            {
+                // Criar um novo usuário
+                Global.tabPage1 = false;
+                // Carrega o formulario de configuração para criar um novo usuário
+                //frmConfig Config = new frmConfig();
+                //Config.ShowDialog();
+                Application.Run(new frmConfig());
+                Global.tabPage1 = true;
+                CarregaConfig();
+            }
+            while ((Servidor.APIKey == "")|(Servidor.Server==""))
+            {
+                // Carrega o formulário de configuração para configurar o servidor
+                Application.Run(new frmConfig());
+                CarregaConfig();
+            }
+
             //Application.Run(new frmLogin());
             Application.Run(new frmMain());
         }
@@ -51,6 +70,12 @@ namespace InterfaceDesktop
             Variaveis.fVbn.NomeFeed = Properties.Settings.Default.sVbn;
             Variaveis.fVca.NomeFeed = Properties.Settings.Default.sVca;
             Variaveis.fVcn.NomeFeed = Properties.Settings.Default.sVcn;
+
+            Servidor.APIKey = Properties.Settings.Default.APIKEY;
+            Servidor.Server = Properties.Settings.Default.Servidor;
+            Servidor.Username = Properties.Settings.Default.Usuario;
+            Servidor.Senha = Properties.Settings.Default.Senha;
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System; // tipos de variáveis utilizada
-using System.Windows.Forms; // Formulários
-using System.Data.SQLite; // Banco de dados SQLite
+using System.Collections.Generic; // Formulários
+using System.Net;
+using System.Windows.Forms;
 namespace InterfaceDesktop
 {
     public partial class frmConfig : Form
@@ -13,7 +14,42 @@ namespace InterfaceDesktop
         private void btnOK_Click(object sender, EventArgs e)
         {
             // Salva as configurações
-            //Properties.Settings.Default.sEP = 
+            Properties.Settings.Default.sEP = txtEP.Text;
+            Properties.Settings.Default.sEQ = txtEQ.Text;
+            Properties.Settings.Default.sES = txtES.Text;
+            Properties.Settings.Default.sFP = txtFatorPotencia.Text;
+            Properties.Settings.Default.sFreq = txtFreq.Text;
+            Properties.Settings.Default.sIa = txtIa.Text;
+            Properties.Settings.Default.sIb = txtIb.Text;
+            Properties.Settings.Default.sIc = txtIc.Text;
+            Properties.Settings.Default.sIMa = txtIMa.Text;
+            Properties.Settings.Default.sIMb = txtIMb.Text;
+            Properties.Settings.Default.sIMc = txtIMc.Text;
+            Properties.Settings.Default.sIPa = txtIPa.Text;
+            Properties.Settings.Default.sIPb = txtIPb.Text;
+            Properties.Settings.Default.sIPc = txtIPc.Text;
+            Properties.Settings.Default.sNivelOleo = txtNo.Text;
+            Properties.Settings.Default.sP = txtP.Text;
+            Properties.Settings.Default.sPM = txtPM.Text;
+            Properties.Settings.Default.sPP = txtPP.Text;
+            Properties.Settings.Default.sQ = txtQ.Text;
+            Properties.Settings.Default.sQM = txtQM.Text;
+            Properties.Settings.Default.sQP = txtQP.Text;
+            Properties.Settings.Default.sS = txtS.Text;
+            Properties.Settings.Default.sSM = txtSM.Text;
+            Properties.Settings.Default.sSP = txtSP.Text;
+            Properties.Settings.Default.sTEntolamento = txtTe.Text;
+            Properties.Settings.Default.sTOleo = txtTo.Text;
+            Properties.Settings.Default.sVab = txtVab.Text;
+            Properties.Settings.Default.sValvulaPressao = txtValvulaPressao.Text;
+            Properties.Settings.Default.sVan = txtVan.Text;
+            Properties.Settings.Default.sVbc = txtVbc.Text;
+            Properties.Settings.Default.sVbn = txtVbn.Text;
+            Properties.Settings.Default.sVca = txtVca.Text;
+            Properties.Settings.Default.sVcn = txtVcn.Text;
+            Properties.Settings.Default.APIKEY = txtAPIKEY.Text;
+            Properties.Settings.Default.Servidor = txtServidor.Text;
+
             Properties.Settings.Default.Save();
             Global.restart = true;
             this.Close();
@@ -39,7 +75,7 @@ namespace InterfaceDesktop
         {
             bool erro = false;
             // Verifica a senha (ou se existe algum)
-            if ((Uteis.getMD5(txtSenhaAntiga.Text) == Global.Senha) | !Global.tabPage1)
+            if ((Uteis.getMD5(txtSenhaAntiga.Text) == Servidor.Senha) | Servidor.Senha == "")
             {
                 // Verifica o comprimento do nome de usuário
                 if (txtNome.Text.Length >= 4)
@@ -58,67 +94,31 @@ namespace InterfaceDesktop
                         if (!erro)
                         {
                             // Gravar informações no banco de dados
-                            if (txtNome.Text == Global.Username)//Se for troca de senha
+
+                            if ((Servidor.Senha == Uteis.getMD5(txtSenhaAntiga.Text)) | (Servidor.Senha == ""))
                             {
-                                if (Global.Senha == Uteis.getMD5(txtSenhaAntiga.Text))
+                                // Adicionar novo registro
+                                // Comando para trocar senha (adicionar um novo usuário com o mesmo nome)
+                                // Verifica se as senhas são idênticas
+                                if (txtSenha.Text == txtSenha2.Text)
                                 {
-                                    // Adicionar novo registro
-                                    // Comando para trocar senha (adicionar um novo usuário com o mesmo nome)
-                                    // Verifica se as senhas são idênticas
-                                    if (txtSenha.Text == txtSenha2.Text)
-                                    {
-                                        Global.Senha = Uteis.getMD5(txtSenha.Text);
-                                        Global.Username = txtNome.Text;
-                                        ComandoSQL.INSERT("INSERT INTO " + Global.TabelaUsers + " (Username, Senha) VALUES ('" + txtNome.Text + "' ,'" + Global.Senha + "');");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("As senhas não são idênticas");
-                                    }
+                                    Servidor.Senha = Uteis.getMD5(txtSenha.Text);
+                                    Servidor.Username = txtNome.Text;
+                                    Properties.Settings.Default.Usuario = txtNome.Text;
+                                    Properties.Settings.Default.Senha = Servidor.Senha;
+                                    Properties.Settings.Default.Save();
+                                    this.Close();
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Senha incorreta");
+                                    MessageBox.Show("As senhas não são idênticas");
                                 }
                             }
                             else
                             {
-                                bool Existe = false;
-                                // Verifica se existe o usuário
-                                string strComando = "SELECT * FROM " + Global.TabelaUsers +
-                                    " WHERE Username ='" + txtNome.Text + "' LIMIT 0,1";
-                                using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
-                                {
-                                    Con.Open();
-                                    using (SQLiteCommand Comando = new SQLiteCommand(strComando, Con))
-                                    {
-                                        SQLiteDataReader Leitor = Comando.ExecuteReader();
-                                        if (Leitor.Read())
-                                            Existe = true;
-                                    }
-                                }
-                                if (Existe)
-                                {
-                                    MessageBox.Show("Não é possível modificar a senha de outro usuário");
-                                }
-                                else
-                                {
-                                    // Criar um novo usuário
-                                    // Adicionar novo registro
-                                    // Comando para trocar senha (adicionar um novo usuário com o mesmo nome)
-                                    if (txtSenha.Text == txtSenha2.Text)
-                                    {
-                                        ComandoSQL.INSERT("INSERT INTO " + Global.TabelaUsers + " (Username, Senha) VALUES ('" + txtNome.Text + "' ,'" + Uteis.getMD5(txtSenha.Text) + "');");
-                                        Global.tabPage1 = true;
-                                        this.Close();
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("As senhas não são idênticas");
-                                    }
-
-                                }
+                                MessageBox.Show("Senha incorreta");
                             }
+
                         }
                         else
                         {
@@ -143,7 +143,7 @@ namespace InterfaceDesktop
 
         private void frmConfig_Load(object sender, EventArgs e)
         {
-            txtNome.Text = Global.Username;
+            txtNome.Text = Servidor.Username;
             if (!Global.tabPage1)
             {
                 // Rearanja os controles, ocultando as configurações não relevantes 
@@ -159,62 +159,79 @@ namespace InterfaceDesktop
                 btnCancelar.Enabled = false;
                 txtNome.Select();
                 this.ControlBox = false;
+                btnAddUser.Text = "Criar usuário";
                 AcceptButton = btnAddUser;
             }
             else
             {
-                // Nome de usuário igual ao do usuário atual para troca de senha
-                //txtNome.Text = Global.Username;
-                // Carrega as configurações
+                this.Top = 0;
+                this.Height = Screen.PrimaryScreen.WorkingArea.Height - 10;
+                // Carrega as configurações para o formulário
+                //txtAPIKEY.Text = Servidor.APIKey;
+
+                txtEP.Text = Properties.Settings.Default.sEP;
+                txtEQ.Text = Properties.Settings.Default.sEQ;
+                txtES.Text = Properties.Settings.Default.sES;
+                txtFatorPotencia.Text = Properties.Settings.Default.sFP;
+                txtFreq.Text = Properties.Settings.Default.sFreq;
+                txtIa.Text = Properties.Settings.Default.sIa;
+                txtIb.Text = Properties.Settings.Default.sIb;
+                txtIc.Text = Properties.Settings.Default.sIc;
+                txtIMa.Text = Properties.Settings.Default.sIMa;
+                txtIMb.Text = Properties.Settings.Default.sIMb;
+                txtIMc.Text = Properties.Settings.Default.sIMc;
+                txtIPa.Text = Properties.Settings.Default.sIPa;
+                txtIPb.Text = Properties.Settings.Default.sIPb;
+                txtIPc.Text = Properties.Settings.Default.sIPc;
+                txtNo.Text = Properties.Settings.Default.sNivelOleo;
+                txtP.Text = Properties.Settings.Default.sP;
+                txtPM.Text = Properties.Settings.Default.sPM;
+                txtPP.Text = Properties.Settings.Default.sPP;
+                txtQ.Text = Properties.Settings.Default.sQ;
+                txtQM.Text = Properties.Settings.Default.sQM;
+                txtQP.Text = Properties.Settings.Default.sQP;
+                txtS.Text = Properties.Settings.Default.sS;
+                txtSM.Text = Properties.Settings.Default.sSM;
+                txtSP.Text = Properties.Settings.Default.sSP;
+                txtTe.Text = Properties.Settings.Default.sTEntolamento;
+                txtTo.Text = Properties.Settings.Default.sTOleo;
+                txtVab.Text = Properties.Settings.Default.sVab;
+                txtValvulaPressao.Text = Properties.Settings.Default.sValvulaPressao;
+                txtVan.Text = Properties.Settings.Default.sVan;
+                txtVbc.Text = Properties.Settings.Default.sVbc;
+                txtVbn.Text = Properties.Settings.Default.sVbn;
+                txtVca.Text = Properties.Settings.Default.sVca;
+                txtVcn.Text = Properties.Settings.Default.sVcn;
                 txtAPIKEY.Text = Properties.Settings.Default.APIKEY;
+                txtServidor.Text = Properties.Settings.Default.Servidor;
 
-                //string sqlComando = "SELECT * FROM " + Global.TabelaConfig + " ORDER BY ID DESC LIMIT 0,1";
-                //using (SQLiteConnection Con = new SQLiteConnection(Global.Conexao))
-                //{
-                    //Con.Open();
-                    //using (SQLiteCommand Comando = new SQLiteCommand(sqlComando, Con))
-                    //{
-                        //SQLiteDataReader Leitor = Comando.ExecuteReader();
-                        //if (Leitor.Read())
-                        //{
-                        //    txtServidor.Text = Convert.ToString(Leitor["Servidor"]);
-                        //    txtAPIKEY.Text = Convert.ToString(Leitor["APIKEY"]);
-                        //    txtP.Text = Convert.ToString(Leitor["Node_P"]);
-                        //    txtQ.Text = Convert.ToString(Leitor["Node_Q"]);
-                        //    txtS.Text = Convert.ToString(Leitor["Node_S"]);
-                        //    txtVa.Text = Convert.ToString(Leitor["Node_Va"]);
-                        //    txtVb.Text = Convert.ToString(Leitor["Node_Vb"]);
-                        //    txtVc.Text = Convert.ToString(Leitor["Node_Vc"]);
-                        //    txtIa.Text = Convert.ToString(Leitor["Node_Ia"]);
-                        //    txtIb.Text = Convert.ToString(Leitor["Node_Ib"]);
-                        //    txtIc.Text = Convert.ToString(Leitor["Node_Ic"]);
-                        //    txtNo.Text = Convert.ToString(Leitor["Node_No"]);
-                        //    txtTo.Text = Convert.ToString(Leitor["Node_To"]);
-                        //    txtTe.Text = Convert.ToString(Leitor["Node_Te"]);
-                        //}
-                        //else
-                        //{
-                        //    //configurações padrão
-                        //    txtAPIKEY.Text = "";
-                        //    txtServidor.Text = "http://";
-                        //    txtP.Text = "P";
-                        //    txtQ.Text = "Q";
-                        //    txtS.Text = "S";
-                        //    txtVa.Text = "Va";
-                        //    txtVb.Text = "Vb";
-                        //    txtVc.Text = "Vc";
-                        //    txtIa.Text = "Ia";
-                        //    txtIb.Text = "Ib";
-                        //    txtIc.Text = "Ic";
-                        //    txtNo.Text = "No";
-                        //    txtTo.Text = "To";
-                        //    txtTe.Text = "Te";
-                        //    btnCancelar.Enabled = false;
 
-                        //}
-                    //}
-                //}
                 this.Show();
+            }
+        }
+
+        private void btnServidor_Click(object sender, EventArgs e)
+        {
+            // Carrega a lista de variáveis disponível no servidor web
+            if ((txtServidor.Text != "") & (txtAPIKEY.Text != ""))
+            {
+                WebClient ServidorWeb = new WebClient();
+                string Requisicao = txtServidor.Text + ComandosCSV.strComandoFeedList + txtAPIKEY.Text;
+                Requisicao = ServidorWeb.DownloadString(Requisicao);
+                List<Feed> Fdd = json.json2Feed(Requisicao);
+                string[] strVariaveis = new string[Fdd.Count];
+                for (int kk = 0; kk < Fdd.Count; kk++)
+                {
+                    strVariaveis[kk] = Fdd[kk].Nome;
+                }
+                for (int kk = 0; kk < tabPage1.Controls.Count; kk++)
+                {
+                    if (tabPage1.Controls[kk] is ComboBox)
+                    {
+                        ((ComboBox)tabPage1.Controls[kk]).Items.Clear();
+                        ((ComboBox)tabPage1.Controls[kk]).Items.AddRange(strVariaveis);
+                    }
+                }
             }
         }
     }

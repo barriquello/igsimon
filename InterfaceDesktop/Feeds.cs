@@ -25,6 +25,11 @@ namespace InterfaceDesktop
     class RegistroDB
     {
         public UInt32 Horario { get; set; }
-        public float[] P = new float[Global.strCategoria.Length];
+        public float[] P = new float[Variaveis.NumVars];
+    }
+    class Feed
+    {
+        public string Nome;
+        public string id;
     }
 }

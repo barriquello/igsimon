@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("InterfaceDesktop")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Abel")]
+[assembly: AssemblyCompany("UFSM")]
 [assembly: AssemblyProduct("InterfaceDesktop")]
 [assembly: AssemblyCopyright("Copyright © Abel 2016")]
 [assembly: AssemblyTrademark("")]

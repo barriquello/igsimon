@@ -236,9 +236,6 @@ namespace InterfaceDesktop
             {
                 chartTemperatura.Series[jj].XValueType = TipoJanela;
             }
-            chartTemperatura.Series[Variaveis.fNivelOleo.NomeFeed].Enabled = chkNo.Checked;
-            chartTemperatura.Series[Variaveis.fTOleo.NomeFeed].Enabled = chkTo.Checked;
-            chartTemperatura.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled = chkTe.Checked;
 
             ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
@@ -646,6 +643,8 @@ namespace InterfaceDesktop
             // relóginhos
             aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
             aTo.Value(registroDB.P[Variaveis.fTOleo.indice]); aTe.Value(registroDB.P[Variaveis.fTEnrolamento.indice]);
+            lblNo.Text = string.Format(Variaveis.fNivelOleo.formato, registroDB.P[Variaveis.fNivelOleo.indice]);
+//            picStatus.Image=((registroDB.P[Variaveis.fNivelOleo.indice]>Global.NOleoAlto)||(registroDB.P[Variaveis.fNivelOleo.indice]<Global.NOleoBaixo))?Properties.Resources.Vermelho:Properties.Resources.Verde;
             tv1.SuspendLayout();
             if (tv1.Nodes.Count == 0)
             {
@@ -815,7 +814,8 @@ namespace InterfaceDesktop
             {
                 if (No.Nodes.Count > 0)
                     MarcarTodas(No.Nodes);
-                No.Checked = true;
+                else
+                    No.Checked = true;
             }
         }
 
@@ -1139,6 +1139,7 @@ namespace InterfaceDesktop
             try
             {
                 chartTemperatura.Series[e.Node.Tag.ToString()].Enabled = e.Node.Checked;
+                ReposicionaChartAreas();
             }
             catch { }
         }

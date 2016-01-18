@@ -34,8 +34,6 @@
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
             this.tmrGraficos = new System.Windows.Forms.Timer(this.components);
-            this.chkTe = new System.Windows.Forms.CheckBox();
-            this.chkTo = new System.Windows.Forms.CheckBox();
             this.lblTe = new System.Windows.Forms.Label();
             this.lblTo = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
@@ -50,7 +48,8 @@
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.chkNo = new System.Windows.Forms.CheckBox();
+            this.aTe = new InterfaceDesktop.Analogico();
+            this.aTo = new InterfaceDesktop.Analogico();
             this.lblNo = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -62,8 +61,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.tv1 = new System.Windows.Forms.TreeView();
-            this.aTe = new InterfaceDesktop.Analogico();
-            this.aTo = new InterfaceDesktop.Analogico();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -99,32 +96,6 @@
             // tmrGraficos
             // 
             this.tmrGraficos.Tick += new System.EventHandler(this.tmrGraficos_Tick);
-            // 
-            // chkTe
-            // 
-            this.chkTe.AutoSize = true;
-            this.chkTe.Checked = true;
-            this.chkTe.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTe.Location = new System.Drawing.Point(587, 36);
-            this.chkTe.Name = "chkTe";
-            this.chkTe.Size = new System.Drawing.Size(15, 14);
-            this.chkTe.TabIndex = 3;
-            this.chkTe.Tag = "11";
-            this.chkTe.UseVisualStyleBackColor = true;
-            this.chkTe.CheckedChanged += new System.EventHandler(this.chkP_CheckedChanged);
-            // 
-            // chkTo
-            // 
-            this.chkTo.AutoSize = true;
-            this.chkTo.Checked = true;
-            this.chkTo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTo.Location = new System.Drawing.Point(269, 38);
-            this.chkTo.Name = "chkTo";
-            this.chkTo.Size = new System.Drawing.Size(15, 14);
-            this.chkTo.TabIndex = 3;
-            this.chkTo.Tag = "10";
-            this.chkTo.UseVisualStyleBackColor = true;
-            this.chkTo.CheckedChanged += new System.EventHandler(this.chkP_CheckedChanged);
             // 
             // lblTe
             // 
@@ -251,11 +222,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox6.Controls.Add(this.aTe);
             this.groupBox6.Controls.Add(this.aTo);
-            this.groupBox6.Controls.Add(this.chkTe);
-            this.groupBox6.Controls.Add(this.chkNo);
             this.groupBox6.Controls.Add(this.label23);
             this.groupBox6.Controls.Add(this.lblTe);
-            this.groupBox6.Controls.Add(this.chkTo);
             this.groupBox6.Controls.Add(this.lblNo);
             this.groupBox6.Controls.Add(this.label22);
             this.groupBox6.Controls.Add(this.label24);
@@ -269,18 +237,27 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Nível / Temperatura";
             // 
-            // chkNo
+            // aTe
             // 
-            this.chkNo.AutoSize = true;
-            this.chkNo.Checked = true;
-            this.chkNo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNo.Location = new System.Drawing.Point(269, 18);
-            this.chkNo.Name = "chkNo";
-            this.chkNo.Size = new System.Drawing.Size(15, 14);
-            this.chkNo.TabIndex = 7;
-            this.chkNo.Tag = "9";
-            this.chkNo.UseVisualStyleBackColor = true;
-            this.chkNo.CheckedChanged += new System.EventHandler(this.chkP_CheckedChanged);
+            this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
+            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTe.Location = new System.Drawing.Point(382, 58);
+            this.aTe.Margin = new System.Windows.Forms.Padding(5);
+            this.aTe.Name = "aTe";
+            this.aTe.Size = new System.Drawing.Size(214, 107);
+            this.aTe.TabIndex = 8;
+            this.aTe.TabStop = false;
+            // 
+            // aTo
+            // 
+            this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
+            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTo.Location = new System.Drawing.Point(63, 58);
+            this.aTo.Margin = new System.Windows.Forms.Padding(4);
+            this.aTo.Name = "aTo";
+            this.aTo.Size = new System.Drawing.Size(214, 107);
+            this.aTo.TabIndex = 8;
+            this.aTo.TabStop = false;
             // 
             // lblNo
             // 
@@ -394,28 +371,6 @@
             this.tv1.TabIndex = 9;
             this.tv1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tv1_AfterCheck);
             // 
-            // aTe
-            // 
-            this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
-            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTe.Location = new System.Drawing.Point(382, 58);
-            this.aTe.Margin = new System.Windows.Forms.Padding(5);
-            this.aTe.Name = "aTe";
-            this.aTe.Size = new System.Drawing.Size(214, 107);
-            this.aTe.TabIndex = 8;
-            this.aTe.TabStop = false;
-            // 
-            // aTo
-            // 
-            this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
-            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTo.Location = new System.Drawing.Point(63, 58);
-            this.aTo.Margin = new System.Windows.Forms.Padding(4);
-            this.aTo.Name = "aTo";
-            this.aTo.Size = new System.Drawing.Size(214, 107);
-            this.aTo.TabIndex = 8;
-            this.aTo.TabStop = false;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -455,8 +410,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Timer tmrRelogio;
         private System.Windows.Forms.Timer tmrGraficos;
-        private System.Windows.Forms.CheckBox chkTe;
-        private System.Windows.Forms.CheckBox chkTo;
         private System.Windows.Forms.Label lblTe;
         private System.Windows.Forms.Label lblTo;
         private System.Windows.Forms.Label label22;
@@ -469,7 +422,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblSpring;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.CheckBox chkNo;
         private System.Windows.Forms.Label lblNo;
         private System.Windows.Forms.Label label24;
         private InterfaceDesktop.Analogico aTo;

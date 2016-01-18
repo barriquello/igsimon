@@ -110,6 +110,7 @@
             // sP
             // 
             this.sP.Location = new System.Drawing.Point(283, 13);
+            this.sP.Maximum = 256;
             this.sP.Name = "sP";
             this.sP.Size = new System.Drawing.Size(209, 16);
             this.sP.TabIndex = 3;

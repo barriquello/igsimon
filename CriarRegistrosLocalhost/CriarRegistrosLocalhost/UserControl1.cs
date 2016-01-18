@@ -38,6 +38,7 @@ namespace CriarRegistrosLocalhost
         {
             for (int nn = 99; nn >=0; nn--)
                 textBox1.Items.Add(nn);
+            textBox1.SelectedIndex = textBox1.Items.Count - 1;
         }
     }
 }

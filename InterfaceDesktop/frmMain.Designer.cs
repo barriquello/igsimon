@@ -48,9 +48,11 @@
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.picValvula = new System.Windows.Forms.PictureBox();
             this.aTe = new InterfaceDesktop.Analogico();
             this.aTo = new InterfaceDesktop.Analogico();
             this.lblNo = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tooConfig = new System.Windows.Forms.ToolStripButton();
@@ -66,6 +68,7 @@
             this.statusStrip1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picValvula)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -129,7 +132,8 @@
             // 
             // picStatus
             // 
-            this.picStatus.Location = new System.Drawing.Point(230, 18);
+            this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
+            this.picStatus.Location = new System.Drawing.Point(158, 18);
             this.picStatus.Name = "picStatus";
             this.picStatus.Size = new System.Drawing.Size(16, 16);
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -220,15 +224,17 @@
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.picValvula);
+            this.groupBox6.Controls.Add(this.picStatus);
             this.groupBox6.Controls.Add(this.aTe);
             this.groupBox6.Controls.Add(this.aTo);
             this.groupBox6.Controls.Add(this.label23);
             this.groupBox6.Controls.Add(this.lblTe);
             this.groupBox6.Controls.Add(this.lblNo);
             this.groupBox6.Controls.Add(this.label22);
+            this.groupBox6.Controls.Add(this.label1);
             this.groupBox6.Controls.Add(this.label24);
             this.groupBox6.Controls.Add(this.lblTo);
-            this.groupBox6.Controls.Add(this.picStatus);
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(308, 12);
             this.groupBox6.Name = "groupBox6";
@@ -236,6 +242,16 @@
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Nível / Temperatura";
+            // 
+            // picValvula
+            // 
+            this.picValvula.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
+            this.picValvula.Location = new System.Drawing.Point(477, 18);
+            this.picValvula.Name = "picValvula";
+            this.picValvula.Size = new System.Drawing.Size(16, 16);
+            this.picValvula.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picValvula.TabIndex = 4;
+            this.picValvula.TabStop = false;
             // 
             // aTe
             // 
@@ -263,11 +279,21 @@
             // 
             this.lblNo.AutoSize = true;
             this.lblNo.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblNo.Location = new System.Drawing.Point(154, 18);
+            this.lblNo.Location = new System.Drawing.Point(180, 18);
             this.lblNo.Name = "lblNo";
             this.lblNo.Size = new System.Drawing.Size(25, 16);
             this.lblNo.TabIndex = 5;
             this.lblNo.Text = "No";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.label1.Location = new System.Drawing.Point(326, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(149, 16);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Válvula de segurança";
             // 
             // label24
             // 
@@ -295,7 +321,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(12, 12);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(282, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(313, 39);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "Ações";
             // 
@@ -397,6 +423,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picValvula)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -437,5 +464,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.TreeView tv1;
+        private System.Windows.Forms.PictureBox picValvula;
+        private System.Windows.Forms.Label label1;
     }
 }

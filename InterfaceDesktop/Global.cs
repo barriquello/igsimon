@@ -74,7 +74,7 @@ namespace InterfaceDesktop
         #endregion
         #region Informações uteis
         /// <summary>Separador de campo do CSV</summary>
-        public const char SeparadorCSV = ',';// '\t';
+        public const char SeparadorCSV = '\t';//',';// '\t';
         /// <summary>Linha de cabeçalho no CSV</summary>
         public const bool CabecalhoCSV = true;
         /// <summary>Nível alto</summary>

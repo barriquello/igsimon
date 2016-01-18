@@ -8,6 +8,7 @@ namespace CriarRegistrosLocalhost
 
     public partial class Form1 : Form
     {
+        private static byte Contador;
         public Form1()
         {
             InitializeComponent();
@@ -18,9 +19,10 @@ namespace CriarRegistrosLocalhost
         {
             return (Int32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int contador = sP.Value;
+            Contador = (byte)sP.Value;
             // ponto ao invés de virgula
             System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;//.GetCultureInfo("en_US");
             WebClient Servidor = new WebClient();
@@ -28,17 +30,7 @@ namespace CriarRegistrosLocalhost
             //PM-210
             DateTime Horario = DateTime.Now;
             string URL1 = string.Format("http://localhost/monitor/set.json?monitorid=10&time={0}&data=0,0,{1},{2},{3},{4},{5},{6},", Time2Unix(Horario), Horario.Year, Horario.Month, Horario.Day, Horario.Hour, Horario.Minute, Horario.Second);//20,20,20,20&apikey=72d5d09d5ed08c6743d2c71006f3c9bd";
-            URL1 += string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},"+
-                "{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},"+
-                "{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},"+
-                "{30},{31},{32}",
-                // P, S, Q
-                dec(uc00.text(),4), dec(uc01.text(),4),dec( uc02.text(),4), 
-                
-                //uc03.text(), uc04.text(), uc05.text(), uc06.text(), uc07.text(), uc08.text(), uc09.text(),
-                uc10.text(), uc11.text(), uc12.text(), uc13.text(), uc14.text(), uc15.text(), uc16.text(), uc17.text(), uc18.text(), uc19.text(),
-                uc20.text(), uc21.text(), uc22.text(), uc23.text(), uc24.text(), uc25.text(), uc26.text(), uc27.text(), uc28.text(), uc29.text(),
-                uc30.text(), uc31.text(), uc32.text());
+            URL1 += Dados();
             // Ajustar o número de bits de acordo com o decodificador.
 
             URL1 += "&apikey=" + txtAPIKEY.Text;
@@ -49,22 +41,49 @@ namespace CriarRegistrosLocalhost
             }
             catch (Exception Erro) { textBox1.Text = "Erro:\n" + Erro.Message; }
             timer1.Interval = Convert.ToInt32(textBox2.Text);
-
-            contador++;
-            if (contador > sP.Maximum)
-                contador = sP.Minimum;
-            sP.Value = contador;
+            sP.Value = Contador;
         }
 
-        private string dec(string p1, int p2)
+        private string Dados()
         {
-            string retorno = string.Format("{0}", p1);
-            for (int jj = 0; jj < p2; jj++)
+            Contador++;
+            for (int mmm = 0; mmm < Controls.Count; mmm++)
             {
-
-                retorno += "0,";
+                if (Controls[mmm] is UserControl1)
+                {
+                    ((UserControl1)Controls[mmm]).text(((byte)(Contador + mmm)).ToString());
+                }
             }
-            return retorno;
+
+
+            return string.Format("{0},0,0,0,{1},0,0,0,{2},0,0,0,0,{3},0,{4},0,{5},0,{6},0,{7},0,{8},0,{9},0," +
+                "{10},0,{11},0,{12},0,{13},0,{14},0,{15},0,{16},0,{17},0,{18},0,{19},0," +
+                "{20},0,{21},0,{22},0,{23},0,{24},0,{25},0,{26},0,{27},0,{28},{29}," +
+                "{30},{31},{32}",
+                // EP, ES, EQ int32
+                uc00.text(), uc01.text(), uc02.text(),
+                // P S Q int16
+                uc03.text(), uc04.text(), uc05.text(),
+                // FP 16bits, escala 0,0001
+                uc06.text(),
+                // Freq, 16bits, escala 0,01
+                uc07.text(),
+                // PM, SM, QM, 16bits
+                uc08.text(), uc09.text(), uc10.text(),
+                // PP QP SP, 16bits
+                uc11.text(), uc12.text(), uc13.text(),
+                // Ia, Ib, Ic, 16bits
+                uc14.text(), uc15.text(), uc16.text(),
+                // IMa IMb IMc, 16 bits
+                uc17.text(), uc18.text(), uc19.text(),
+                // IPa IPb IPc, 16bits
+                uc20.text(), uc21.text(), uc22.text(),
+                // Vab, Vbc, Vac, 16 bits
+                uc23.text(), uc24.text(), uc25.text(),
+                // Van Vbn Vcn, 16bits
+                uc26.text(), uc27.text(), uc28.text(),
+                // temperaturas, nível, válvula (não necessáriamente nessa ordem), 8bits
+                uc29.text(), uc30.text(), uc31.text(), uc32.text());
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -118,17 +137,52 @@ namespace CriarRegistrosLocalhost
 
         private void btnGerar_Click(object sender, EventArgs e)
         {
+            Contador = (byte)sP.Value;
+            // ponto ao invés de virgula
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;//.GetCultureInfo("en_US");
+            WebClient Servidor = new WebClient();
+            int milisegundos = Convert.ToInt32(textBox2.Text);
+            //URL1 = "http://localhost/input/post.json?node=1&json={";
+            //PM-210
+            DateTime Horario = dtInicio.Value; // DateTime.Now;
+            SuspendLayout();
+            do
+            {
+                Text = Horario.ToString();
+                string URL1 = string.Format(
+                    "http://localhost/monitor/set.json?monitorid=10&time={0}&data=0,0,{1},{2},{3},{4},{5},{6},",
+                    Time2Unix(Horario),
+                    Horario.Year, Horario.Month, Horario.Day,
+                    Horario.Hour, Horario.Minute, Horario.Second);
+                URL1 += Dados();
+                // Ajustar o número de bits de acordo com o decodificador.
 
+                URL1 += "&apikey=" + txtAPIKEY.Text;
+                try
+                {
+                    textBox1.Text = Encoding.UTF8.GetString(
+                    Servidor.DownloadData(URL1));
+                }
+                catch (Exception Erro) { textBox1.Text = "Erro:\n" + Erro.Message; }
+                Horario = Horario.AddMilliseconds(milisegundos);
+                if ((Contador&0x1F)==0x1F)
+                    Application.DoEvents();
+            } while (Horario < DateTime.Now);
+            ResumeLayout();
+            timer1.Interval = Convert.ToInt32(textBox2.Text);
+            sP.Value = Contador;
         }
+
+     
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            Environment.Exit(0);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            timer1_Tick(sender, e);
         }
     }
 }

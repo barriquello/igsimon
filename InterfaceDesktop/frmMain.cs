@@ -42,16 +42,12 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas.Add("T");
             chartTemperatura.ChartAreas.Add("X").Visible = false;
             // Adiciona legendas
-            for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
-            {
-                // por consequência do chartTemperatura.Legends.clear(), jj será o índice da nova legenda
-                chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[jj].Name).LegendItemOrder = LegendItemOrder.Auto;
-                chartTemperatura.Legends[jj].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
-                chartTemperatura.Legends[jj].LegendStyle = LegendStyle.Column; // legendas em uma coluna
-            }
-
             for (int kk = 0; kk < chartTemperatura.ChartAreas.Count; kk++)
             {
+                // por consequência do chartTemperatura.Legends.clear(), jj será o índice da nova legenda
+                chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[kk].Name).LegendItemOrder = LegendItemOrder.Auto;
+                chartTemperatura.Legends[kk].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
+                chartTemperatura.Legends[kk].LegendStyle = LegendStyle.Column; // legendas em uma coluna
                 // Habilita os cursores
                 chartTemperatura.ChartAreas[kk].CursorX.IsUserEnabled = true;
                 chartTemperatura.ChartAreas[kk].CursorX.LineWidth = 2;
@@ -659,7 +655,7 @@ namespace InterfaceDesktop
         private void AtualizaLabels(RegistroDB registroDB)
         {
             // relóginhos
-            aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
+            //aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
             aTo.Value(registroDB.P[Variaveis.fTOleo.indice]); aTe.Value(registroDB.P[Variaveis.fTEnrolamento.indice]);
             lblNo.Text = string.Format(Variaveis.fNivelOleo.formato, registroDB.P[Variaveis.fNivelOleo.indice]);
            
@@ -724,26 +720,26 @@ namespace InterfaceDesktop
                             tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes.Add(Variaveis.fIMb.NodeTv1, FormataTexto(Variaveis.fIMb, registroDB)).Tag = Variaveis.fIMb.NomeFeed;
                             tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes.Add(Variaveis.fIMc.NodeTv1, FormataTexto(Variaveis.fIMc, registroDB)).Tag = Variaveis.fIMc.NomeFeed;
                         }
-                        tv1.Nodes["ve"].Nodes["vd"].Nodes.Add("p", "Potência");
+                        tv1.Nodes["ve"].Nodes["vd"].Nodes.Add("p2", "Potência");
                         {
-                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes.Add(Variaveis.fPM.NodeTv1, FormataTexto(Variaveis.fPM, registroDB)).Tag = Variaveis.fPM.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes.Add(Variaveis.fQM.NodeTv1, FormataTexto(Variaveis.fQM, registroDB)).Tag = Variaveis.fQM.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes.Add(Variaveis.fSM.NodeTv1, FormataTexto(Variaveis.fSM, registroDB)).Tag = Variaveis.fSM.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p2"].Nodes.Add(Variaveis.fPM.NodeTv1, FormataTexto(Variaveis.fPM, registroDB)).Tag = Variaveis.fPM.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p2"].Nodes.Add(Variaveis.fQM.NodeTv1, FormataTexto(Variaveis.fQM, registroDB)).Tag = Variaveis.fQM.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vd"].Nodes["p2"].Nodes.Add(Variaveis.fSM.NodeTv1, FormataTexto(Variaveis.fSM, registroDB)).Tag = Variaveis.fSM.NomeFeed;
                         }
                     }
                     tv1.Nodes["ve"].Nodes.Add("vm", "Valores de Demanda Máxima");
                     {
-                        tv1.Nodes["ve"].Nodes["vm"].Nodes.Add("c", "Corrente Máxima");
+                        tv1.Nodes["ve"].Nodes["vm"].Nodes.Add("c2", "Corrente Máxima");
                         {
-                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes.Add(Variaveis.fIPa.NodeTv1, FormataTexto(Variaveis.fIPa, registroDB)).Tag = Variaveis.fIPa.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes.Add(Variaveis.fIPb.NodeTv1, FormataTexto(Variaveis.fIPb, registroDB)).Tag = Variaveis.fIPb.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes.Add(Variaveis.fIPc.NodeTv1, FormataTexto(Variaveis.fIPc, registroDB)).Tag = Variaveis.fIPc.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c2"].Nodes.Add(Variaveis.fIPa.NodeTv1, FormataTexto(Variaveis.fIPa, registroDB)).Tag = Variaveis.fIPa.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c2"].Nodes.Add(Variaveis.fIPb.NodeTv1, FormataTexto(Variaveis.fIPb, registroDB)).Tag = Variaveis.fIPb.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["c2"].Nodes.Add(Variaveis.fIPc.NodeTv1, FormataTexto(Variaveis.fIPc, registroDB)).Tag = Variaveis.fIPc.NomeFeed;
                         }
-                        tv1.Nodes["ve"].Nodes["vm"].Nodes.Add("p", "Potência");
+                        tv1.Nodes["ve"].Nodes["vm"].Nodes.Add("p3", "Potência");
                         {
-                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes.Add(Variaveis.fPP.NodeTv1, FormataTexto(Variaveis.fPP, registroDB)).Tag = Variaveis.fPP.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes.Add(Variaveis.fQP.NodeTv1, FormataTexto(Variaveis.fQP, registroDB)).Tag = Variaveis.fQP.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes.Add(Variaveis.fSP.NodeTv1, FormataTexto(Variaveis.fSP, registroDB)).Tag = Variaveis.fSP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p3"].Nodes.Add(Variaveis.fPP.NodeTv1, FormataTexto(Variaveis.fPP, registroDB)).Tag = Variaveis.fPP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p3"].Nodes.Add(Variaveis.fQP.NodeTv1, FormataTexto(Variaveis.fQP, registroDB)).Tag = Variaveis.fQP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["vm"].Nodes["p3"].Nodes.Add(Variaveis.fSP.NodeTv1, FormataTexto(Variaveis.fSP, registroDB)).Tag = Variaveis.fSP.NomeFeed;
                         }
                     }
                 }
@@ -758,7 +754,7 @@ namespace InterfaceDesktop
                     tv1.Nodes["ov"].Nodes.Add(Variaveis.fValvulaPressao.NodeTv1, ((registroDB.P[Variaveis.fValvulaPressao.indice] == 0) ? "Válvula em condições normais" : "Válvula acionada"));
 
                 }
-                MarcarTodas(tv1.Nodes);
+                MarcarTodas(tv1.Nodes, true);
                 tv1.ExpandAll();
                 tv1.SelectedNode = tv1.Nodes[0];
             }
@@ -804,21 +800,21 @@ namespace InterfaceDesktop
                                 tv1.Nodes["ve"].Nodes["vd"].Nodes["c"].Nodes[Variaveis.fIMc.NodeTv1].Text = FormataTexto(Variaveis.fIMc, registroDB);
                             }
                             {
-                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes[Variaveis.fPM.NodeTv1].Text = FormataTexto(Variaveis.fPM, registroDB);
-                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes[Variaveis.fQM.NodeTv1].Text = FormataTexto(Variaveis.fQM, registroDB);
-                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p"].Nodes[Variaveis.fSM.NodeTv1].Text = FormataTexto(Variaveis.fSM, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p2"].Nodes[Variaveis.fPM.NodeTv1].Text = FormataTexto(Variaveis.fPM, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p2"].Nodes[Variaveis.fQM.NodeTv1].Text = FormataTexto(Variaveis.fQM, registroDB);
+                                tv1.Nodes["ve"].Nodes["vd"].Nodes["p2"].Nodes[Variaveis.fSM.NodeTv1].Text = FormataTexto(Variaveis.fSM, registroDB);
                             }
                         }
                         {
                             {
-                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes[Variaveis.fIPa.NodeTv1].Text = FormataTexto(Variaveis.fIPa, registroDB);
-                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes[Variaveis.fIPb.NodeTv1].Text = FormataTexto(Variaveis.fIPb, registroDB);
-                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c"].Nodes[Variaveis.fIPc.NodeTv1].Text = FormataTexto(Variaveis.fIPc, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c2"].Nodes[Variaveis.fIPa.NodeTv1].Text = FormataTexto(Variaveis.fIPa, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c2"].Nodes[Variaveis.fIPb.NodeTv1].Text = FormataTexto(Variaveis.fIPb, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["c2"].Nodes[Variaveis.fIPc.NodeTv1].Text = FormataTexto(Variaveis.fIPc, registroDB);
                             }
                             {
-                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes[Variaveis.fPP.NodeTv1].Text = FormataTexto(Variaveis.fPP, registroDB);
-                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes[Variaveis.fQP.NodeTv1].Text = FormataTexto(Variaveis.fQP, registroDB);
-                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p"].Nodes[Variaveis.fSP.NodeTv1].Text = FormataTexto(Variaveis.fSP, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p3"].Nodes[Variaveis.fPP.NodeTv1].Text = FormataTexto(Variaveis.fPP, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p3"].Nodes[Variaveis.fQP.NodeTv1].Text = FormataTexto(Variaveis.fQP, registroDB);
+                                tv1.Nodes["ve"].Nodes["vm"].Nodes["p3"].Nodes[Variaveis.fSP.NodeTv1].Text = FormataTexto(Variaveis.fSP, registroDB);
                             }
                         }
                     }
@@ -837,14 +833,14 @@ namespace InterfaceDesktop
         }
 
         // Rotina recursiva para marcar todas as checkbox do treeview
-        private void MarcarTodas(TreeNodeCollection treeNodeCollection)
+        private void MarcarTodas(TreeNodeCollection treeNodeCollection, bool Marcar)
         {
             foreach (TreeNode No in treeNodeCollection)
             {
                 if (No.Nodes.Count > 0)
-                    MarcarTodas(No.Nodes);
+                    MarcarTodas(No.Nodes, Marcar);
                 else
-                    No.Checked = true;
+                    No.Checked = Marcar;
             }
         }
 
@@ -1167,10 +1163,36 @@ namespace InterfaceDesktop
         {
             try
             {
+                // primeiro tenta 
                 chartTemperatura.Series[e.Node.Tag.ToString()].Enabled = e.Node.Checked;
                 ReposicionaChartAreas();
             }
-            catch { }
+            catch
+            {
+                MarcarTodasAbaixo(tv1.Nodes, e.Node.Name, e.Node.Checked);
+            }
+            finally
+            {
+                // nada
+            }
+        }
+        /// <summary>Procura um item na treeview e marca/desmarca tudo abaixo</summary>
+        private void MarcarTodasAbaixo(TreeNodeCollection Item, string p1, bool p2)
+        {
+            for (int jj = 0; jj < Item.Count; jj++)
+            {
+                if (Item[jj].Name == p1)
+                {
+                    MarcarTodas(Item[jj].Nodes, p2);
+                }
+                else
+                {
+                    if (Item[jj].Nodes.Count > 0)
+                    {
+                        MarcarTodasAbaixo(Item[jj].Nodes, p1, p2);
+                    }
+                }
+            }
         }
     }
 }

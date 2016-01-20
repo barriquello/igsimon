@@ -1,4 +1,5 @@
-﻿namespace InterfaceDesktop
+﻿using System.Drawing;
+namespace InterfaceDesktop
 {
 
     class Variaveis
@@ -26,65 +27,65 @@
         private const string strPrecisao = "{0}";
         //Grandezas instantâneas:
         //Correntes I (A,B,C)
-        public static FeedServidor fIa = new FeedServidor(func.Il, 0, "NIa","Ia = "+strPrecisao+" A");
-        public static FeedServidor fIb = new FeedServidor(func.Il, 1, "NIb", "Ib = " + strPrecisao + " A");
-        public static FeedServidor fIc = new FeedServidor(func.Il, 2, "NIc", "Ic = " + strPrecisao + " A");
+        public static FeedServidor fIa = new FeedServidor(func.Il, 0, "NIa", "Ia = " + strPrecisao + " A", Color.Red);
+        public static FeedServidor fIb = new FeedServidor(func.Il, 1, "NIb", "Ib = " + strPrecisao + " A", Color.Lime);
+        public static FeedServidor fIc = new FeedServidor(func.Il, 2, "NIc", "Ic = " + strPrecisao + " A", Color.Blue);
 
         //Tensões; V (A-B,B-C,C-A, A-N, B-N, C-N)
-        public static FeedServidor fVab = new FeedServidor(func.Vl, 3, "NVab","Vab = "+strPrecisao + " V");
-        public static FeedServidor fVbc = new FeedServidor(func.Vl, 4, "NVbc","Vbc = " +strPrecisao+ " V");
-        public static FeedServidor fVca = new FeedServidor(func.Vl, 5, "NVca","Vca = " +strPrecisao+ " V");
+        public static FeedServidor fVab = new FeedServidor(func.Vl, 3, "NVab", "Vab = " + strPrecisao + " V", Color.Red);
+        public static FeedServidor fVbc = new FeedServidor(func.Vl, 4, "NVbc", "Vbc = " + strPrecisao + " V", Color.Lime);
+        public static FeedServidor fVca = new FeedServidor(func.Vl, 5, "NVca", "Vca = " + strPrecisao + " V", Color.Blue);
 
-        public static FeedServidor fVan = new FeedServidor(func.Vf, 6, "NVan","Van = " +strPrecisao+ " V");
-        public static FeedServidor fVbn = new FeedServidor(func.Vf, 7, "NVbn","Vbn = " +strPrecisao+ " V");
-        public static FeedServidor fVcn = new FeedServidor(func.Vf, 8, "NVcn","Vcn = " +strPrecisao+ " V");
+        public static FeedServidor fVan = new FeedServidor(func.Vf, 6, "NVan", "Van = " + strPrecisao + " V", Color.Magenta);
+        public static FeedServidor fVbn = new FeedServidor(func.Vf, 7, "NVbn", "Vbn = " + strPrecisao + " V", Color.Green);
+        public static FeedServidor fVcn = new FeedServidor(func.Vf, 8, "NVcn", "Vcn = " + strPrecisao + " V", Color.Indigo);
 
         //Freqüência (F);
-        public static FeedServidor fFreq = new FeedServidor(func.Fr0, 9, "NFreq","Frequência = " +strPrecisao);
+        public static FeedServidor fFreq = new FeedServidor(func.Fr0, 9, "NFreq", "Frequência = " + strPrecisao, Color.Black);
 
         //Potência Ativa (P);
-        public static FeedServidor fP = new FeedServidor(func.Po, 10, "NP", "P = " + strPrecisao +" W");
+        public static FeedServidor fP = new FeedServidor(func.Po, 10, "NP", "P = " + strPrecisao + " W", Color.Red);
         //Potência Aparente (S);
-        public static FeedServidor fS = new FeedServidor(func.Po, 11, "NS", "S = " + strPrecisao +" VA");
+        public static FeedServidor fS = new FeedServidor(func.Po, 11, "NS", "S = " + strPrecisao + " VA", Color.Green);
         //Potência Reativa (Q);
-        public static FeedServidor fQ = new FeedServidor(func.Po, 12, "NQ", "Q = " + strPrecisao + " VAr");
+        public static FeedServidor fQ = new FeedServidor(func.Po, 12, "NQ", "Q = " + strPrecisao + " VAr", Color.Blue);
         //Fator de Potência (FP);
-        public static FeedServidor fFatorPotencia = new FeedServidor(func.FP, 13, "NFP", "Cos (\u03C6) = " + strPrecisao);
+        public static FeedServidor fFatorPotencia = new FeedServidor(func.FP, 13, "NFP", "Cos (\u03C6) = " + strPrecisao, Color.Black);
         //Valores de Energia
         //Energia Total (EP);
-        public static FeedServidor fEP = new FeedServidor(func.En0, 14, "NEP", "EP = " + strPrecisao +" Wh");
+        public static FeedServidor fEP = new FeedServidor(func.En0, 14, "NEP", "EP = " + strPrecisao + " Wh", Color.Black);
         //Energia Reativa (EQ);
-        public static FeedServidor fEQ = new FeedServidor(func.En0, 15, "NEQ", "EQ = " + strPrecisao+" VArh");
+        public static FeedServidor fEQ = new FeedServidor(func.En0, 15, "NEQ", "EQ = " + strPrecisao + " VArh", Color.Black);
         //Energia Aparente (ES);
-        public static FeedServidor fES = new FeedServidor(func.En0, 16, "NES", "ES = " + strPrecisao+" VAh");
+        public static FeedServidor fES = new FeedServidor(func.En0, 16, "NES", "ES = " + strPrecisao + " VAh", Color.Black);
         //Valores de Demanda (média)
         //Corrente IM (A,B,C)
-        public static FeedServidor fIMa = new FeedServidor(func.Il0, 17, "NIMa", "IMa = " + strPrecisao+" A");
-        public static FeedServidor fIMb = new FeedServidor(func.Il0, 18, "NIMb", "IMb = " + strPrecisao + " A");
-        public static FeedServidor fIMc = new FeedServidor(func.Il0, 19, "NIMc", "IMc = " + strPrecisao + " A");
+        public static FeedServidor fIMa = new FeedServidor(func.Il0, 17, "NIMa", "IMa = " + strPrecisao + " A", Color.Black);
+        public static FeedServidor fIMb = new FeedServidor(func.Il0, 18, "NIMb", "IMb = " + strPrecisao + " A", Color.Black);
+        public static FeedServidor fIMc = new FeedServidor(func.Il0, 19, "NIMc", "IMc = " + strPrecisao + " A", Color.Black);
         //Potência Ativa, Reativa, Aparente; (PM, QM, SM)
-        public static FeedServidor fPM = new FeedServidor(func.Po0, 20, "NPM", "PM = " + strPrecisao +" W");
-        public static FeedServidor fQM = new FeedServidor(func.Po0, 21, "NQM", "QM = " + strPrecisao+" VAr");
-        public static FeedServidor fSM = new FeedServidor(func.Po0, 22, "NSM", "SM = " + strPrecisao+" VA");
+        public static FeedServidor fPM = new FeedServidor(func.Po0, 20, "NPM", "PM = " + strPrecisao + " W", Color.Black);
+        public static FeedServidor fQM = new FeedServidor(func.Po0, 21, "NQM", "QM = " + strPrecisao + " VAr", Color.Black);
+        public static FeedServidor fSM = new FeedServidor(func.Po0, 22, "NSM", "SM = " + strPrecisao + " VA", Color.Black);
         //Valores de Demanda Máxima (de pico)
         //Corrente Máxima; IP (A,B,C)
-        public static FeedServidor fIPa = new FeedServidor(func.Il0, 23, "NIPa", "IPa = " + strPrecisao + " A");
-        public static FeedServidor fIPb = new FeedServidor(func.Il0, 24, "NIPb", "IPb = " + strPrecisao + " A");
-        public static FeedServidor fIPc = new FeedServidor(func.Il0, 25, "NIPc", "IPc = " + strPrecisao + " A");
+        public static FeedServidor fIPa = new FeedServidor(func.Il0, 23, "NIPa", "IPa = " + strPrecisao + " A", Color.Black);
+        public static FeedServidor fIPb = new FeedServidor(func.Il0, 24, "NIPb", "IPb = " + strPrecisao + " A", Color.Black);
+        public static FeedServidor fIPc = new FeedServidor(func.Il0, 25, "NIPc", "IPc = " + strPrecisao + " A", Color.Black);
         //Potência ativa máxima; (PP)
-        public static FeedServidor fPP = new FeedServidor(func.Po0, 26, "NPP", "PP = " + strPrecisao+" W");
+        public static FeedServidor fPP = new FeedServidor(func.Po0, 26, "NPP", "PP = " + strPrecisao + " W", Color.Black);
         //Potência reativa máxima; (QP)
-        public static FeedServidor fQP = new FeedServidor(func.Po0, 27, "NQP", "QP = " + strPrecisao+" VAr");
+        public static FeedServidor fQP = new FeedServidor(func.Po0, 27, "NQP", "QP = " + strPrecisao + " VAr", Color.Black);
         //Potência aparente máxima; (SP)
-        public static FeedServidor fSP = new FeedServidor(func.Po0, 28, "NSP", "SP = " + strPrecisao+ " VA");
+        public static FeedServidor fSP = new FeedServidor(func.Po0, 28, "NSP", "SP = " + strPrecisao + " VA", Color.Black);
 
         //temperatura do óleo,
-        public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", "Óleo isolante = " + strPrecisao + " ºC");
+        public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", "Óleo isolante = " + strPrecisao + " ºC", Color.Red);
         //temperatura do enrolamento,
-        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", "Enrolamentos = " + strPrecisao + " ºC");
+        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", "Enrolamentos = " + strPrecisao + " ºC", Color.DarkOrange);
         //nível de óleo (alto, médio, baixo)
-        public static FeedServidor fNivelOleo = new FeedServidor(func.Ni, 31, "NNO", "Nível do óleo = {0}");
+        public static FeedServidor fNivelOleo = new FeedServidor(func.Ni, 31, "NNO", "Nível do óleo = {0}", Color.Black);
         //estado da válvula de pressão (atuado ou não-atuado)
-        public static FeedServidor fValvulaPressao = new FeedServidor(func.Pr0, 32, "NVP", "Válvula de segurança = {0}");
+        public static FeedServidor fValvulaPressao = new FeedServidor(func.Pr0, 32, "NVP", "Válvula de segurança = {0}", Color.Black);
     }
 }

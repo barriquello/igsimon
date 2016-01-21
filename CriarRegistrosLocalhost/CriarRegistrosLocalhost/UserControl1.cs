@@ -16,7 +16,11 @@ namespace CriarRegistrosLocalhost
         {
             textBox1.Text = valor;
         }
-        public string text()
+        public float text()
+        {
+            return Convert.ToSingle(textBox1.Text);
+        }
+        public string stext()
         {
             return textBox1.Text;
         }

@@ -74,7 +74,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(15, 588);
+            this.button1.Location = new System.Drawing.Point(246, 169);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(87, 34);
             this.button1.TabIndex = 0;
@@ -348,6 +348,8 @@
             this.toolGraficos.Name = "toolGraficos";
             this.toolGraficos.Size = new System.Drawing.Size(36, 36);
             this.toolGraficos.Text = "toolStripButton2";
+            this.toolGraficos.ToolTipText = "Visualizar gráficos";
+            this.toolGraficos.Click += new System.EventHandler(this.toolGraficos_Click);
             // 
             // toolComparar
             // 
@@ -357,6 +359,7 @@
             this.toolComparar.Name = "toolComparar";
             this.toolComparar.Size = new System.Drawing.Size(36, 36);
             this.toolComparar.Text = "toolStripButton1";
+            this.toolComparar.ToolTipText = "Comparar valores";
             // 
             // toolExcel
             // 
@@ -366,6 +369,8 @@
             this.toolExcel.Name = "toolExcel";
             this.toolExcel.Size = new System.Drawing.Size(36, 36);
             this.toolExcel.Text = "toolStripButton1";
+            this.toolExcel.ToolTipText = "Exportar gráfico atual";
+            this.toolExcel.Click += new System.EventHandler(this.toolExcel_Click);
             // 
             // toolStripSeparator2
             // 
@@ -393,7 +398,7 @@
             this.tv1.FullRowSelect = true;
             this.tv1.Location = new System.Drawing.Point(12, 54);
             this.tv1.Name = "tv1";
-            this.tv1.Size = new System.Drawing.Size(290, 528);
+            this.tv1.Size = new System.Drawing.Size(290, 568);
             this.tv1.TabIndex = 9;
             this.tv1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tv1_AfterCheck);
             // 

@@ -6,6 +6,7 @@ using System.Collections.Generic; // Variáveis anonimas (json)
 using System.Windows.Forms.DataVisualization.Charting; //Gráficos
 using System.Linq;
 using System.IO;
+using System.Drawing;
 
 namespace InterfaceDesktop
 {
@@ -41,6 +42,14 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas.Add("I");
             //chartTemperatura.ChartAreas.Add("N");
             chartTemperatura.ChartAreas.Add("T");
+            // Unidade
+            //chartTemperatura.ChartAreas["P"].AxisY.Title = "kVW";
+            //chartTemperatura.ChartAreas["Vl"].AxisY.Title = "kV";
+            //chartTemperatura.ChartAreas["Vf"].AxisY.Title = "kV";
+            //chartTemperatura.ChartAreas["I"].AxisY.Title = "A";
+            //chartTemperatura.ChartAreas["T"].AxisY.Title = "ºC";
+
+
             chartTemperatura.ChartAreas.Add("X").Visible = false;
             // Adiciona legendas
             for (int kk = 0; kk < chartTemperatura.ChartAreas.Count; kk++)
@@ -291,26 +300,27 @@ namespace InterfaceDesktop
                     }
                     Registros2[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();
                 }
-                for (int mm = 0; mm < Registros2.Count; mm++)
-                {
-                    int indice = Registros.FindIndex(x => x.Horario == Registros2[mm].Horario); //2,5s
-
-                    if (indice < 0)
-                    {
-                        Registros.Add(Registros2[mm]);
-                        Salvar.Add(mm);
-                    }
-                    else
-                    {
-                        // já deve estar lá
-                        //Registros[indice] = Registros2[mm];
-                    }
-                }
-
             }
+            for (int mm = 0; mm < Registros2.Count; mm++)
+            {
+                int indice = Registros.FindIndex(x => x.Horario == Registros2[mm].Horario); //2,5s
+
+                if (indice < 0)
+                {
+                    Registros.Add(Registros2[mm]);
+                    Salvar.Add(mm);
+                }
+                else
+                {
+                    // já deve estar lá
+                    //Registros[indice] = Registros2[mm];
+                }
+            }
+
             toolStripProgressBar1.Value = 0;
             if (Salvar.Count > 0)
             {
+                HashSet<string> Conteudo;
                 DateTime Data = new DateTime(1970, 1, 1);
                 DateTime DataNova = Uteis.Unix2time(Registros2[Salvar[0]].Horario);
                 string Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(DataNova));
@@ -319,6 +329,7 @@ namespace InterfaceDesktop
                 string strLinha = "";
                 if (!(new FileInfo(Arquivo).Exists))
                 {
+                    Conteudo = new HashSet<string>();
                     Gravar = new StreamWriter(Arquivo, true);
                     // Gera Arquivo CSV com cabeçalho
                     strLinha = "Horario";
@@ -330,11 +341,12 @@ namespace InterfaceDesktop
                 }
                 else
                 {
+                    Conteudo = new HashSet<string>(File.ReadAllLines(Arquivo));
                     Gravar = new StreamWriter(Arquivo, true);
                 }
                 for (int mm = 0; mm < Salvar.Count; mm++)
                 {
-                    DataNova = Uteis.Unix2time(Registros[Salvar[mm]].Horario);
+                    DataNova = Uteis.Unix2time(Registros2[Salvar[mm]].Horario);
                     if (Data.Date != DataNova.Date)
                     {
                         Data = DataNova;
@@ -342,6 +354,7 @@ namespace InterfaceDesktop
                         Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(Data));
                         if (!(new FileInfo(Arquivo).Exists))
                         {
+                            Conteudo = new HashSet<string>();
                             Gravar = new StreamWriter(Arquivo, true);
                             // Gera Arquivo CSV com cabeçalho
                             strLinha = "Horario";
@@ -353,10 +366,11 @@ namespace InterfaceDesktop
                         }
                         else
                         {
+                            Conteudo = new HashSet<string>(File.ReadAllLines(Arquivo));
                             Gravar = new StreamWriter(Arquivo, true);
                         }
                     }
-                    SalvarCSV(Registros[Salvar[mm]], Gravar);
+                    SalvarCSV(Registros2[Salvar[mm]], Gravar, Conteudo);
 
                 }
                 Gravar.Close();
@@ -364,7 +378,7 @@ namespace InterfaceDesktop
         }
 
         /// <summary>Salva num arquivo CSV os dados</summary>
-        private void SalvarCSV(RegistroDB reg, StreamWriter Gravar)
+        private void SalvarCSV(RegistroDB reg, StreamWriter Gravar, HashSet<string> Lista)
         {
             //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
@@ -373,7 +387,10 @@ namespace InterfaceDesktop
             {
                 Linha += Global.SeparadorCSV + reg.P[jj].ToString(SeparadorDecimal);
             }
-            Gravar.WriteLine(Linha);
+            if (!Lista.Any(x => x == Linha))
+            {
+                Gravar.WriteLine(Linha);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -673,7 +690,6 @@ namespace InterfaceDesktop
             lblTo.Text = string.Format(Variaveis.fTOleo.formato, registroDB.P[Variaveis.fTOleo.indice]);
             lblTe.Text = string.Format(Variaveis.fTEnrolamento.formato, registroDB.P[Variaveis.fTEnrolamento.indice]);
 
-
             lblNo.Text = string.Format(Variaveis.fNivelOleo.formato, registroDB.P[Variaveis.fNivelOleo.indice]);
 
             if ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) | (registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo))
@@ -693,12 +709,13 @@ namespace InterfaceDesktop
                 {
                     tv1.Nodes["ve"].Nodes.Add("gi", "Grandezas instantâneas");
                     {
-                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("i", "Corrente");
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("p", "Potência");
                         {
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIa.NodeTv1, FormataTexto(Variaveis.fIa, registroDB)).Tag = Variaveis.fIa.NomeFeed;// string.Format(Variaveis.fIa.formato, Registros[Registros.Count - 1].P[Variaveis.fIa.indice]));
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIb.NodeTv1, FormataTexto(Variaveis.fIb, registroDB)).Tag = Variaveis.fIb.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIc.NodeTv1, FormataTexto(Variaveis.fIc, registroDB)).Tag = Variaveis.fIc.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fP.NodeTv1, FormataTexto(Variaveis.fP, registroDB)).Tag = Variaveis.fP.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fQ.NodeTv1, FormataTexto(Variaveis.fQ, registroDB)).Tag = Variaveis.fQ.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fS.NodeTv1, FormataTexto(Variaveis.fS, registroDB)).Tag = Variaveis.fS.NomeFeed;
                         }
+
                         tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("v", "Tensões");
                         {
                             tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes.Add("vlinha", "Tensões de linha");
@@ -714,20 +731,21 @@ namespace InterfaceDesktop
                                 tv1.Nodes["ve"].Nodes["gi"].Nodes["v"].Nodes["vfase"].Nodes.Add(Variaveis.fVcn.NodeTv1, FormataTexto(Variaveis.fVcn, registroDB)).Tag = Variaveis.fVcn.NomeFeed;
                             }
                         }
-                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add(Variaveis.fFreq.NodeTv1, FormataTexto(Variaveis.fFreq, registroDB)).Tag = Variaveis.fFreq.NomeFeed;
-                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("p", "Potência");
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("i", "Corrente");
                         {
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fP.NodeTv1, FormataTexto(Variaveis.fP, registroDB)).Tag = Variaveis.fP.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fQ.NodeTv1, FormataTexto(Variaveis.fQ, registroDB)).Tag = Variaveis.fQ.NomeFeed;
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["p"].Nodes.Add(Variaveis.fS.NodeTv1, FormataTexto(Variaveis.fS, registroDB)).Tag = Variaveis.fS.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIa.NodeTv1, FormataTexto(Variaveis.fIa, registroDB)).Tag = Variaveis.fIa.NomeFeed;// string.Format(Variaveis.fIa.formato, Registros[Registros.Count - 1].P[Variaveis.fIa.indice]));
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIb.NodeTv1, FormataTexto(Variaveis.fIb, registroDB)).Tag = Variaveis.fIb.NomeFeed;
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIc.NodeTv1, FormataTexto(Variaveis.fIc, registroDB)).Tag = Variaveis.fIc.NomeFeed;
                         }
+                        tv1.Nodes["ve"].Nodes["gi"].Nodes.Add(Variaveis.fFreq.NodeTv1, FormataTexto(Variaveis.fFreq, registroDB)).Tag = Variaveis.fFreq.NomeFeed;
+
                         tv1.Nodes["ve"].Nodes["gi"].Nodes.Add(Variaveis.fFatorPotencia.NodeTv1, FormataTexto(Variaveis.fFatorPotencia, registroDB)).Tag = Variaveis.fFatorPotencia.NomeFeed;
                     }
-                    tv1.Nodes["ve"].Nodes.Add("ve", "Valores de Energia");
+                    tv1.Nodes["ve"].Nodes.Add("ven", "Valores de Energia");
                     {
-                        tv1.Nodes["ve"].Nodes["ve"].Nodes.Add(Variaveis.fEP.NodeTv1, FormataTexto(Variaveis.fEP, registroDB)).Tag = Variaveis.fEP.NomeFeed;
-                        tv1.Nodes["ve"].Nodes["ve"].Nodes.Add(Variaveis.fEQ.NodeTv1, FormataTexto(Variaveis.fEQ, registroDB)).Tag = Variaveis.fEQ.NomeFeed;
-                        tv1.Nodes["ve"].Nodes["ve"].Nodes.Add(Variaveis.fES.NodeTv1, FormataTexto(Variaveis.fES, registroDB)).Tag = Variaveis.fES.NomeFeed;
+                        tv1.Nodes["ve"].Nodes["ven"].Nodes.Add(Variaveis.fEP.NodeTv1, FormataTexto(Variaveis.fEP, registroDB)).Tag = Variaveis.fEP.NomeFeed;
+                        tv1.Nodes["ve"].Nodes["ven"].Nodes.Add(Variaveis.fEQ.NodeTv1, FormataTexto(Variaveis.fEQ, registroDB)).Tag = Variaveis.fEQ.NomeFeed;
+                        tv1.Nodes["ve"].Nodes["ven"].Nodes.Add(Variaveis.fES.NodeTv1, FormataTexto(Variaveis.fES, registroDB)).Tag = Variaveis.fES.NomeFeed;
                     }
                     tv1.Nodes["ve"].Nodes.Add("vd", "Valores de Demanda (Média)");
                     {
@@ -806,9 +824,9 @@ namespace InterfaceDesktop
                             tv1.Nodes["ve"].Nodes["gi"].Nodes[Variaveis.fFatorPotencia.NodeTv1].Text = FormataTexto(Variaveis.fFatorPotencia, registroDB);
                         }
                         {
-                            tv1.Nodes["ve"].Nodes["ve"].Nodes[Variaveis.fEP.NodeTv1].Text = FormataTexto(Variaveis.fEP, registroDB);
-                            tv1.Nodes["ve"].Nodes["ve"].Nodes[Variaveis.fEQ.NodeTv1].Text = FormataTexto(Variaveis.fEQ, registroDB);
-                            tv1.Nodes["ve"].Nodes["ve"].Nodes[Variaveis.fES.NodeTv1].Text = FormataTexto(Variaveis.fES, registroDB);
+                            tv1.Nodes["ve"].Nodes["ven"].Nodes[Variaveis.fEP.NodeTv1].Text = FormataTexto(Variaveis.fEP, registroDB);
+                            tv1.Nodes["ve"].Nodes["ven"].Nodes[Variaveis.fEQ.NodeTv1].Text = FormataTexto(Variaveis.fEQ, registroDB);
+                            tv1.Nodes["ve"].Nodes["ven"].Nodes[Variaveis.fES.NodeTv1].Text = FormataTexto(Variaveis.fES, registroDB);
                         }
                         {
                             {
@@ -1016,6 +1034,12 @@ namespace InterfaceDesktop
         {
             if (!(double.IsNaN(e.NewPosition)))
             {
+                // CORRIGIR ISSO
+                return;
+                e.NewPosition = chartTemperatura.Series[0].Points.FindByValue(e.NewPosition).XValue;
+                UInt32 horario = Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition));
+                int indice = Registros.FindIndex(x => x.Horario == horario);
+                Text = indice.ToString();
                 //Text = string.Format("{0} - {1}", DateTime.FromOADate(e.NewPosition).ToString(), Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition)));
             }
         }
@@ -1220,6 +1244,62 @@ namespace InterfaceDesktop
         {
             Properties.Settings.Default.Janela = cmbJanela.Text;
             Properties.Settings.Default.Save();
+        }
+
+        private void toolGraficos_Click(object sender, EventArgs e)
+        {
+            tmrGraficos.Enabled = false;
+            frmGraficos Graficos = new frmGraficos();
+            Hide();
+            Graficos.ShowDialog();
+            Show();
+            tmrGraficos.Enabled = true;
+            tmrGraficos_Tick(null, null);
+        }
+
+        private void toolExcel_Click(object sender, EventArgs e)
+        {
+            string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            SaveFileDialog SalvaArquivo = new SaveFileDialog();
+            SalvaArquivo.FileName = ComandosCSV.ArquivoCSV(tUltimaAtualizacao);
+            SalvaArquivo.InitialDirectory = Pasta;
+            SalvaArquivo.Filter = "Arquivo CSV|*.csv|Arquivo XLS|*.xls|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
+            SalvaArquivo.ShowDialog();
+            if (SalvaArquivo.FileName.Length > 3)
+            {
+                int ponto = SalvaArquivo.FileName.LastIndexOf('.');
+                if (ponto < 0) ponto = SalvaArquivo.FileName.Length - 3;
+                string Formato = SalvaArquivo.FileName.Substring(ponto).ToLower();
+                switch (Formato)
+                {
+                    case ".csv":
+                        // Salvar CSV
+
+                        break;
+                    case ".png":
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".bmp":
+                        Graphics Imagem = chartTemperatura.CreateGraphics();
+                        Bitmap bitmat = new Bitmap(chartTemperatura.Width, chartTemperatura.Height, Imagem);
+                        Rectangle retangulo = new Rectangle(0, 0, chartTemperatura.Width, chartTemperatura.Height);
+                        chartTemperatura.DrawToBitmap(bitmat,retangulo);
+                        System.Drawing.Imaging.ImageFormat imgFormato = System.Drawing.Imaging.ImageFormat.Jpeg;
+                        if (Formato == ".bmp")
+                            imgFormato = System.Drawing.Imaging.ImageFormat.Bmp;
+                        if (Formato == ".png")
+                            imgFormato = System.Drawing.Imaging.ImageFormat.Png;
+
+                        bitmat.Save(SalvaArquivo.FileName, imgFormato);
+
+                        break;
+                    case ".xls":
+                    default:
+                        // Salvar XLS
+                        break;
+                }
+            }
+
         }
     }
 }

@@ -61,29 +61,29 @@ namespace CriarRegistrosLocalhost
                 "{20},0,{21},0,{22},0,{23},0,{24},0,{25},0,{26},0,{27},0,{28},{29}," +
                 "{30},{31},{32}",
                 // EP, ES, EQ int32
-                uc00.text(), uc01.text(), uc02.text(),
+                uc00.text() * 100 / 256, uc01.text() * 100 / 256, uc02.text() * 100 / 256,
                 // P S Q int16
-                uc03.text(), uc04.text(), uc05.text(),
+                uc03.text() * 100 / 256, uc04.text() * 100 / 256, uc05.text() * 100 / 256,
                 // FP 16bits, escala 0,0001
-                uc06.text(),
+                uc06.text() * 100 / 256,
                 // Freq, 16bits, escala 0,01
-                uc07.text(),
+                uc07.text() * 100 / 256,
                 // PM, SM, QM, 16bits
-                uc08.text(), uc09.text(), uc10.text(),
+                uc08.text() * 100 / 256, uc09.text() * 100 / 256, uc10.text() * 100 / 256,
                 // PP QP SP, 16bits
-                uc11.text(), uc12.text(), uc13.text(),
+                uc11.text() * 100 / 256, uc12.text() * 100 / 256, uc13.text() * 100 / 256,
                 // Ia, Ib, Ic, 16bits
-                uc14.text(), uc15.text(), uc16.text(),
+                uc14.text() * 100 / 256, uc15.text() * 100 / 256, uc16.text() * 100 / 256,
                 // IMa IMb IMc, 16 bits
-                uc17.text(), uc18.text(), uc19.text(),
+                uc17.text() * 100 / 256, uc18.text() * 100 / 256, uc19.text() * 100 / 256,
                 // IPa IPb IPc, 16bits
-                uc20.text(), uc21.text(), uc22.text(),
+                uc20.text() * 100 / 256, uc21.text() * 100 / 256, uc22.text() * 100 / 256,
                 // Vab, Vbc, Vac, 16 bits
-                uc23.text(), uc24.text(), uc25.text(),
+                uc23.text() * 100 / 256, uc24.text() * 100 / 256, uc25.text() * 100 / 256,
                 // Van Vbn Vcn, 16bits
-                uc26.text(), uc27.text(), uc28.text(),
+                uc26.text() * 100 / 256, uc27.text() * 100 / 256, uc28.text() * 100 / 256,
                 // temperaturas, nível, válvula (não necessáriamente nessa ordem), 8bits
-                uc29.text(), uc30.text(), uc31.text(), uc32.text());
+                uc29.text(), uc30.text() * 100 / 256, uc31.text() * 100 / 256, uc32.text() * 100 / 256);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

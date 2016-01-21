@@ -466,5 +466,17 @@ namespace InterfaceDesktop.Properties {
                 this["Senha"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2 Horas")]
+        public string Janela {
+            get {
+                return ((string)(this["Janela"]));
+            }
+            set {
+                this["Janela"] = value;
+            }
+        }
     }
 }

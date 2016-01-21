@@ -135,7 +135,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(455, 645);
-            this.tabControl1.TabIndex = 2;
+            this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
@@ -230,7 +230,7 @@
             this.button1.Location = new System.Drawing.Point(347, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(78, 24);
-            this.button1.TabIndex = 17;
+            this.button1.TabIndex = 2;
             this.button1.Text = "Carregar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.btnServidor_Click);
@@ -240,210 +240,210 @@
             this.txtTe.Location = new System.Drawing.Point(220, 595);
             this.txtTe.Name = "txtTe";
             this.txtTe.Size = new System.Drawing.Size(207, 21);
-            this.txtTe.TabIndex = 16;
+            this.txtTe.TabIndex = 35;
             // 
             // txtES
             // 
             this.txtES.Location = new System.Drawing.Point(290, 307);
             this.txtES.Name = "txtES";
             this.txtES.Size = new System.Drawing.Size(137, 21);
-            this.txtES.TabIndex = 13;
+            this.txtES.TabIndex = 19;
             // 
             // txtIMc
             // 
             this.txtIMc.Location = new System.Drawing.Point(290, 363);
             this.txtIMc.Name = "txtIMc";
             this.txtIMc.Size = new System.Drawing.Size(137, 21);
-            this.txtIMc.TabIndex = 13;
+            this.txtIMc.TabIndex = 22;
             // 
             // txtIPc
             // 
             this.txtIPc.Location = new System.Drawing.Point(290, 459);
             this.txtIPc.Name = "txtIPc";
             this.txtIPc.Size = new System.Drawing.Size(137, 21);
-            this.txtIPc.TabIndex = 13;
+            this.txtIPc.TabIndex = 28;
             // 
             // txtIc
             // 
             this.txtIc.Location = new System.Drawing.Point(288, 91);
             this.txtIc.Name = "txtIc";
             this.txtIc.Size = new System.Drawing.Size(137, 21);
-            this.txtIc.TabIndex = 13;
+            this.txtIc.TabIndex = 5;
             // 
             // txtVca
             // 
             this.txtVca.Location = new System.Drawing.Point(288, 131);
             this.txtVca.Name = "txtVca";
             this.txtVca.Size = new System.Drawing.Size(137, 21);
-            this.txtVca.TabIndex = 10;
+            this.txtVca.TabIndex = 8;
             // 
             // txtVcn
             // 
             this.txtVcn.Location = new System.Drawing.Point(288, 171);
             this.txtVcn.Name = "txtVcn";
             this.txtVcn.Size = new System.Drawing.Size(137, 21);
-            this.txtVcn.TabIndex = 7;
+            this.txtVcn.TabIndex = 11;
             // 
             // txtSM
             // 
             this.txtSM.Location = new System.Drawing.Point(290, 403);
             this.txtSM.Name = "txtSM";
             this.txtSM.Size = new System.Drawing.Size(137, 21);
-            this.txtSM.TabIndex = 4;
+            this.txtSM.TabIndex = 25;
             // 
             // txtSP
             // 
             this.txtSP.Location = new System.Drawing.Point(290, 499);
             this.txtSP.Name = "txtSP";
             this.txtSP.Size = new System.Drawing.Size(137, 21);
-            this.txtSP.TabIndex = 4;
+            this.txtSP.TabIndex = 31;
             // 
             // txtS
             // 
             this.txtS.Location = new System.Drawing.Point(288, 211);
             this.txtS.Name = "txtS";
             this.txtS.Size = new System.Drawing.Size(137, 21);
-            this.txtS.TabIndex = 4;
+            this.txtS.TabIndex = 14;
             // 
             // txtTo
             // 
             this.txtTo.Location = new System.Drawing.Point(5, 595);
             this.txtTo.Name = "txtTo";
             this.txtTo.Size = new System.Drawing.Size(187, 21);
-            this.txtTo.TabIndex = 15;
+            this.txtTo.TabIndex = 34;
             // 
             // txtEQ
             // 
             this.txtEQ.Location = new System.Drawing.Point(147, 307);
             this.txtEQ.Name = "txtEQ";
             this.txtEQ.Size = new System.Drawing.Size(137, 21);
-            this.txtEQ.TabIndex = 12;
+            this.txtEQ.TabIndex = 18;
             // 
             // txtIMb
             // 
             this.txtIMb.Location = new System.Drawing.Point(147, 363);
             this.txtIMb.Name = "txtIMb";
             this.txtIMb.Size = new System.Drawing.Size(137, 21);
-            this.txtIMb.TabIndex = 12;
+            this.txtIMb.TabIndex = 21;
             // 
             // txtIPb
             // 
             this.txtIPb.Location = new System.Drawing.Point(147, 459);
             this.txtIPb.Name = "txtIPb";
             this.txtIPb.Size = new System.Drawing.Size(137, 21);
-            this.txtIPb.TabIndex = 12;
+            this.txtIPb.TabIndex = 27;
             // 
             // txtIb
             // 
             this.txtIb.Location = new System.Drawing.Point(147, 91);
             this.txtIb.Name = "txtIb";
             this.txtIb.Size = new System.Drawing.Size(137, 21);
-            this.txtIb.TabIndex = 12;
+            this.txtIb.TabIndex = 4;
             // 
             // txtVbc
             // 
             this.txtVbc.Location = new System.Drawing.Point(147, 131);
             this.txtVbc.Name = "txtVbc";
             this.txtVbc.Size = new System.Drawing.Size(137, 21);
-            this.txtVbc.TabIndex = 9;
+            this.txtVbc.TabIndex = 7;
             // 
             // txtVbn
             // 
             this.txtVbn.Location = new System.Drawing.Point(147, 171);
             this.txtVbn.Name = "txtVbn";
             this.txtVbn.Size = new System.Drawing.Size(137, 21);
-            this.txtVbn.TabIndex = 6;
+            this.txtVbn.TabIndex = 10;
             // 
             // txtFreq
             // 
             this.txtFreq.Location = new System.Drawing.Point(6, 251);
             this.txtFreq.Name = "txtFreq";
             this.txtFreq.Size = new System.Drawing.Size(137, 21);
-            this.txtFreq.TabIndex = 14;
+            this.txtFreq.TabIndex = 15;
             // 
             // txtFatorPotencia
             // 
             this.txtFatorPotencia.Location = new System.Drawing.Point(147, 251);
             this.txtFatorPotencia.Name = "txtFatorPotencia";
             this.txtFatorPotencia.Size = new System.Drawing.Size(137, 21);
-            this.txtFatorPotencia.TabIndex = 14;
+            this.txtFatorPotencia.TabIndex = 16;
             // 
             // txtValvulaPressao
             // 
             this.txtValvulaPressao.Location = new System.Drawing.Point(220, 555);
             this.txtValvulaPressao.Name = "txtValvulaPressao";
             this.txtValvulaPressao.Size = new System.Drawing.Size(206, 21);
-            this.txtValvulaPressao.TabIndex = 14;
+            this.txtValvulaPressao.TabIndex = 33;
             // 
             // txtNo
             // 
             this.txtNo.Location = new System.Drawing.Point(6, 555);
             this.txtNo.Name = "txtNo";
             this.txtNo.Size = new System.Drawing.Size(186, 21);
-            this.txtNo.TabIndex = 14;
+            this.txtNo.TabIndex = 32;
             // 
             // txtEP
             // 
             this.txtEP.Location = new System.Drawing.Point(6, 307);
             this.txtEP.Name = "txtEP";
             this.txtEP.Size = new System.Drawing.Size(137, 21);
-            this.txtEP.TabIndex = 11;
+            this.txtEP.TabIndex = 17;
             // 
             // txtIMa
             // 
             this.txtIMa.Location = new System.Drawing.Point(6, 363);
             this.txtIMa.Name = "txtIMa";
             this.txtIMa.Size = new System.Drawing.Size(137, 21);
-            this.txtIMa.TabIndex = 11;
+            this.txtIMa.TabIndex = 20;
             // 
             // txtIPa
             // 
             this.txtIPa.Location = new System.Drawing.Point(6, 459);
             this.txtIPa.Name = "txtIPa";
             this.txtIPa.Size = new System.Drawing.Size(137, 21);
-            this.txtIPa.TabIndex = 11;
+            this.txtIPa.TabIndex = 26;
             // 
             // txtIa
             // 
             this.txtIa.Location = new System.Drawing.Point(6, 91);
             this.txtIa.Name = "txtIa";
             this.txtIa.Size = new System.Drawing.Size(137, 21);
-            this.txtIa.TabIndex = 11;
+            this.txtIa.TabIndex = 3;
             // 
             // txtVab
             // 
             this.txtVab.Location = new System.Drawing.Point(6, 131);
             this.txtVab.Name = "txtVab";
             this.txtVab.Size = new System.Drawing.Size(137, 21);
-            this.txtVab.TabIndex = 8;
+            this.txtVab.TabIndex = 6;
             // 
             // txtVan
             // 
             this.txtVan.Location = new System.Drawing.Point(6, 171);
             this.txtVan.Name = "txtVan";
             this.txtVan.Size = new System.Drawing.Size(137, 21);
-            this.txtVan.TabIndex = 5;
+            this.txtVan.TabIndex = 9;
             // 
             // txtPM
             // 
             this.txtPM.Location = new System.Drawing.Point(6, 403);
             this.txtPM.Name = "txtPM";
             this.txtPM.Size = new System.Drawing.Size(137, 21);
-            this.txtPM.TabIndex = 2;
+            this.txtPM.TabIndex = 23;
             // 
             // txtPP
             // 
             this.txtPP.Location = new System.Drawing.Point(6, 499);
             this.txtPP.Name = "txtPP";
             this.txtPP.Size = new System.Drawing.Size(137, 21);
-            this.txtPP.TabIndex = 2;
+            this.txtPP.TabIndex = 29;
             // 
             // txtP
             // 
             this.txtP.Location = new System.Drawing.Point(6, 211);
             this.txtP.Name = "txtP";
             this.txtP.Size = new System.Drawing.Size(137, 21);
-            this.txtP.TabIndex = 2;
+            this.txtP.TabIndex = 12;
             // 
             // txtServidor
             // 
@@ -824,14 +824,14 @@
             this.txtQM.Location = new System.Drawing.Point(147, 403);
             this.txtQM.Name = "txtQM";
             this.txtQM.Size = new System.Drawing.Size(137, 21);
-            this.txtQM.TabIndex = 3;
+            this.txtQM.TabIndex = 24;
             // 
             // txtQP
             // 
             this.txtQP.Location = new System.Drawing.Point(147, 499);
             this.txtQP.Name = "txtQP";
             this.txtQP.Size = new System.Drawing.Size(137, 21);
-            this.txtQP.TabIndex = 3;
+            this.txtQP.TabIndex = 30;
             // 
             // lbl1
             // 
@@ -847,7 +847,7 @@
             this.txtQ.Location = new System.Drawing.Point(147, 211);
             this.txtQ.Name = "txtQ";
             this.txtQ.Size = new System.Drawing.Size(137, 21);
-            this.txtQ.TabIndex = 3;
+            this.txtQ.TabIndex = 13;
             // 
             // tabPage2
             // 

@@ -32,7 +32,9 @@ namespace InterfaceDesktop
         /// <summary>Converte horário Unix em horário</summary>
         public static DateTime Unix2time(UInt32 Unix)
         {
-            return new DateTime(1970, 1, 1,0,0,0,System.DateTimeKind.Utc).AddSeconds(Unix);
+            DateTime Horario  = 
+            /*return*/ new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(Unix);
+            return Horario.ToLocalTime();
         }
 
     }

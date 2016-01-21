@@ -28,17 +28,17 @@ namespace InterfaceDesktop
         //Grandezas instantâneas:
         //Correntes I (A,B,C)
         public static FeedServidor fIa = new FeedServidor(func.Il, 0, "NIa", "Ia = " + strPrecisao + " A", Color.Red);
-        public static FeedServidor fIb = new FeedServidor(func.Il, 1, "NIb", "Ib = " + strPrecisao + " A", Color.Lime);
+        public static FeedServidor fIb = new FeedServidor(func.Il, 1, "NIb", "Ib = " + strPrecisao + " A", Color.Green);
         public static FeedServidor fIc = new FeedServidor(func.Il, 2, "NIc", "Ic = " + strPrecisao + " A", Color.Blue);
 
         //Tensões; V (A-B,B-C,C-A, A-N, B-N, C-N)
         public static FeedServidor fVab = new FeedServidor(func.Vl, 3, "NVab", "Vab = " + strPrecisao + " V", Color.Red);
-        public static FeedServidor fVbc = new FeedServidor(func.Vl, 4, "NVbc", "Vbc = " + strPrecisao + " V", Color.Lime);
+        public static FeedServidor fVbc = new FeedServidor(func.Vl, 4, "NVbc", "Vbc = " + strPrecisao + " V", Color.Green);
         public static FeedServidor fVca = new FeedServidor(func.Vl, 5, "NVca", "Vca = " + strPrecisao + " V", Color.Blue);
 
-        public static FeedServidor fVan = new FeedServidor(func.Vf, 6, "NVan", "Van = " + strPrecisao + " V", Color.Magenta);
+        public static FeedServidor fVan = new FeedServidor(func.Vf, 6, "NVan", "Van = " + strPrecisao + " V", Color.Red);
         public static FeedServidor fVbn = new FeedServidor(func.Vf, 7, "NVbn", "Vbn = " + strPrecisao + " V", Color.Green);
-        public static FeedServidor fVcn = new FeedServidor(func.Vf, 8, "NVcn", "Vcn = " + strPrecisao + " V", Color.Indigo);
+        public static FeedServidor fVcn = new FeedServidor(func.Vf, 8, "NVcn", "Vcn = " + strPrecisao + " V", Color.Blue);
 
         //Freqüência (F);
         public static FeedServidor fFreq = new FeedServidor(func.Fr0, 9, "NFreq", "Frequência = " + strPrecisao, Color.Black);
@@ -82,7 +82,7 @@ namespace InterfaceDesktop
         //temperatura do óleo,
         public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", "Óleo isolante = " + strPrecisao + " ºC", Color.Red);
         //temperatura do enrolamento,
-        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", "Enrolamentos = " + strPrecisao + " ºC", Color.DarkOrange);
+        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", "Enrolamentos = " + strPrecisao + " ºC", Color.Green);
         //nível de óleo (alto, médio, baixo)
         public static FeedServidor fNivelOleo = new FeedServidor(func.Ni, 31, "NNO", "Nível do óleo = {0}", Color.Black);
         //estado da válvula de pressão (atuado ou não-atuado)

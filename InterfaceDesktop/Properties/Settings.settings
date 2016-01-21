@@ -113,5 +113,8 @@
     <Setting Name="Senha" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Janela" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2 Horas</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

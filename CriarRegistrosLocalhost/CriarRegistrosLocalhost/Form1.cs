@@ -17,7 +17,7 @@ namespace CriarRegistrosLocalhost
         /// <summary>Converte Horário em horário Unix</summary>
         public Int32 Time2Unix(DateTime Horario)
         {
-            return (Int32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            return (Int32)Horario.Subtract(new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc)).TotalSeconds;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -28,8 +28,8 @@ namespace CriarRegistrosLocalhost
             WebClient Servidor = new WebClient();
             //URL1 = "http://localhost/input/post.json?node=1&json={";
             //PM-210
-            DateTime Horario = DateTime.Now;
-            string URL1 = string.Format("http://localhost/monitor/set.json?monitorid=10&time={0}&data=0,0,{1},{2},{3},{4},{5},{6},", Time2Unix(Horario), Horario.Year, Horario.Month, Horario.Day, Horario.Hour, Horario.Minute, Horario.Second);//20,20,20,20&apikey=72d5d09d5ed08c6743d2c71006f3c9bd";
+            DateTime Horario = DateTime.Now.ToUniversalTime();
+            string URL1 = string.Format("http://localhost/monitor/set.json?monitorid=10*&time={0}&data=0,0,{1},{2},{3},{4},{5},{6},", Time2Unix(Horario), Horario.Year, Horario.Month, Horario.Day, Horario.Hour, Horario.Minute, Horario.Second);//20,20,20,20&apikey=72d5d09d5ed08c6743d2c71006f3c9bd";
             URL1 += Dados();
             // Ajustar o número de bits de acordo com o decodificador.
 
@@ -144,7 +144,7 @@ namespace CriarRegistrosLocalhost
             int milisegundos = Convert.ToInt32(textBox2.Text);
             //URL1 = "http://localhost/input/post.json?node=1&json={";
             //PM-210
-            DateTime Horario = dtInicio.Value; // DateTime.Now;
+            DateTime Horario = dtInicio.Value.ToUniversalTime(); // DateTime.Now;
             SuspendLayout();
             do
             {

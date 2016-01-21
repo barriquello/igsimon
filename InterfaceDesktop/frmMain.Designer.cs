@@ -321,7 +321,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(12, 12);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(292, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(261, 39);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "Ações";
             // 
@@ -381,7 +381,7 @@
             "1 Hora"});
             this.cmbJanela.Name = "cmbJanela";
             this.cmbJanela.Size = new System.Drawing.Size(100, 39);
-            this.cmbJanela.Text = "2 Hora";
+            this.cmbJanela.Text = "0,5 Hora";
             this.cmbJanela.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
             // 
             // tv1
@@ -415,6 +415,7 @@
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmMain";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).EndInit();

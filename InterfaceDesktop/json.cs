@@ -6,7 +6,7 @@ namespace InterfaceDesktop
     {
         public static List<Feed> json2Feed(string Requisicao)
         {
-            const string strListaRemover = "[{\":,}]";
+            string strListaRemover = "[{\":,}]";
             // Requisição = [{campo:valor, campo:valor, ...}, {campo:valor, ...},...]
             List<Feed> FDD = new List<Feed>();
             string[] Linha = Requisicao.Split('}'); //Linha = {campo:valor, campo:valor, ...}

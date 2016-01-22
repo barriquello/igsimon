@@ -24,7 +24,7 @@ namespace InterfaceDesktop
                 fNivelOleo, fValvulaPressao
             };
         }
-        private const string strPrecisao = "{0}";
+        private static readonly string strPrecisao = "{0}";
         //Grandezas instantâneas:
         //Correntes I (A,B,C)
         public static FeedServidor fIa = new FeedServidor(func.Il, 0, "NIa", "Ia = " + strPrecisao + " A", Color.Red);

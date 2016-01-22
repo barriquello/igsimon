@@ -24,9 +24,9 @@ namespace InterfaceDesktop
         }
         /// <summary>Função da variável (Po, Vf, Vl, Il, FP, Fr, Ni, Te, Pr</summary>
         public func Funcao;
-        public Color Cor { get; set; }
+        public Color Cor;// { get; set; }
         /// <summary>Nome do feed</summary>
-        public string NomeFeed { get; set; }
+        public string NomeFeed;// { get; set; }
         /// <summary>Índice do feed</summary>
         public string IndiceFeed = "";
         /// <summary>Índice da variável no banco de dados local (Registro)</summary>

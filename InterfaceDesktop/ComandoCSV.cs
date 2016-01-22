@@ -9,13 +9,13 @@ namespace InterfaceDesktop
     {
 
         /// <summary>Comando para obter um arquivo CSV</summary>
-        public const string strComandoCSV = "/feed/csvexport.json?id=";
+        public static readonly string strComandoCSV = "/feed/csvexport.json?id=";
         /// <summary>Comando para obter o horário</summary>
-        public const string strComandoHorario = "/feed/get.json?field=time&id=";
+        public static readonly string strComandoHorario = "/feed/get.json?field=time&id=";
         /// <summary>Comando para obter um arquivo único valor</summary>
-        public const string strComandoValor = "/feed/get.json?field=value&id=";
+        public static readonly string strComandoValor = "/feed/get.json?field=value&id=";
         /// <summary>Comando para obter a lista de feeds</summary>
-        public const string strComandoFeedList = "/feed/list.json?apikey=";
+        public static readonly string strComandoFeedList = "/feed/list.json?apikey=";
         /// <summary>Comando para obter a hora no servidor</summary>
         //public const string strComandoHora = "/time/server.json?id=";//apikey=";
         /// <summary>Rotina para gerar o nome do arquivo CSV com base na data</summary>

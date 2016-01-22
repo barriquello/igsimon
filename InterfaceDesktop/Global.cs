@@ -7,19 +7,19 @@ namespace InterfaceDesktop
     {
         #region Informações uteis
         /// <summary>Separador de campo do CSV</summary>
-        public const char SeparadorCSV = '\t';//',';// '\t';
+        public static readonly char SeparadorCSV = '\t';//',';// '\t';
         /// <summary>Linha de cabeçalho no CSV</summary>
-        public const bool CabecalhoCSV = true;
+        public static readonly bool CabecalhoCSV = true;
         /// <summary>Nível alto</summary>
-        public const int NOleoAlto = 7;
+        public static readonly int NOleoAlto = 7;
         /// <summary>Nível bbaixo</summary>
-        public const int NOleoBaixo = 3;
+        public static readonly int NOleoBaixo = 3;
         /// <summary>Numero máximo de registros a manter na memória</summary>
-        public const int RegistrosMAXIMO = 7 * 24 * 60 * 2 * 4; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
+        public static readonly int RegistrosMAXIMO = 7 * 24 * 60 * 2; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
         /// <summary>Intervalo entre comunicações com o servidor web</summary>
-        public static int intTaxaAtualizacao = 15000;  //ms
+        public static readonly int intTaxaAtualizacao = 15000;  //ms
         /// <summary>Precisão de exibição de dados na tela</summary>
-        public const string strPrecisao = "{0}";
+        public static readonly string strPrecisao = "{0}";
         #endregion
 
         #region Configurações relativas ao comportamento do formulário de configurações

@@ -17,11 +17,13 @@ namespace InterfaceDesktop
         /// <summary>Data do registro mais recente no servidor</summary>
         DateTime tUltimaAtualizacao;
         //UInt32 tUltimaAtualizacao = 0;
+        /// <summary>Registro mais antigo buscado</summary>
+        UInt32 PrimeiroValor = UInt32.MaxValue;
 
         // Janela de tempo
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
 
-        List<RegistroDB> Registros = new List<RegistroDB>();
+        public static List<RegistroDB> Registros = new List<RegistroDB>();
 
         public frmMain()
         {
@@ -264,6 +266,10 @@ namespace InterfaceDesktop
             string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
             UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime));// Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
             UInt32 _Final = Final;
+            if (PrimeiroValor > Inicio)
+            {
+                PrimeiroValor = Inicio;
+            }
             if (Ultimo > _Final)
             {
                 Ultimo = _Final;
@@ -605,7 +611,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
+            lblMEM.Text = string.Format("| {0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
         }
 
         // Atualiza os gráficos
@@ -1177,6 +1183,10 @@ namespace InterfaceDesktop
                         LimpaSeries();
                         try
                         {
+                            if (Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)) < PrimeiroValor)
+                            {
+                                BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)),PrimeiroValor);
+                            }
                             PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
                         }
                         catch
@@ -1261,11 +1271,15 @@ namespace InterfaceDesktop
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             SaveFileDialog SalvaArquivo = new SaveFileDialog();
-            SalvaArquivo.FileName = ComandosCSV.ArquivoCSV(tUltimaAtualizacao);
+            SalvaArquivo.FileName = ComandosCSV.ArquivoCSV(tUltimaAtualizacao).Replace(".csv", ".xlsx");
+            //SalvaArquivo.FileName = "testes.xlsx";
             SalvaArquivo.InitialDirectory = Pasta;
-            SalvaArquivo.Filter = "Arquivo CSV|*.csv|Arquivo XLS|*.xls|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
-            SalvaArquivo.ShowDialog();
-            if (SalvaArquivo.FileName.Length > 3)
+            //Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
+            SalvaArquivo.Filter = "Arquivo XLSX|*.xlsx|Arquivo CSV|*.csv|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
+            SalvaArquivo.DefaultExt = "*.xlsx";
+            //SalvaArquivo.ShowDialog();
+            //if (SalvaArquivo.FileName.Length > 3)
+            if (SalvaArquivo.ShowDialog() == DialogResult.OK)
             {
                 int ponto = SalvaArquivo.FileName.LastIndexOf('.');
                 if (ponto < 0) ponto = SalvaArquivo.FileName.Length - 3;
@@ -1273,33 +1287,67 @@ namespace InterfaceDesktop
                 switch (Formato)
                 {
                     case ".csv":
-                        // Salvar CSV
+                        {
+                            // Salvar CSV
+                            UInt32 inicio = Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo));
+                            UInt32 Final = Uteis.Time2Unix(tUltimaAtualizacao);
+                            using (StreamWriter GravarArquivoCSV = new StreamWriter(SalvaArquivo.FileName, false))
+                            {
 
+                                System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
+                                FeedServidor[] vars = Variaveis.strVariaveis();
+                                StringBuilder bstr = new StringBuilder("Horario");
+                                for (int jj = 0; jj < vars.Length; jj++)
+                                {
+                                    bstr.Append(Global.SeparadorCSV);
+                                    bstr.Append(vars[jj].NomeFeed);
+                                }
+                                GravarArquivoCSV.WriteLine(bstr);
+                                for (int jj = 0; jj < Registros.Count; jj++)
+                                {
+                                    if ((inicio < Registros[jj].Horario) & (Final > Registros[jj].Horario))
+                                    {
+                                        bstr = new StringBuilder(Registros[jj].Horario.ToString());
+                                        for (int kk = 0; kk < vars.Length; kk++)
+                                        {
+                                            bstr.Append(Global.SeparadorCSV);
+                                            bstr.Append(Registros[jj].P[vars[kk].indice].ToString(SeparadorDecimal));
+                                        }
+                                        GravarArquivoCSV.WriteLine(bstr);
+                                    }
+                                }
+                            }
+                        }
                         break;
                     case ".png":
                     case ".jpg":
                     case ".jpeg":
                     case ".bmp":
-                        Graphics Imagem = chartTemperatura.CreateGraphics();
-                        Bitmap bitmat = new Bitmap(chartTemperatura.Width, chartTemperatura.Height, Imagem);
-                        Rectangle retangulo = new Rectangle(0, 0, chartTemperatura.Width, chartTemperatura.Height);
-                        chartTemperatura.DrawToBitmap(bitmat,retangulo);
-                        System.Drawing.Imaging.ImageFormat imgFormato = System.Drawing.Imaging.ImageFormat.Jpeg;
-                        if (Formato == ".bmp")
-                            imgFormato = System.Drawing.Imaging.ImageFormat.Bmp;
-                        if (Formato == ".png")
-                            imgFormato = System.Drawing.Imaging.ImageFormat.Png;
+                        {
+                            Graphics Imagem = chartTemperatura.CreateGraphics();
+                            Bitmap bitmat = new Bitmap(chartTemperatura.Width, chartTemperatura.Height, Imagem);
+                            Rectangle retangulo = new Rectangle(0, 0, chartTemperatura.Width, chartTemperatura.Height);
+                            chartTemperatura.DrawToBitmap(bitmat, retangulo);
+                            System.Drawing.Imaging.ImageFormat imgFormato = System.Drawing.Imaging.ImageFormat.Jpeg;
+                            if (Formato == ".bmp")
+                                imgFormato = System.Drawing.Imaging.ImageFormat.Bmp;
+                            if (Formato == ".png")
+                                imgFormato = System.Drawing.Imaging.ImageFormat.Png;
 
-                        bitmat.Save(SalvaArquivo.FileName, imgFormato);
-
+                            bitmat.Save(SalvaArquivo.FileName, imgFormato);
+                        }
                         break;
                     case ".xls":
+                    case ".xlsx":
                     default:
-                        // Salvar XLS
+                        {
+                            // Salvar 
+                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
+                            System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                        }
                         break;
                 }
             }
-
         }
     }
 }

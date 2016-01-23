@@ -21,8 +21,10 @@ namespace InterfaceDesktop
                 dtpFim.MinDate = 
                     dtpInicio.MinDate = ArquivoParaData(ListaDeArquivos[0]);
                 dtpFim.Value =
+                    dtpFim.MaxDate =
                     dtpInicio.Value =
                     dtpInicio.MaxDate = ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]);
+                dtpFim.MaxDate += new TimeSpan(23, 59, 59);
                 dtpFim.Value = dtpInicio.Value.Add(new TimeSpan(23, 59, 59));
                 for (int mm = 0; mm < ListaDeArquivos.Length; mm++)
                 {

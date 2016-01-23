@@ -22,7 +22,7 @@ namespace InterfaceDesktop
     }
 
     // Informações do banco de dados do servidor armazenadas na memória (isso pode ocupar memória demais)
-    class RegistroDB
+    public class RegistroDB
     {
         public UInt32 Horario;// { get; set; }
         public float[] P = new float[Variaveis.NumVars];

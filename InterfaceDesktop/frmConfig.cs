@@ -156,7 +156,7 @@ namespace InterfaceDesktop
                 txtSenha.Top = txtNome.Top;
                 txtNome.Top = txtSenhaAntiga.Top;
                 btnOK.Enabled = false;
-                btnCancelar.Enabled = false;
+                //btnCancelar.Enabled = false;
                 txtNome.Select();
                 this.ControlBox = false;
                 btnAddUser.Text = "Criar usuário";

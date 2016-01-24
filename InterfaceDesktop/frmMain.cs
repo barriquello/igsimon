@@ -31,7 +31,7 @@ namespace InterfaceDesktop
         }
 
         // Cria a ESTRUTURA do gráfico
-        private void GerarGrafico()
+        private bool GerarGrafico()
         {
             // Limpa o gráfico (tudo nele)
             chartTemperatura.Series.Clear();
@@ -139,7 +139,7 @@ namespace InterfaceDesktop
 
             //Título nas legendas
             chartTemperatura.Legends["P"].Title = "Potência";
-            chartTemperatura.Legends["P"].TitleAlignment = System.Drawing.StringAlignment.Near;
+            //chartTemperatura.Legends["P"].TitleAlignment = System.Drawing.StringAlignment.Near;
             chartTemperatura.Legends["Vl"].Title = "Tensão de Linha";
             chartTemperatura.Legends["Vf"].Title = "Tensão de Fase";
             chartTemperatura.Legends["I"].Title = "Corrente";
@@ -173,14 +173,17 @@ namespace InterfaceDesktop
                     }
                     catch
                     {
-                        MessageBox.Show("Erro ao gerar o gráfico, verifique se há algum nome de variável repetido");
+                        MessageBox.Show(string.Format("Erro ao gerar o gráfico\nVerifique se há algum nome de variável repetido.\nEm especial a variável {0}", strSeries[jj].NomeFeed));
                         frmConfig Config = new frmConfig();
+                        this.Hide();
+                        tmrRelogio.Enabled = tmrGraficos.Enabled = false;
                         Config.ShowDialog();
                         this.Close();
-                        return;
+                        return false;
                     }
                 }
             }
+            return true;
         }
 
         private string Func2str(func funcao)
@@ -300,9 +303,9 @@ namespace InterfaceDesktop
                     //int indice = Registros.TakeWhile(hora => hora.Horario !=Horario_ ).Count(); // 3,5s
                     if (indice < 0) // se não existe vamos criar um novo
                     {
-                        Registros2.Add(new RegistroDB());
+                        Registros2.Add(new RegistroDB() { Horario = Horario_ });
                         indice = Registros2.Count - 1;
-                        Registros2[indice].Horario = Horario_;
+                        //Registros2[indice].Horario = Horario_;
                     }
                     Registros2[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();
                 }
@@ -388,42 +391,19 @@ namespace InterfaceDesktop
         {
             //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
-            string Linha = reg.Horario.ToString();
+            StringBuilder Linha = new StringBuilder(reg.Horario.ToString());
+            //string Linha = reg.Horario.ToString();
             for (int jj = 0; jj < reg.P.Length; jj++)
             {
-                Linha += Global.SeparadorCSV + reg.P[jj].ToString(SeparadorDecimal);
+                Linha.Append(Global.SeparadorCSV);
+                Linha.Append(reg.P[jj].ToString(SeparadorDecimal));
             }
-            if (!Lista.Any(x => x == Linha))
+            if (!Lista.Any(x => x == Linha.ToString()))
             {
                 Gravar.WriteLine(Linha);
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // rotina para ser executada apenas uma vez
-            // Pegar o "time" mais recente:
-            string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
-            tUltimaAtualizacao = DTData2DateTime(strTime); //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
-            lblMensagens.Text = "Último registro: " + tUltimaAtualizacao.ToLocalTime().ToString();
-            BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
-            GerarGrafico();
-            PlotaGrafico(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
-            //chartTemperatura.Printing.PrintPreview();
-            //picStatus.Image = InterfaceDesktop.Properties.Resources.Vermelho;
-            tv1.ExpandAll();
-            try
-            {
-                tv1.SelectedNode = tv1.Nodes[0];
-            }
-            catch
-            { }
-        }
-
-        private void btnConfig_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -538,8 +518,15 @@ namespace InterfaceDesktop
             if (VarSemIndice)
             {
                 Global.ConfigObriatoria = true;
+                int contagem = 0;
                 while (!Global.restart)
                 {
+                    if (contagem++ > 3)
+                    {
+                        MessageBox.Show("O programa será encerrado agora");
+                        this.Close();
+                        return;
+                    }
                     frmConfig Config = new frmConfig();
                     MessageBox.Show("Verifique os nomes das variáveis");
                     Config.ShowDialog();
@@ -611,7 +598,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("| {0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
         }
 
         // Atualiza os gráficos
@@ -632,7 +619,7 @@ namespace InterfaceDesktop
                 // Primeira execução
                 BuscaDados(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
                 //BuscaDados(VelhaUltimaAtualizacao, tUltimaAtualizacao);
-                GerarGrafico();
+                if (!GerarGrafico()) return;
                 if (Registros.Count > 0)
                     Plotar = true;
             }
@@ -651,7 +638,7 @@ namespace InterfaceDesktop
             {
                 //GerarGrafico();
                 PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
-                lblMensagens.Text = string.Format("Último registro: {0}", tUltimaAtualizacao.ToLocalTime());
+                lblMensagens.Text = string.Format("Último registro: {0} |", tUltimaAtualizacao.ToLocalTime());
             }
 
             // Atualiza as etiquetas
@@ -916,10 +903,7 @@ namespace InterfaceDesktop
         {
             try
             {
-                string strComando = Servidor.Server + Comando + ID +
-                    "&start=" + Inicio.ToString() +
-                    "&end=" + Fim.ToString() +
-                    "&apikey=" + Servidor.APIKey + "&interval=1&timeformat=0";
+                string strComando = string.Format("{0}{1}{2}&start={3}&end={4}&apikey={5}&interval=1&timeformat=0", Servidor.Server, Comando, ID, Inicio, Fim, Servidor.APIKey);
                 WebClient Web = new WebClient();
                 strComando = Web.DownloadString(strComando);
                 // Verifica a APIKey
@@ -928,6 +912,8 @@ namespace InterfaceDesktop
                     MessageBox.Show("APIKey incorreta");
                     this.Hide();
                     frmConfig Config = new frmConfig();
+                    tmrRelogio.Enabled=
+                        tmrGraficos.Enabled = false;
                     Config.ShowDialog();
                     this.Close();
                 }
@@ -1027,7 +1013,7 @@ namespace InterfaceDesktop
             if (Global.restart)
             {
                 Global.restart = false;
-                MessageBox.Show("É necessário nova autenticação");
+                MessageBox.Show("É necessário reiniciar o programa");
                 this.Close();
             }
             else
@@ -1038,16 +1024,16 @@ namespace InterfaceDesktop
 
         private void chartTemperatura_CursorPositionChanged(object sender, CursorEventArgs e)
         {
-            if (!(double.IsNaN(e.NewPosition)))
-            {
-                // CORRIGIR ISSO
-                return;
-                e.NewPosition = chartTemperatura.Series[0].Points.FindByValue(e.NewPosition).XValue;
-                UInt32 horario = Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition));
-                int indice = Registros.FindIndex(x => x.Horario == horario);
-                Text = indice.ToString();
-                //Text = string.Format("{0} - {1}", DateTime.FromOADate(e.NewPosition).ToString(), Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition)));
-            }
+            //if (!(double.IsNaN(e.NewPosition)))
+            //{
+            //    // CORRIGIR ISSO
+            //    return;
+            //    e.NewPosition = chartTemperatura.Series[0].Points.FindByValue(e.NewPosition).XValue;
+            //    UInt32 horario = Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition));
+            //    int indice = Registros.FindIndex(x => x.Horario == horario);
+            //    Text = indice.ToString();
+            //    //Text = string.Format("{0} - {1}", DateTime.FromOADate(e.NewPosition).ToString(), Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition)));
+            //}
         }
 
         private void chkP_CheckedChanged(object sender, EventArgs e)
@@ -1271,7 +1257,7 @@ namespace InterfaceDesktop
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             SaveFileDialog SalvaArquivo = new SaveFileDialog();
-            SalvaArquivo.FileName = ComandosCSV.ArquivoCSV(tUltimaAtualizacao).Replace(".csv", ".xlsx");
+            SalvaArquivo.FileName = ComandosCSV.ArquivoCSV(tUltimaAtualizacao.ToLocalTime()).Replace(".csv", ".xlsx");
             //SalvaArquivo.FileName = "testes.xlsx";
             SalvaArquivo.InitialDirectory = Pasta;
             //Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
@@ -1343,7 +1329,16 @@ namespace InterfaceDesktop
                         {
                             // Salvar 
                             new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
-                            System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
+                            if (VerificaExcel == null)
+                            {
+                                System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
+                                System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            }
+                            else
+                            {
+                                System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            }
                         }
                         break;
                 }

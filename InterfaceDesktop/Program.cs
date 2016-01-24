@@ -11,9 +11,14 @@ namespace InterfaceDesktop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             CarregaConfig();
-
+            int contador = 0;
             while (Servidor.Username == "")
             {
+                if (contador++ > 3)
+                {
+                    MessageBox.Show("O programa será encerrado agora");
+                    return;
+                }
                 // Criar um novo usuário
                 Global.tabPage1 = false;
                 // Carrega o formulario de configuração para criar um novo usuário
@@ -23,8 +28,14 @@ namespace InterfaceDesktop
                 Global.tabPage1 = true;
                 CarregaConfig();
             }
+            contador = 0;
             while ((Servidor.APIKey == "")|(Servidor.Server==""))
             {
+                if (contador++ > 3)
+                {
+                    MessageBox.Show("O programa será encerrado agora");
+                    return;
+                }
                 // Carrega o formulário de configuração para configurar o servidor
                 Application.Run(new frmConfig());
                 CarregaConfig();

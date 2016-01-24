@@ -20,57 +20,6 @@ namespace InterfaceDesktop
             CreatePackage(Arquivo);
         }
 
-        // Generates content of worksheetPart3.
-        private void ____GenerateWorksheetPart3Content(WorksheetPart worksheetPart3)
-        {
-
-            SheetData sheetData3 = new SheetData();
-            System.Globalization.CultureInfo separadorDecimal = System.Globalization.CultureInfo.InvariantCulture;
-            FeedServidor[] Feeds = Variaveis.strVariaveis();
-            // Primeira linha: nomes dos feeds
-            Row row1 = new Row() { RowIndex = (UInt32Value)1U, Spans = new ListValue<StringValue>() { InnerText = "1:" + (Feeds.Length + 1).ToString() } };
-            Cell cell1 = new Cell() { CellReference = Colunas[0] + "1", DataType = CellValues.String };//.SharedString };
-            CellValue cellValue1 = new CellValue();
-            cellValue1.Text = "Horário";
-
-            cell1.Append(cellValue1);
-            row1.Append(cell1);
-            for (int jj = 0; jj < Feeds.Length; jj++)
-            {
-                cell1 = new Cell() { CellReference = Colunas[jj + 1] + "1", DataType = CellValues.String };//.SharedString };
-                cellValue1 = new CellValue();
-                cellValue1.Text = Feeds[jj].NomeFeed;
-                cell1.Append(cellValue1);
-                row1.Append(cell1);
-            }
-            sheetData3.Append(row1);
-            UInt32Value Linha = 2;
-            for (int kk = 0; kk < frmMain.Registros.Count; kk++)
-            {
-                RegistroDB Registro = frmMain.Registros[kk];
-                if ((Registro.Horario > Inicio) & (Registro.Horario < Final))
-                {
-                    Row row2 = new Row() { RowIndex = (UInt32Value)Linha++, Spans = new ListValue<StringValue>() { InnerText = "1:" + (Feeds.Length + 1).ToString() } };
-                    cell1 = new Cell() { CellReference = Colunas[0] + (kk + 2).ToString(), StyleIndex = (UInt32Value)1U, DataType = CellValues.Number };
-                    cellValue1 = new CellValue();
-                    cellValue1.Text = Registro.Horario.ToString(separadorDecimal);
-                    cell1.Append(cellValue1);
-                    row2.Append(cell1);
-                    for (int jj = 0; jj < Feeds.Length; jj++)
-                    {
-                        cell1 = new Cell() { CellReference = Colunas[jj + 1] + (kk + 2).ToString(), StyleIndex = (UInt32Value)1U, DataType = CellValues.Number };
-                        cellValue1 = new CellValue();
-                        cellValue1.Text = Registro.P[Feeds[jj].indice].ToString(separadorDecimal);
-                        cell1.Append(cellValue1);
-                        row2.Append(cell1);
-                    }
-                    sheetData3.Append(row2);
-                }
-            }
-
-        }
-
-
         // Creates a SpreadsheetDocument.
         private void CreatePackage(string filePath)
         {
@@ -278,16 +227,16 @@ namespace InterfaceDesktop
             SheetData sheetData3 = new SheetData();
 
             //Row row1 = new Row() { RowIndex = (UInt32Value)1U, Spans = new ListValue<StringValue>() { InnerText = "1:4" } };
-            Row row1 = new Row() { RowIndex = 1U, Spans = new ListValue<StringValue>() { InnerText = "1:" + (Feeds.Length + 1).ToString() } };
+            Row row1 = new Row() { RowIndex = 1U, Spans = new ListValue<StringValue>() { InnerText = string.Format("1:{0}", Feeds.Length + 1) } };
             //Cell cell1 = new Cell() { CellReference = "A1", DataType = CellValues.SharedString };
-            Cell cell1 = new Cell() { CellReference = Colunas[0] + "1", DataType = CellValues.String };
+            Cell cell1 = new Cell() { CellReference = string.Format("{0}1", Colunas[0]), DataType = CellValues.String };
             CellValue cellValue1 = new CellValue();
             cellValue1.Text = "Horário";
             cell1.Append(cellValue1);
             row1.Append(cell1);
             for (int jj = 0; jj < Feeds.Length; jj++)
             {
-                cell1 = new Cell() { CellReference = Colunas[jj + 1] + "1", DataType = CellValues.String };
+                cell1 = new Cell() { CellReference = string.Format("{0}1", Colunas[jj + 1]), DataType = CellValues.String };
                 cellValue1 = new CellValue(Feeds[jj].NomeFeed);
                 cell1.Append(cellValue1);
                 row1.Append(cell1);
@@ -299,7 +248,7 @@ namespace InterfaceDesktop
                 RegistroDB registro = frmMain.Registros[kk];
                 if ((Inicio < registro.Horario) & (Final > registro.Horario))
                 {
-                    row1 = new Row() { RowIndex = ++NumeroLinhas, Spans = new ListValue<StringValue>() { InnerText = "1:" + (Feeds.Length + 1).ToString() } };
+                    row1 = new Row() { RowIndex = ++NumeroLinhas, Spans = new ListValue<StringValue>() { InnerText = string.Format("1:{0}", Feeds.Length + 1) } };
                     cell1 = new Cell() { CellReference = Colunas[0] + NumeroLinhas.ToString(), DataType = CellValues.String };
                     cellValue1= new CellValue();
                     cellValue1.Text = Uteis.Unix2time(registro.Horario).ToString();
@@ -316,7 +265,7 @@ namespace InterfaceDesktop
                     sheetData3.Append(row1);
                 }
             }
-            SheetDimension sheetDimension3 = new SheetDimension() { Reference = "A1:" + Colunas[Feeds.Length + 1] + NumeroLinhas.ToString() };
+            SheetDimension sheetDimension3 = new SheetDimension() { Reference = string.Format("A1:{0}{1}", Colunas[Feeds.Length + 1], NumeroLinhas) };
 
             //Row row2 = new Row() { RowIndex = (UInt32Value)2U, Spans = new ListValue<StringValue>() { InnerText = "1:4" } };
 

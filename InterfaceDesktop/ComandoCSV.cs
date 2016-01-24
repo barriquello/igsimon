@@ -21,7 +21,7 @@ namespace InterfaceDesktop
         /// <summary>Rotina para gerar o nome do arquivo CSV com base na data</summary>
         public static string ArquivoCSV(DateTime Data)
         {
-            return "DB_" + Data.Year.ToString("D4") + "_" + Data.Month.ToString("D2") + "_" + Data.Day.ToString("D2") + ".csv";
+            return string.Format("DB_{0:D4}_{1:D2}_{2:D2}.csv", Data.Year, Data.Month, Data.Day);
         }
     }
 }

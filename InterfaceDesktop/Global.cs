@@ -6,14 +6,22 @@ namespace InterfaceDesktop
     class Global
     {
         #region Informações uteis
-        /// <summary>Separador de campo do CSV</summary>
+        /// <summary>Separador de campo do CSV no servidor web</summary>
         public static readonly char SeparadorCSV = '\t';//',';// '\t';
+        /// <summary>Separador CSV para o arquivo CSV a ser exportado</summary>
+        public static readonly char SeparadorCSVCSV = ';';
         /// <summary>Linha de cabeçalho no CSV</summary>
         public static readonly bool CabecalhoCSV = true;
         /// <summary>Nível alto</summary>
         public static readonly int NOleoAlto = 7;
         /// <summary>Nível bbaixo</summary>
         public static readonly int NOleoBaixo = 3;
+
+        public static readonly string strNOleoAlto = "\u2191\tNível máximo";
+        public static readonly string strNOleoBaixo = "\u2193\tNível baixo ";
+        public static readonly string strNOleoNormal = "\tNível médio";
+
+
         /// <summary>Numero máximo de registros a manter na memória</summary>
         public static readonly int RegistrosMAXIMO = 7 * 24 * 60 * 2; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
         /// <summary>Intervalo entre comunicações com o servidor web</summary>

@@ -309,7 +309,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(12, 12);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(261, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(294, 39);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "Ações";
             // 

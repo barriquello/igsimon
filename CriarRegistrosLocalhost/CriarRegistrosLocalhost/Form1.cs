@@ -29,7 +29,7 @@ namespace CriarRegistrosLocalhost
             //URL1 = "http://localhost/input/post.json?node=1&json={";
             //PM-210
             DateTime Horario = DateTime.Now.ToUniversalTime();
-            string URL1 = string.Format("http://localhost/monitor/set.json?monitorid=10*&time={0}&data=0,0,{1},{2},{3},{4},{5},{6},", Time2Unix(Horario), Horario.Year, Horario.Month, Horario.Day, Horario.Hour, Horario.Minute, Horario.Second);//20,20,20,20&apikey=72d5d09d5ed08c6743d2c71006f3c9bd";
+            string URL1 = string.Format("http://localhost/monitor/set.json?monitorid=10&time={0}&data=0,0,{1},{2},{3},{4},{5},{6},", Time2Unix(Horario), Horario.Year, Horario.Month, Horario.Day, Horario.Hour, Horario.Minute, Horario.Second);//20,20,20,20&apikey=72d5d09d5ed08c6743d2c71006f3c9bd";
             URL1 += Dados();
             // Ajustar o número de bits de acordo com o decodificador.
 

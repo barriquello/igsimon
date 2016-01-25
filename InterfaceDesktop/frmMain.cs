@@ -683,7 +683,8 @@ namespace InterfaceDesktop
             lblTo.Text = string.Format(Variaveis.fTOleo.formato, registroDB.P[Variaveis.fTOleo.indice]);
             lblTe.Text = string.Format(Variaveis.fTEnrolamento.formato, registroDB.P[Variaveis.fTEnrolamento.indice]);
 
-            lblNo.Text = string.Format(Variaveis.fNivelOleo.formato, registroDB.P[Variaveis.fNivelOleo.indice]);
+            lblNo.Text = string.Format((registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo) ? Global.strNOleoBaixo: ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) ? Global.strNOleoAlto :Global.strNOleoNormal));
+                //Variaveis.fNivelOleo.formato, registroDB.P[Variaveis.fNivelOleo.indice]);
 
             if ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) | (registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo))
                 picStatus.Image = Properties.Resources.Vermelho;
@@ -778,7 +779,7 @@ namespace InterfaceDesktop
                         tv1.Nodes["ov"].Nodes["te"].Nodes.Add(Variaveis.fTEnrolamento.NodeTv1, FormataTexto(Variaveis.fTEnrolamento, registroDB)).Tag = Variaveis.fTEnrolamento.NomeFeed;
                         tv1.Nodes["ov"].Nodes["te"].Nodes.Add(Variaveis.fTOleo.NodeTv1, FormataTexto(Variaveis.fTOleo, registroDB)).Tag = Variaveis.fTOleo.NomeFeed;
                     }
-                    tv1.Nodes["ov"].Nodes.Add(Variaveis.fNivelOleo.NodeTv1, ((registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo) ? "Nível baixo" : ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) ? "Nível alto" : "Nível normal"))).Tag = Variaveis.fNivelOleo.NomeFeed;
+                    tv1.Nodes["ov"].Nodes.Add(Variaveis.fNivelOleo.NodeTv1, ((registroDB.P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo) ? Global.strNOleoBaixo : ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) ? Global.strNOleoAlto : Global.strNOleoNormal))).Tag = Variaveis.fNivelOleo.NomeFeed;
                     tv1.Nodes["ov"].Nodes.Add(Variaveis.fValvulaPressao.NodeTv1, ((registroDB.P[Variaveis.fValvulaPressao.indice] == 0) ? "Válvula em condições normais" : "Válvula acionada"));
 
                 }
@@ -1009,7 +1010,9 @@ namespace InterfaceDesktop
             this.Hide();
             Global.restart = false;
             Global.ConfigObriatoria = false;
+            tmrGraficos.Enabled = false;
             frmconfig1.ShowDialog();
+            tmrGraficos.Enabled = true;
             if (Global.restart)
             {
                 Global.restart = false;
@@ -1165,7 +1168,8 @@ namespace InterfaceDesktop
                         //Text = string.Format("Antiga = {0}, Nova = {1}", JanelaDeTempo, NovaJanela);
                         JanelaDeTempo = NovaJanela;// new TimeSpan(dia, hora, minuto, segundo);
                         // Atualizar tudo
-                        timerRelogio_Tick(new object(), new EventArgs());
+                        tmrGraficos.Enabled = false; tmrGraficos.Enabled = true;
+                        //timerRelogio_Tick(new object(), new EventArgs());
                         LimpaSeries();
                         try
                         {
@@ -1265,6 +1269,7 @@ namespace InterfaceDesktop
             SalvaArquivo.DefaultExt = "*.xlsx";
             //SalvaArquivo.ShowDialog();
             //if (SalvaArquivo.FileName.Length > 3)
+            tmrGraficos.Enabled = false;
             if (SalvaArquivo.ShowDialog() == DialogResult.OK)
             {
                 int ponto = SalvaArquivo.FileName.LastIndexOf('.');
@@ -1280,12 +1285,12 @@ namespace InterfaceDesktop
                             using (StreamWriter GravarArquivoCSV = new StreamWriter(SalvaArquivo.FileName, false))
                             {
 
-                                System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
+                                System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.CurrentInfo;// System.Globalization.NumberFormatInfo.InvariantInfo;
                                 FeedServidor[] vars = Variaveis.strVariaveis();
                                 StringBuilder bstr = new StringBuilder("Horario");
                                 for (int jj = 0; jj < vars.Length; jj++)
                                 {
-                                    bstr.Append(Global.SeparadorCSV);
+                                    bstr.Append(Global.SeparadorCSVCSV);
                                     bstr.Append(vars[jj].NomeFeed);
                                 }
                                 GravarArquivoCSV.WriteLine(bstr);
@@ -1296,7 +1301,7 @@ namespace InterfaceDesktop
                                         bstr = new StringBuilder(Registros[jj].Horario.ToString());
                                         for (int kk = 0; kk < vars.Length; kk++)
                                         {
-                                            bstr.Append(Global.SeparadorCSV);
+                                            bstr.Append(Global.SeparadorCSVCSV);
                                             bstr.Append(Registros[jj].P[vars[kk].indice].ToString(SeparadorDecimal));
                                         }
                                         GravarArquivoCSV.WriteLine(bstr);
@@ -1333,7 +1338,7 @@ namespace InterfaceDesktop
                             if (VerificaExcel == null)
                             {
                                 System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
-                                System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                                //System.Diagnostics.Process.Start(SalvaArquivo.FileName);
                             }
                             else
                             {
@@ -1343,6 +1348,7 @@ namespace InterfaceDesktop
                         break;
                 }
             }
+            tmrGraficos.Enabled = true;
         }
     }
 }

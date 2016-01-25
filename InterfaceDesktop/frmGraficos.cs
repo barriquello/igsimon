@@ -7,6 +7,10 @@ namespace InterfaceDesktop
     public partial class frmGraficos : Form
     {
         private static List<RegistroDB> Registros = new List<RegistroDB>();
+
+        private static DateTime Inicio;
+        private static DateTime Fim;
+
         public frmGraficos()
         {
             InitializeComponent();
@@ -20,12 +24,11 @@ namespace InterfaceDesktop
                 listBox1.Items.AddRange(ListaDeArquivos);
                 dtpFim.MinDate = 
                     dtpInicio.MinDate = ArquivoParaData(ListaDeArquivos[0]);
-                dtpFim.Value =
-                    dtpFim.MaxDate =
-                    dtpInicio.Value =
-                    dtpInicio.MaxDate = ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]);
-                dtpFim.MaxDate += new TimeSpan(23, 59, 59);
-                dtpFim.Value = dtpInicio.Value.Add(new TimeSpan(23, 59, 59));
+                dtpFim.MaxDate =
+                    dtpInicio.MaxDate =
+                    dtpFim.Value =
+                    ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]).Add(new TimeSpan(23, 59, 59));
+                dtpInicio.Value = ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]);
                 for (int mm = 0; mm < ListaDeArquivos.Length; mm++)
                 {
                     listBox1.Items.Add(ArquivoParaData(ListaDeArquivos[mm]));
@@ -47,6 +50,21 @@ namespace InterfaceDesktop
             }
             catch { }
             return data;
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (dtpInicio.Value < dtpFim.Value)
+            {
+                Inicio = dtpInicio.Value;
+                Fim = dtpFim.Value;
+            }
+            else
+            {
+                Inicio = dtpFim.Value;
+                Fim = dtpInicio.Value;
+            }
+
         }
     }
 }

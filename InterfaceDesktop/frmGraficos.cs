@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace InterfaceDesktop
@@ -65,6 +66,71 @@ namespace InterfaceDesktop
                 Fim = dtpInicio.Value;
             }
 
+            Registros.Clear();
+
+            chrGrafico.ChartAreas.Clear();
+            chrGrafico.Series.Clear();
+            chrGrafico.Legends.Clear();
+
+            BuscaDadosCSV(Inicio, Fim);
+            //Registros.Sort();
+            GeraGrafico();
+            PlotaGrafico();
+            // Limpeza de memória para economizar memória ( vai depender da velocidade da busca local)
+            //Registros.Clear();
+        }
+
+        private void BuscaDadosCSV(DateTime _inicio, DateTime _fim)
+        {
+            DateTime inicio=_inicio;
+            FeedServidor[] fdd = Variaveis.strVariaveis();
+            int[] indices = new int[fdd.Length + 1];
+            string Arquivo = "";
+            while (inicio < Fim)
+            {
+                Arquivo = ComandosCSV.ArquivoCSV(inicio);
+                if (File.Exists(Arquivo))
+                {
+                    using (StreamReader leitor = new StreamReader(Arquivo))
+                    {
+                        // Identifica a ordem das variáveis
+                        Arquivo = leitor.ReadLine();
+                        string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                        for (int jj = 1; jj < campos.Length; jj++)
+                        {
+                            for (int mm = 0; mm < fdd.Length; mm++)
+                            {
+                                if (campos[jj] == fdd[mm].NomeFeed)
+                                {
+                                    indices[jj] = mm;
+                                    break;
+                                }
+                            }
+                        }
+                        while (!leitor.EndOfStream)
+                        {
+                            RegistroDB reg = new RegistroDB();
+                            Arquivo = leitor.ReadLine().Replace('.',',');
+                            campos = Arquivo.Split(Global.SeparadorCSV);
+                            reg.Horario = Convert.ToUInt32(campos[0]);
+                            for (int jj = 1; jj < campos.Length; jj++)
+                            {
+                                reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                            }
+                            Registros.Add(reg);
+                        }
+                    }
+                }
+                inicio = inicio.AddDays(1); //próximo
+            }
+        }
+
+        private void GeraGrafico()
+        {
+        }
+
+        private void PlotaGrafico()
+        {
         }
     }
 }

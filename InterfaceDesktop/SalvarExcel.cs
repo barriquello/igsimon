@@ -217,15 +217,22 @@ namespace InterfaceDesktop
             SheetViews sheetViews3 = new SheetViews();
 
             SheetView sheetView3 = new SheetView() { TabSelected = true, WorkbookViewId = (UInt32Value)0U };
-            Selection selection1 = new Selection() { ActiveCell = "A1", SequenceOfReferences = new ListValue<StringValue>() { InnerText = "A1" } };
+            //Selection selection1 = new Selection() { ActiveCell = "A1", SequenceOfReferences = new ListValue<StringValue>() { InnerText = "A1" } };
+            Pane pane1 = new Pane() { HorizontalSplit = 1D, VerticalSplit = 1D, TopLeftCell = "B2", ActivePane = PaneValues.BottomRight, State = PaneStateValues.FrozenSplit };
+            Selection selection1 = new Selection() { Pane = PaneValues.BottomLeft };
+            Selection selection2 = new Selection() { Pane = PaneValues.TopRight, ActiveCell = "B1", SequenceOfReferences = new ListValue<StringValue>() { InnerText = "B1" } };
+            Selection selection3 = new Selection() { Pane = PaneValues.BottomRight };
+            sheetView3.Append(pane1);
 
             sheetView3.Append(selection1);
-
             sheetViews3.Append(sheetView3);
+            
             SheetFormatProperties sheetFormatProperties3 = new SheetFormatProperties() { DefaultRowHeight = 20D };
 
             SheetData sheetData3 = new SheetData();
-
+            Columns columns1 = new Columns();
+            Column column1 = new Column() { Min = (UInt32Value)1U, Max = (UInt32Value)1U, Width = 18D, BestFit = true, CustomWidth = true };
+            columns1.Append(column1);
             //Row row1 = new Row() { RowIndex = (UInt32Value)1U, Spans = new ListValue<StringValue>() { InnerText = "1:4" } };
             Row row1 = new Row() { RowIndex = 1U, Spans = new ListValue<StringValue>() { InnerText = string.Format("1:{0}", Feeds.Length + 1) } };
             //Cell cell1 = new Cell() { CellReference = "A1", DataType = CellValues.SharedString };
@@ -269,15 +276,12 @@ namespace InterfaceDesktop
 
             //Row row2 = new Row() { RowIndex = (UInt32Value)2U, Spans = new ListValue<StringValue>() { InnerText = "1:4" } };
 
-            Cell cell5 = new Cell() { CellReference = "A2" };
-            CellValue cellValue5 = new CellValue();
-            cellValue5.Text = "123";
-
             PageMargins pageMargins3 = new PageMargins() { Left = 0.511811024D, Right = 0.511811024D, Top = 0.78740157499999996D, Bottom = 0.78740157499999996D, Header = 0.31496062000000002D, Footer = 0.31496062000000002D };
 
             worksheet3.Append(sheetDimension3);
             worksheet3.Append(sheetViews3);
             worksheet3.Append(sheetFormatProperties3);
+            worksheet3.Append(columns1);
             worksheet3.Append(sheetData3);
             worksheet3.Append(pageMargins3);
 

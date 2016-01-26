@@ -60,6 +60,7 @@ namespace InterfaceDesktop
                 chartTemperatura.Legends.Add(chartTemperatura.ChartAreas[kk].Name).LegendItemOrder = LegendItemOrder.Auto;
                 chartTemperatura.Legends[kk].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
                 chartTemperatura.Legends[kk].LegendStyle = LegendStyle.Column; // legendas em uma coluna
+                chartTemperatura.Legends[kk].BackColor = chartTemperatura.BackColor;
                 // Habilita os cursores
                 chartTemperatura.ChartAreas[kk].CursorX.IsUserEnabled = true;
                 chartTemperatura.ChartAreas[kk].CursorX.LineWidth = 2;
@@ -1202,6 +1203,20 @@ namespace InterfaceDesktop
             {
                 if (chartTemperatura.ChartAreas["T"].AxisX.ScaleView.IsZoomed)
                     chartTemperatura.ChartAreas["T"].AxisX.ScaleView.ZoomReset();
+                if (JanelaDeTempo.TotalDays > 1)
+                {
+                    for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
+                    {
+                        chartTemperatura.Series[jj].XValueType = ChartValueType.DateTime;
+                    }
+                }
+                else
+                {
+                    for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
+                    {
+                        chartTemperatura.Series[jj].XValueType = ChartValueType.Time;
+                    }
+                }
             }
         }
 

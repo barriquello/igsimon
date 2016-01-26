@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icone.ico" />
+    <None Include="RES\Buscar.png" />
     <None Include="RES\Relogio.png" />
     <None Include="RES\Config.png" />
     <None Include="RES\Comparacoes.png" />

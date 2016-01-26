@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dtpInicio = new System.Windows.Forms.DateTimePicker();
             this.dtpFim = new System.Windows.Forms.DateTimePicker();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.chrGrafico = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.btnBuscar = new System.Windows.Forms.Button();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btnBuscar = new System.Windows.Forms.ToolStripButton();
+            this.btnExcel = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).BeginInit();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtpInicio
@@ -62,7 +62,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(508, 12);
+            this.listBox1.Location = new System.Drawing.Point(508, 463);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(306, 43);
             this.listBox1.TabIndex = 1;
@@ -87,29 +87,50 @@
             // 
             // chrGrafico
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chrGrafico.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chrGrafico.Legends.Add(legend2);
+            this.chrGrafico.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chrGrafico.BackColor = System.Drawing.Color.Yellow;
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chrGrafico.Series.Add(series2);
             this.chrGrafico.Size = new System.Drawing.Size(802, 457);
             this.chrGrafico.TabIndex = 3;
             this.chrGrafico.Text = "chart1";
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnBuscar,
+            this.btnExcel});
+            this.toolStrip1.Location = new System.Drawing.Point(343, 4);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStrip1.Size = new System.Drawing.Size(75, 39);
+            this.toolStrip1.TabIndex = 9;
+            this.toolStrip1.Text = "Ações";
+            // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(346, 23);
+            this.btnBuscar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnBuscar.Image = global::InterfaceDesktop.Properties.Resources.Buscar;
+            this.btnBuscar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(75, 20);
-            this.btnBuscar.TabIndex = 4;
+            this.btnBuscar.Size = new System.Drawing.Size(36, 36);
             this.btnBuscar.Text = "Buscar";
-            this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
+            // btnExcel
+            // 
+            this.btnExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnExcel.Image = global::InterfaceDesktop.Properties.Resources.Excel;
+            this.btnExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExcel.Name = "btnExcel";
+            this.btnExcel.Size = new System.Drawing.Size(36, 36);
+            this.btnExcel.Text = "toolStripButton1";
+            this.btnExcel.ToolTipText = "Exportar gráfico atual";
             // 
             // frmGraficos
             // 
@@ -117,7 +138,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(826, 518);
-            this.Controls.Add(this.btnBuscar);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.chrGrafico);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -129,6 +150,8 @@
             this.Text = "Graficos";
             this.Load += new System.EventHandler(this.Graficos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).EndInit();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,6 +165,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chrGrafico;
-        private System.Windows.Forms.Button btnBuscar;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton btnBuscar;
+        private System.Windows.Forms.ToolStripButton btnExcel;
     }
 }

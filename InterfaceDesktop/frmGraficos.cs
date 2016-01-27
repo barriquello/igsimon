@@ -432,32 +432,5 @@ namespace InterfaceDesktop
         {
             return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                analogico1.Min(Convert.ToSingle(textBox1.Text));
-            }
-            catch { }
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                analogico1.Value(Convert.ToSingle(textBox2.Text));
-            }
-            catch { }
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                analogico1.Max(Convert.ToSingle(textBox3.Text));
-            }
-            catch { }
-        }
     }
 }

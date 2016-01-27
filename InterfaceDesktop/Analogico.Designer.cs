@@ -77,6 +77,7 @@
             this.lblMin.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblMin.BackColor = System.Drawing.Color.Transparent;
             this.lblMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMin.ForeColor = System.Drawing.Color.DimGray;
             this.lblMin.Location = new System.Drawing.Point(30, 124);
             this.lblMin.Name = "lblMin";
             this.lblMin.Size = new System.Drawing.Size(50, 13);
@@ -88,6 +89,7 @@
             this.lblMax.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblMax.BackColor = System.Drawing.Color.Transparent;
             this.lblMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMax.ForeColor = System.Drawing.Color.DimGray;
             this.lblMax.Location = new System.Drawing.Point(219, 123);
             this.lblMax.Name = "lblMax";
             this.lblMax.Size = new System.Drawing.Size(50, 13);
@@ -100,6 +102,7 @@
             this.lblMeio.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblMeio.BackColor = System.Drawing.Color.Transparent;
             this.lblMeio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMeio.ForeColor = System.Drawing.Color.DimGray;
             this.lblMeio.Location = new System.Drawing.Point(129, 35);
             this.lblMeio.Name = "lblMeio";
             this.lblMeio.Size = new System.Drawing.Size(50, 13);

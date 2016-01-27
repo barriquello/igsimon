@@ -46,18 +46,18 @@
             // 
             this.dtpInicio.CustomFormat = "dd / MM / yyyy   HH : mm : ss";
             this.dtpInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpInicio.Location = new System.Drawing.Point(12, 23);
+            this.dtpInicio.Location = new System.Drawing.Point(13, 23);
             this.dtpInicio.Name = "dtpInicio";
-            this.dtpInicio.Size = new System.Drawing.Size(161, 20);
+            this.dtpInicio.Size = new System.Drawing.Size(170, 20);
             this.dtpInicio.TabIndex = 0;
             // 
             // dtpFim
             // 
             this.dtpFim.CustomFormat = "dd / MM / yyyy   HH : mm : ss";
             this.dtpFim.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFim.Location = new System.Drawing.Point(179, 23);
+            this.dtpFim.Location = new System.Drawing.Point(187, 23);
             this.dtpFim.Name = "dtpFim";
-            this.dtpFim.Size = new System.Drawing.Size(161, 20);
+            this.dtpFim.Size = new System.Drawing.Size(170, 20);
             this.dtpFim.TabIndex = 0;
             // 
             // lstValores
@@ -66,9 +66,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstValores.FormattingEnabled = true;
             this.lstValores.IntegralHeight = false;
-            this.lstValores.Location = new System.Drawing.Point(787, 4);
+            this.lstValores.Location = new System.Drawing.Point(773, 4);
             this.lstValores.Name = "lstValores";
-            this.lstValores.Size = new System.Drawing.Size(187, 502);
+            this.lstValores.Size = new System.Drawing.Size(201, 502);
             this.lstValores.TabIndex = 1;
             // 
             // label1
@@ -83,7 +83,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(176, 4);
+            this.label2.Location = new System.Drawing.Point(187, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(23, 13);
             this.label2.TabIndex = 2;
@@ -94,14 +94,14 @@
             this.chrGrafico.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.chrGrafico.BackColor = System.Drawing.Color.Yellow;
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
-            this.chrGrafico.Size = new System.Drawing.Size(770, 457);
+            this.chrGrafico.Size = new System.Drawing.Size(755, 457);
             this.chrGrafico.TabIndex = 3;
             this.chrGrafico.Text = "chart1";
             this.chrGrafico.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chrGrafico_CursorPositionChanged);
             this.chrGrafico.AxisViewChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.ViewEventArgs>(this.chrGrafico_AxisViewChanged);
+            this.chrGrafico.MouseUp += new System.Windows.Forms.MouseEventHandler(this.chrGrafico_MouseUp);
             // 
             // toolStrip1
             // 
@@ -111,7 +111,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnBuscar,
             this.btnExcel});
-            this.toolStrip1.Location = new System.Drawing.Point(343, 4);
+            this.toolStrip1.Location = new System.Drawing.Point(361, 4);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip1.Size = new System.Drawing.Size(75, 39);

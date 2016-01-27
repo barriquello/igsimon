@@ -80,7 +80,7 @@ namespace InterfaceDesktop
             GeraGrafico();
             if (Registros.Count > 1)
             {
-                PlotaGrafico();            
+                PlotaGrafico();
                 btnExcel.Enabled = true;
                 lstValores.SuspendLayout();
                 RegistroDB reg = Registros[Registros.Count - 1];
@@ -383,11 +383,11 @@ namespace InterfaceDesktop
             UInt32 posicao;
             if (Registros.Count > 1)
             {
-                RegistroDB reg = Registros[Registros.Count-1];            
+                RegistroDB reg = Registros[Registros.Count - 1];
                 if (!(double.IsNaN(e.NewPosition)))
                 {
 
-                    posicao = Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition));
+                    posicao = Time2Unix(DateTime.FromOADate(e.NewPosition));
                     for (int jj = 0; jj < Registros.Count; jj++)
                     {
                         if (posicao <= Registros[jj].Horario)
@@ -398,14 +398,66 @@ namespace InterfaceDesktop
                     }
                     lstValores.SuspendLayout();
                     lstValores.Items.Clear();
-                    lstValores.Items.Add(string.Format("Horário = {0}",Uteis.Unix2time(reg.Horario)));
-                    for (int jj = 0; jj < vars.Length; jj++) 
+                    lstValores.Items.Add(string.Format("Horário = {0}", Uteis.Unix2time(reg.Horario)));
+                    for (int jj = 0; jj < vars.Length; jj++)
                     {
-                        lstValores.Items.Add(string.Format(vars[jj].formato,reg.P[vars[jj].indice]));
+                        lstValores.Items.Add(string.Format(vars[jj].formato, reg.P[vars[jj].indice]));
                     }
                     lstValores.ResumeLayout();
                 }
             }
+        }
+
+        private void chrGrafico_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (chrGrafico.ChartAreas["T"].AxisX.ScaleView.IsZoomed)
+                {
+                    chrGrafico.ChartAreas["T"].AxisX.ScaleView.ZoomReset();
+                }
+                ChartValueType EscalaX = ChartValueType.DateTime;
+                if (Registros[Registros.Count - 1].Horario - Registros[0].Horario <= (24 * 60 * 60))
+                {
+                    EscalaX = ChartValueType.Time;
+                }
+                for (int mm = 0; mm < chrGrafico.Series.Count; mm++)
+                {
+                    chrGrafico.Series[mm].XValueType = EscalaX;
+                }
+            }
+        }
+        /// <summary>Transforma datetime para unixtime Rotina para contrornar o problema de fusohorário</summary>
+        private static UInt32 Time2Unix(DateTime Horario)
+        {
+            return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                analogico1.Min(Convert.ToSingle(textBox1.Text));
+            }
+            catch { }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                analogico1.Value(Convert.ToSingle(textBox2.Text));
+            }
+            catch { }
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                analogico1.Max(Convert.ToSingle(textBox3.Text));
+            }
+            catch { }
         }
     }
 }

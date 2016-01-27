@@ -50,7 +50,7 @@ namespace InterfaceDesktop
         //Potência Reativa (Q);
         public static FeedServidor fQ = new FeedServidor(func.Po, 12, "NQ", string.Format("Q = {0} VAr", strPrecisao), Color.Blue);
         //Fator de Potência (FP);
-        public static FeedServidor fFatorPotencia = new FeedServidor(func.FP, 13, "NFP", string.Format("Cos (\u03C6) = ", strPrecisao), Color.Black);
+        public static FeedServidor fFatorPotencia = new FeedServidor(func.FP, 13, "NFP", string.Format("Cos (\u03C6) = {0}", strPrecisao), Color.Black);
         //Valores de Energia
         //Energia Total (EP);
         public static FeedServidor fEP = new FeedServidor(func.En0, 14, "NEP", string.Format("EP = {0} Wh", strPrecisao), Color.Black);
@@ -73,16 +73,16 @@ namespace InterfaceDesktop
         public static FeedServidor fIPb = new FeedServidor(func.Il0, 24, "NIPb", string.Format("IPb = {0} A", strPrecisao), Color.Black);
         public static FeedServidor fIPc = new FeedServidor(func.Il0, 25, "NIPc", string.Format("IPc = {0} A", strPrecisao), Color.Black);
         //Potência ativa máxima; (PP)
-        public static FeedServidor fPP = new FeedServidor(func.Po0, 26, "NPP", string.Format("PP ={0} W", strPrecisao), Color.Black);
+        public static FeedServidor fPP = new FeedServidor(func.Po0, 26, "NPP", string.Format("PP = {0} W", strPrecisao), Color.Black);
         //Potência reativa máxima; (QP)
         public static FeedServidor fQP = new FeedServidor(func.Po0, 27, "NQP", string.Format("QP = {0} VAr", strPrecisao), Color.Black);
         //Potência aparente máxima; (SP)
         public static FeedServidor fSP = new FeedServidor(func.Po0, 28, "NSP", string.Format("SP = {0} VA", strPrecisao), Color.Black);
 
         //temperatura do óleo,
-        public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", string.Format("Óleo isolante = {0} ºC", strPrecisao), Color.Red);
+        public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", string.Format("Temperatura do óleo isolante = {0} ºC", strPrecisao), Color.Red);
         //temperatura do enrolamento,
-        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", string.Format("Enrolamentos = {0} ºC", strPrecisao), Color.Green);
+        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", string.Format("Temperatura dos enrolamentos = {0} ºC", strPrecisao), Color.Green);
         //nível de óleo (alto, médio, baixo)
         public static FeedServidor fNivelOleo = new FeedServidor(func.Ni, 31, "NNO", "Nível do óleo = {0}", Color.Black);
         //estado da válvula de pressão (atuado ou não-atuado)

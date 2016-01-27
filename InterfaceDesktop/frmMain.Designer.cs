@@ -35,9 +35,7 @@
             this.tmrGraficos = new System.Windows.Forms.Timer(this.components);
             this.lblTe = new System.Windows.Forms.Label();
             this.lblTo = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
             this.picStatus = new System.Windows.Forms.PictureBox();
-            this.label23 = new System.Windows.Forms.Label();
             this.chartTemperatura = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblMensagens = new System.Windows.Forms.ToolStripStatusLabel();
@@ -93,31 +91,21 @@
             // 
             this.lblTe.AutoSize = true;
             this.lblTe.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTe.Location = new System.Drawing.Point(472, 36);
+            this.lblTe.Location = new System.Drawing.Point(326, 36);
             this.lblTe.Name = "lblTe";
-            this.lblTe.Size = new System.Drawing.Size(25, 16);
+            this.lblTe.Size = new System.Drawing.Size(213, 16);
             this.lblTe.TabIndex = 1;
-            this.lblTe.Text = "Te";
+            this.lblTe.Text = "Temperatura dos enrolamentos";
             // 
             // lblTo
             // 
             this.lblTo.AutoSize = true;
             this.lblTo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTo.Location = new System.Drawing.Point(154, 38);
+            this.lblTo.Location = new System.Drawing.Point(7, 38);
             this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(25, 16);
+            this.lblTo.Size = new System.Drawing.Size(145, 16);
             this.lblTo.TabIndex = 1;
-            this.lblTo.Text = "To";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(326, 36);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(142, 16);
-            this.label22.TabIndex = 0;
-            this.label22.Text = "Temp. Enrolamentos";
+            this.lblTo.Text = "Temperatura do óleo";
             // 
             // picStatus
             // 
@@ -128,16 +116,6 @@
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picStatus.TabIndex = 4;
             this.picStatus.TabStop = false;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(7, 38);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(126, 16);
-            this.label23.TabIndex = 0;
-            this.label23.Text = "Temperatura Óleo";
             // 
             // chartTemperatura
             // 
@@ -217,10 +195,8 @@
             this.groupBox6.Controls.Add(this.picStatus);
             this.groupBox6.Controls.Add(this.aTe);
             this.groupBox6.Controls.Add(this.aTo);
-            this.groupBox6.Controls.Add(this.label23);
             this.groupBox6.Controls.Add(this.lblTe);
             this.groupBox6.Controls.Add(this.lblNo);
-            this.groupBox6.Controls.Add(this.label22);
             this.groupBox6.Controls.Add(this.lblValvula);
             this.groupBox6.Controls.Add(this.lblNivel);
             this.groupBox6.Controls.Add(this.lblTo);
@@ -438,8 +414,6 @@
         private System.Windows.Forms.Timer tmrGraficos;
         private System.Windows.Forms.Label lblTe;
         private System.Windows.Forms.Label lblTo;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartTemperatura;
         private System.Windows.Forms.PictureBox picStatus;
         private System.Windows.Forms.StatusStrip statusStrip1;

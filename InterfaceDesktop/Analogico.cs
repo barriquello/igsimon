@@ -120,7 +120,6 @@ namespace InterfaceDesktop
             lblMin.Left = 30;
             lblMeio.Top = 30;
             lblMeio.Left = (Width - lblMeio.Width) / 2;
-
         }
 
         public Analogico()

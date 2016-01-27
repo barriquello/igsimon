@@ -165,7 +165,7 @@ namespace CriarRegistrosLocalhost
                 }
                 catch (Exception Erro) { textBox1.Text = "Erro:\n" + Erro.Message; }
                 Horario = Horario.AddMilliseconds(milisegundos);
-                if ((Contador&0x1F)==0x1F)
+                //if ((Contador&0x1F)==0x1F)
                     Application.DoEvents();
             } while (Horario < DateTime.Now);
             ResumeLayout();

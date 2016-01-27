@@ -41,8 +41,9 @@ namespace InterfaceDesktop
                 CarregaConfig();
             }
 
-            //Application.Run(new frmLogin());
-            Application.Run(new frmMain());
+            Application.Run(new frmLogin());
+            //Application.Run(new frmMain());
+            //Application.Run(new frmGraficos());
         }
 
         private static void CarregaConfig()

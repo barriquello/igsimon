@@ -12,25 +12,39 @@ namespace InterfaceDesktop
             InitializeComponent();
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private bool verificaSenha()
         {
+            bool retorno = false;
             if (Servidor.Senha == Uteis.getMD5(txtSenha.Text))
             {
-                // Cria uma nova instância do formulário principal
-                Form fmrmain = new frmMain();
-                // Esconde o formulário de autenticação
-                this.Hide();
-                // Exibe o formulário principal e aguarda seu encerramento
-                fmrmain.ShowDialog();
-                // exibe novamente o formulário de autenticação
-                //this.Show();
-                // Encerra o programa
-                this.Show();
+                txtSenha.Visible = txtUsername.Visible = label2.Visible = label3.Visible = false;
+                pictureBox1.Height = Height - toolStrip1.Height - 4 * pictureBox1.Top;
+                retorno = true;
             }
             else
             {
                 MessageBox.Show("Senha incorreta");
                 txtSenha.Text = "";
+                txtSenha.Focus();
+                retorno = false;
+            }
+            return retorno;
+        }
+        private void btnOnline_Click(object sender, EventArgs e)
+        {
+            if (verificaSenha())
+            {
+                // Cria uma nova instância do formulário principal
+                frmMain fmrmain = new frmMain();
+                // Esconde o formulário de autenticação
+                this.Hide();
+                // Exibe o formulário principal e aguarda seu encerramento
+                fmrmain.ShowDialog();
+                fmrmain.Dispose();
+                // exibe novamente o formulário de autenticação
+                //this.Show();
+                // Encerra o programa
+                this.Show();
             }
         }
 
@@ -38,6 +52,30 @@ namespace InterfaceDesktop
         {
             txtUsername.Text = Servidor.Username;
             txtSenha.Text = "";
+        }
+
+        private void btnOffline_Click(object sender, EventArgs e)
+        {
+            if (verificaSenha())
+            {
+                frmGraficos Graficos = new frmGraficos();
+                this.Hide();
+                Graficos.ShowDialog();
+                Graficos.Dispose();
+                this.Show();
+            }
+        }
+
+        private void btnConfig_Click(object sender, EventArgs e)
+        {
+            if (verificaSenha())
+            {
+                frmConfig Config = new frmConfig();
+                this.Hide();
+                Config.ShowDialog();
+                Config.Dispose();
+                this.Show();
+            }
         }
     }
 }

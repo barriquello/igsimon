@@ -4,6 +4,7 @@ using Vt = DocumentFormat.OpenXml.VariantTypes;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using A = DocumentFormat.OpenXml.Drawing;
+using System.Collections.Generic;
 
 namespace InterfaceDesktop
 {
@@ -12,14 +13,14 @@ namespace InterfaceDesktop
         private static System.UInt32 Inicio = 0;
         private static System.UInt32 Final = 0;
         private static string[] Colunas = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ" };
-
-        public void SalvarXLSX(string Arquivo, System.UInt32 __Inicio, System.UInt32 __Final)
+        private List<RegistroDB> Registros = new List<RegistroDB>();
+        public void SalvarXLSX(string Arquivo, System.UInt32 __Inicio, System.UInt32 __Final, List<RegistroDB> regs)
         {
             Inicio = __Inicio;
             Final = __Final;
+            Registros = regs;
             CreatePackage(Arquivo);
         }
-
         // Creates a SpreadsheetDocument.
         private void CreatePackage(string filePath)
         {
@@ -250,9 +251,9 @@ namespace InterfaceDesktop
             }
             sheetData3.Append(row1);
             UInt32Value NumeroLinhas = 1;
-            for (int kk = 0;kk<frmMain.Registros.Count;kk++)
+            for (int kk = 0;kk<Registros.Count;kk++)
             {
-                RegistroDB registro = frmMain.Registros[kk];
+                RegistroDB registro = Registros[kk];
                 if ((Inicio < registro.Horario) & (Final > registro.Horario))
                 {
                     row1 = new Row() { RowIndex = ++NumeroLinhas, Spans = new ListValue<StringValue>() { InnerText = string.Format("1:{0}", Feeds.Length + 1) } };

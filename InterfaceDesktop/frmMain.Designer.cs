@@ -48,9 +48,11 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.picValvula = new System.Windows.Forms.PictureBox();
+            this.aTe = new InterfaceDesktop.Analogico();
+            this.aTo = new InterfaceDesktop.Analogico();
             this.lblNo = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
+            this.lblValvula = new System.Windows.Forms.Label();
+            this.lblNivel = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tooConfig = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -60,8 +62,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.tv1 = new System.Windows.Forms.TreeView();
-            this.aTe = new InterfaceDesktop.Analogico();
-            this.aTo = new InterfaceDesktop.Analogico();
+            this.tmrBlink = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -220,8 +221,8 @@
             this.groupBox6.Controls.Add(this.lblTe);
             this.groupBox6.Controls.Add(this.lblNo);
             this.groupBox6.Controls.Add(this.label22);
-            this.groupBox6.Controls.Add(this.label1);
-            this.groupBox6.Controls.Add(this.label24);
+            this.groupBox6.Controls.Add(this.lblValvula);
+            this.groupBox6.Controls.Add(this.lblNivel);
             this.groupBox6.Controls.Add(this.lblTo);
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(308, 12);
@@ -241,6 +242,28 @@
             this.picValvula.TabIndex = 4;
             this.picValvula.TabStop = false;
             // 
+            // aTe
+            // 
+            this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
+            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTe.Location = new System.Drawing.Point(382, 58);
+            this.aTe.Margin = new System.Windows.Forms.Padding(5);
+            this.aTe.Name = "aTe";
+            this.aTe.Size = new System.Drawing.Size(214, 107);
+            this.aTe.TabIndex = 8;
+            this.aTe.TabStop = false;
+            // 
+            // aTo
+            // 
+            this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
+            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTo.Location = new System.Drawing.Point(63, 58);
+            this.aTo.Margin = new System.Windows.Forms.Padding(4);
+            this.aTo.Name = "aTo";
+            this.aTo.Size = new System.Drawing.Size(214, 107);
+            this.aTo.TabIndex = 8;
+            this.aTo.TabStop = false;
+            // 
             // lblNo
             // 
             this.lblNo.AutoSize = true;
@@ -251,25 +274,25 @@
             this.lblNo.TabIndex = 5;
             this.lblNo.Text = "No";
             // 
-            // label1
+            // lblValvula
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.label1.Location = new System.Drawing.Point(326, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(149, 16);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Válvula de segurança";
+            this.lblValvula.AutoSize = true;
+            this.lblValvula.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblValvula.Location = new System.Drawing.Point(326, 18);
+            this.lblValvula.Name = "lblValvula";
+            this.lblValvula.Size = new System.Drawing.Size(149, 16);
+            this.lblValvula.TabIndex = 4;
+            this.lblValvula.Text = "Válvula de segurança";
             // 
-            // label24
+            // lblNivel
             // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.label24.Location = new System.Drawing.Point(7, 18);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(94, 16);
-            this.label24.TabIndex = 4;
-            this.label24.Text = "Nível do Óleo";
+            this.lblNivel.AutoSize = true;
+            this.lblNivel.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblNivel.Location = new System.Drawing.Point(7, 18);
+            this.lblNivel.Name = "lblNivel";
+            this.lblNivel.Size = new System.Drawing.Size(94, 16);
+            this.lblNivel.TabIndex = 4;
+            this.lblNivel.Text = "Nível do Óleo";
             // 
             // toolStrip1
             // 
@@ -326,7 +349,7 @@
             this.toolComparar.Name = "toolComparar";
             this.toolComparar.Size = new System.Drawing.Size(36, 36);
             this.toolComparar.Text = "toolStripButton1";
-            this.toolComparar.ToolTipText = "Comparar valores";
+            this.toolComparar.ToolTipText = "Comparar gráficos";
             // 
             // toolExcel
             // 
@@ -369,27 +392,10 @@
             this.tv1.TabIndex = 9;
             this.tv1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tv1_AfterCheck);
             // 
-            // aTe
+            // tmrBlink
             // 
-            this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
-            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTe.Location = new System.Drawing.Point(382, 58);
-            this.aTe.Margin = new System.Windows.Forms.Padding(5);
-            this.aTe.Name = "aTe";
-            this.aTe.Size = new System.Drawing.Size(214, 107);
-            this.aTe.TabIndex = 8;
-            this.aTe.TabStop = false;
-            // 
-            // aTo
-            // 
-            this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
-            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTo.Location = new System.Drawing.Point(63, 58);
-            this.aTo.Margin = new System.Windows.Forms.Padding(4);
-            this.aTo.Name = "aTo";
-            this.aTo.Size = new System.Drawing.Size(214, 107);
-            this.aTo.TabIndex = 8;
-            this.aTo.TabStop = false;
+            this.tmrBlink.Interval = 500;
+            this.tmrBlink.Tick += new System.EventHandler(this.tmrBlink_Tick);
             // 
             // frmMain
             // 
@@ -443,7 +449,7 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label lblNo;
-        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label lblNivel;
         private InterfaceDesktop.Analogico aTo;
         private Analogico aTe;
         private System.Windows.Forms.ToolStripStatusLabel lblMEM;
@@ -458,6 +464,7 @@
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.TreeView tv1;
         private System.Windows.Forms.PictureBox picValvula;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblValvula;
+        private System.Windows.Forms.Timer tmrBlink;
     }
 }

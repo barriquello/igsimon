@@ -62,7 +62,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(508, 463);
+            this.listBox1.Location = new System.Drawing.Point(508, 4);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(306, 43);
             this.listBox1.TabIndex = 1;
@@ -125,12 +125,14 @@
             // btnExcel
             // 
             this.btnExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnExcel.Enabled = false;
             this.btnExcel.Image = global::InterfaceDesktop.Properties.Resources.Excel;
             this.btnExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(36, 36);
             this.btnExcel.Text = "toolStripButton1";
             this.btnExcel.ToolTipText = "Exportar gráfico atual";
+            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
             // frmGraficos
             // 

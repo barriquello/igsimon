@@ -49,6 +49,8 @@ namespace InterfaceDesktop
                 _Valor = _max;
             //atualiza o range
             range = _max - _min;
+            lblMax.Text = _max.ToString();
+            lblMeio.Text = (_min + range / 2).ToString();
             //redesenha o ponteiro
             Redesenha();
         }
@@ -61,6 +63,8 @@ namespace InterfaceDesktop
             if (_Valor < _min)
                 _Valor = _min;
             range = _max - _min;
+            lblMin.Text = _min.ToString();
+            lblMeio.Text = (_min + range / 2).ToString();
             Redesenha();
         }
         /// <summary>
@@ -107,6 +111,16 @@ namespace InterfaceDesktop
             lineShape1.Y2 = Height - lineShape1.BorderWidth / 2;
             TamanhoPonteiro = Width * EscalaTamanho;
             ovalShape1.Location = new Point((Width - ovalShape1.Width) / 2, Height - ovalShape1.Height / 2 + lineShape1.BorderWidth / 2);
+
+            lblMax.Top =
+                lblMin.Top =
+                Height - 20;
+
+            lblMax.Left = Width - lblMax.Width - 30;
+            lblMin.Left = 30;
+            lblMeio.Top = 30;
+            lblMeio.Left = (Width - lblMeio.Width) / 2;
+
         }
 
         public Analogico()

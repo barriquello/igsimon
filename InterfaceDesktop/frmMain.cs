@@ -19,7 +19,7 @@ namespace InterfaceDesktop
         //UInt32 tUltimaAtualizacao = 0;
         /// <summary>Registro mais antigo buscado</summary>
         UInt32 PrimeiroValor = UInt32.MaxValue;
-
+        bool blink = false;
         // Janela de tempo
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
 
@@ -1347,8 +1347,8 @@ namespace InterfaceDesktop
                     case ".xlsx":
                     default:
                         {
-                            // Salvar 
-                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao));
+                            // Salvar
+                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao),Registros);
                             Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
                             if (VerificaExcel == null)
                             {
@@ -1360,10 +1360,53 @@ namespace InterfaceDesktop
                                 System.Diagnostics.Process.Start(SalvaArquivo.FileName);
                             }
                         }
+                        tmrGraficos.Enabled = true;
                         break;
                 }
             }
             tmrGraficos.Enabled = true;
+        }
+
+        private void tmrBlink_Tick(object sender, EventArgs e)
+        {
+            Color Fundo;
+            if (blink)
+            {
+                Fundo = Color.Red;
+            }
+            else
+            {
+                Fundo = Color.Yellow;
+            }
+
+            // Nível do óleo alto ou baixo
+            if ((Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] > Global.NOleoAlto) | (Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] < Global.NOleoBaixo))
+            {
+                lblNivel.BackColor = Fundo;
+            }
+            else
+            {
+                lblNivel.BackColor = Color.Transparent;
+            }
+
+            // Válvula de segurança
+
+            if (Registros[Registros.Count - 1].P[Variaveis.fValvulaPressao.indice] != 0)
+            {
+                lblValvula.BackColor = Fundo;
+            }
+            else
+            {
+                lblValvula.BackColor = Color.Transparent;
+            }
+
+            // Temperatura do óleo
+
+            // Temperatura dos enrolamentos
+
+
+            blink = !blink;
+
         }
     }
 }

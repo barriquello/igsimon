@@ -93,6 +93,16 @@ namespace InterfaceDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Config2 {
+            get {
+                object obj = ResourceManager.GetObject("Config2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Excel {
             get {
                 object obj = ResourceManager.GetObject("Excel", resourceCulture);
@@ -126,6 +136,26 @@ namespace InterfaceDesktop.Properties {
         internal static System.Drawing.Bitmap LogoRomagnole {
             get {
                 object obj = ResourceManager.GetObject("LogoRomagnole", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Offline {
+            get {
+                object obj = ResourceManager.GetObject("Offline", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Online {
+            get {
+                object obj = ResourceManager.GetObject("Online", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

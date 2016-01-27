@@ -31,6 +31,9 @@
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.ovalShape1 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
+            this.lblMin = new System.Windows.Forms.Label();
+            this.lblMax = new System.Windows.Forms.Label();
+            this.lblMeio = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // shapeContainer1
@@ -64,10 +67,45 @@
             this.lineShape1.BorderWidth = 5;
             this.lineShape1.Name = "lineShape1";
             this.lineShape1.SelectionColor = System.Drawing.Color.Transparent;
-            this.lineShape1.X1 = 31;
-            this.lineShape1.X2 = 118;
-            this.lineShape1.Y1 = 154;
-            this.lineShape1.Y2 = 154;
+            this.lineShape1.X1 = 97;
+            this.lineShape1.X2 = 132;
+            this.lineShape1.Y1 = 71;
+            this.lineShape1.Y2 = 136;
+            // 
+            // lblMin
+            // 
+            this.lblMin.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblMin.BackColor = System.Drawing.Color.Transparent;
+            this.lblMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMin.Location = new System.Drawing.Point(30, 124);
+            this.lblMin.Name = "lblMin";
+            this.lblMin.Size = new System.Drawing.Size(50, 13);
+            this.lblMin.TabIndex = 1;
+            this.lblMin.Text = "0";
+            // 
+            // lblMax
+            // 
+            this.lblMax.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblMax.BackColor = System.Drawing.Color.Transparent;
+            this.lblMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMax.Location = new System.Drawing.Point(219, 123);
+            this.lblMax.Name = "lblMax";
+            this.lblMax.Size = new System.Drawing.Size(50, 13);
+            this.lblMax.TabIndex = 1;
+            this.lblMax.Text = "100";
+            this.lblMax.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblMeio
+            // 
+            this.lblMeio.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblMeio.BackColor = System.Drawing.Color.Transparent;
+            this.lblMeio.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMeio.Location = new System.Drawing.Point(129, 35);
+            this.lblMeio.Name = "lblMeio";
+            this.lblMeio.Size = new System.Drawing.Size(50, 13);
+            this.lblMeio.TabIndex = 1;
+            this.lblMeio.Text = "50";
+            this.lblMeio.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // Analogico
             // 
@@ -76,6 +114,9 @@
             this.BackgroundImage = global::InterfaceDesktop.Properties.Resources.Relogio;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Controls.Add(this.shapeContainer1);
+            this.Controls.Add(this.lblMeio);
+            this.Controls.Add(this.lblMin);
+            this.Controls.Add(this.lblMax);
             this.DoubleBuffered = true;
             this.Name = "Analogico";
             this.Size = new System.Drawing.Size(280, 140);
@@ -90,5 +131,8 @@
         private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape1;
+        private System.Windows.Forms.Label lblMin;
+        private System.Windows.Forms.Label lblMax;
+        private System.Windows.Forms.Label lblMeio;
     }
 }

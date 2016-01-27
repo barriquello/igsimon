@@ -155,7 +155,7 @@ namespace InterfaceDesktop
             }
             FeedServidor[] strSeries = Variaveis.strVariaveis();
 
-            func[] Tipos = new func[] { func.En, func.FP, func.Fr, func.Il, func.Ni, func.Po, func.Pr, func.Te, func.Vf, func.Vl };
+            //func[] Tipos = new func[] { func.En, func.FP, func.Fr, func.Il, func.Ni, func.Po, func.Pr, func.Te, func.Vf, func.Vl };
             for (int jj = 0; jj < strSeries.Length; jj++) //Tipos.Length;jj++)// Global.strCategoria.Length; jj++)
             {
                 if (Func2str(strSeries[jj].Funcao) != "")
@@ -1039,79 +1039,6 @@ namespace InterfaceDesktop
             //    //Text = string.Format("{0} - {1}", DateTime.FromOADate(e.NewPosition).ToString(), Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition)));
             //}
         }
-
-        private void chkP_CheckedChanged(object sender, EventArgs e)
-        {
-            FeedServidor[] Todas = Variaveis.strVariaveis();
-            try
-            {
-                CheckBox Sender = (CheckBox)sender;
-                // Ajustar SENDER.TAG
-                chartTemperatura.Series[Todas[Convert.ToInt32(Sender.Tag)].NomeFeed].Enabled = Sender.Checked;
-            }
-            catch { }
-            //chkNo2.Checked = chkNo.Checked;
-            //chkTo2.Checked = chkTo.Checked;
-            //chkTe2.Checked = chkTe.Checked;
-            //// Reajustar gráfico no caso de uma chartárea vazia
-            //chartTemperatura.ChartAreas["P"].Visible = chkP.Checked | chkQ.Checked | chkS.Checked;
-            //chartTemperatura.ChartAreas["V"].Visible = chkVa.Checked | chkVb.Checked | chkVc.Checked;
-            //chartTemperatura.ChartAreas["I"].Visible = chkIa.Checked | chkIb.Checked | chkIc.Checked;
-            //chartTemperatura.ChartAreas["T"].Visible = chkTe.Checked | chkTo.Checked;
-            //chartTemperatura.ChartAreas["N"].Visible = chkNo.Checked;
-            //ReposicionaChartAreas();
-        }
-
-        //private void ReposicionaChartAreas()
-        //{
-        //    // remove o zoom:
-        //    chartTemperatura.ChartAreas["N"].AxisX.ScaleView.ZoomReset();
-        //    // Altura das chartareas (%)
-        //    float AlturaP = chartTemperatura.ChartAreas["P"].Visible ? 20 : 0;
-        //    float AlturaV = chartTemperatura.ChartAreas["V"].Visible ? 20 : 0;
-        //    float AlturaI = chartTemperatura.ChartAreas["I"].Visible ? 20 : 0;
-        //    float AlturaT = chartTemperatura.ChartAreas["T"].Visible ? 20 : 0;
-        //    float AlturaN = chartTemperatura.ChartAreas["N"].Visible ? 20 : 0;
-        //    float AlturaTotal = AlturaP + AlturaV + AlturaI + AlturaT + AlturaN; // = 100%, se todas visiveis
-        //    // Nova altura
-        //    AlturaP *= 100 / AlturaTotal;
-        //    AlturaV *= 100 / AlturaTotal;
-        //    AlturaI *= 100 / AlturaTotal;
-        //    AlturaT *= 100 / AlturaTotal;
-        //    AlturaN *= 100 / AlturaTotal;
-        //    // Posiciona as chartAreas
-        //    chartTemperatura.ChartAreas["P"].Position.Y = 0;
-        //    chartTemperatura.ChartAreas["P"].Position.Height = AlturaP;
-        //    chartTemperatura.ChartAreas["V"].Position.Y = AlturaP;
-        //    chartTemperatura.ChartAreas["V"].Position.Height = AlturaV;
-        //    chartTemperatura.ChartAreas["I"].Position.Y = AlturaP + AlturaV;
-        //    chartTemperatura.ChartAreas["I"].Position.Height = AlturaI;
-        //    chartTemperatura.ChartAreas["T"].Position.Y = AlturaP + AlturaV + AlturaI;
-        //    chartTemperatura.ChartAreas["T"].Position.Height = AlturaT;
-        //    chartTemperatura.ChartAreas["N"].Position.Y = AlturaP + AlturaV + AlturaI + AlturaT;
-        //    chartTemperatura.ChartAreas["N"].Position.Height = AlturaN;
-
-        //    for (int mm = 0; mm < chartTemperatura.ChartAreas.Count; mm++)
-        //    {
-        //        chartTemperatura.Legends[chartTemperatura.ChartAreas[mm].Name].Position.Y = chartTemperatura.ChartAreas[mm].Position.Y;
-        //        chartTemperatura.Legends[chartTemperatura.ChartAreas[mm].Name].Position.Height = chartTemperatura.ChartAreas[mm].Position.Height;
-        //        chartTemperatura.Legends[chartTemperatura.ChartAreas[mm].Name].Enabled = chartTemperatura.ChartAreas[mm].Visible;
-        //    }
-        //    // Scrollbar apenas no gráfico debaixo
-        //    string Ordem = "NTIVP";
-        //    string Alinhamento = "N";
-        //    for (int mm = 1; mm < Ordem.Length; mm++)
-        //    {
-        //        chartTemperatura.ChartAreas[Ordem.Substring(mm, 1)].AxisX.ScrollBar.Enabled =
-        //            chartTemperatura.ChartAreas[Ordem.Substring(mm - 1, 1)].AxisX.ScrollBar.Enabled & (!(chartTemperatura.ChartAreas[Ordem.Substring(mm - 1, 1)].Visible));
-        //        Alinhamento = chartTemperatura.ChartAreas[Ordem.Substring(mm, 1)].AxisX.ScrollBar.Enabled ? Ordem.Substring(mm, 1) : Alinhamento;
-        //    }
-
-        //    for (int mm = 0; mm < Ordem.Length; mm++)
-        //    {
-        //        chartTemperatura.ChartAreas[mm].AlignWithChartArea = Alinhamento;
-        //    }
-        //}
 
         private void toolStripComboBox1_TextChanged(object sender, EventArgs e)
         {

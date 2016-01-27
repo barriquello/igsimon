@@ -4,12 +4,15 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Linq;
 
 namespace InterfaceDesktop
 {
     public partial class frmGraficos : Form
     {
         private static List<RegistroDB> Registros = new List<RegistroDB>();
+        FeedServidor[] vars = Variaveis.strVariaveis();
 
         private static DateTime Inicio;
         private static DateTime Fim;
@@ -24,7 +27,6 @@ namespace InterfaceDesktop
             string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
             if (ListaDeArquivos.Length > 0)
             {
-                listBox1.Items.AddRange(ListaDeArquivos);
                 dtpFim.MinDate =
                     dtpInicio.MinDate = ArquivoParaData(ListaDeArquivos[0]);
                 dtpFim.MaxDate =
@@ -32,10 +34,6 @@ namespace InterfaceDesktop
                     dtpFim.Value =
                     ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]).Add(new TimeSpan(23, 59, 59));
                 dtpInicio.Value = ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]);
-                for (int mm = 0; mm < ListaDeArquivos.Length; mm++)
-                {
-                    listBox1.Items.Add(ArquivoParaData(ListaDeArquivos[mm]));
-                }
             }
         }
 
@@ -76,11 +74,23 @@ namespace InterfaceDesktop
 
             BuscaDadosCSV(Inicio, Fim);
             //Registros.Sort();
+            Registros =
+                Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
+            lstValores.Items.Clear();
             GeraGrafico();
-            PlotaGrafico();
-            btnExcel.Enabled = true;
-            // Limpeza de memória para economizar memória ( vai depender da velocidade da busca local)
-            //Registros.Clear();
+            if (Registros.Count > 1)
+            {
+                PlotaGrafico();            
+                btnExcel.Enabled = true;
+                lstValores.SuspendLayout();
+                RegistroDB reg = Registros[Registros.Count - 1];
+                lstValores.Items.Add(string.Format("Horário = {0}", Uteis.Unix2time(reg.Horario)));
+                for (int jj = 0; jj < vars.Length; jj++)
+                {
+                    lstValores.Items.Add(string.Format(vars[jj].formato, reg.P[vars[jj].indice]));
+                }
+                lstValores.ResumeLayout();
+            }
         }
 
         private void BuscaDadosCSV(DateTime _inicio, DateTime _fim)
@@ -130,10 +140,124 @@ namespace InterfaceDesktop
 
         private void GeraGrafico()
         {
+            chrGrafico.Series.Clear();
+            chrGrafico.ChartAreas.Clear();
+            chrGrafico.Legends.Clear();
+            chrGrafico.ChartAreas.Add("P");
+            chrGrafico.ChartAreas.Add("Vl");
+            chrGrafico.ChartAreas.Add("Vf");
+            chrGrafico.ChartAreas.Add("I");
+            chrGrafico.ChartAreas.Add("T");
+
+            for (int kk = 0; kk < chrGrafico.ChartAreas.Count; kk++)
+            {
+                // por consequência do chrGrafico.Legends.clear(), jj será o índice da nova legenda
+                chrGrafico.Legends.Add(chrGrafico.ChartAreas[kk].Name).LegendItemOrder = LegendItemOrder.Auto;
+                chrGrafico.Legends[kk].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
+                chrGrafico.Legends[kk].LegendStyle = LegendStyle.Column; // legendas em uma coluna
+                chrGrafico.Legends[kk].BackColor = chrGrafico.BackColor;
+                // Alinhamento do título da legenda
+                chrGrafico.Legends[kk].TitleAlignment = System.Drawing.StringAlignment.Near;
+                // linha separando o título da legenda
+                chrGrafico.Legends[kk].TitleSeparator = LegendSeparatorStyle.Line;
+                // Habilita os cursores
+                chrGrafico.ChartAreas[kk].CursorX.IsUserEnabled = true;
+                chrGrafico.ChartAreas[kk].CursorX.LineWidth = 2;
+                chrGrafico.ChartAreas[kk].CursorX.LineColor = System.Drawing.Color.Red;
+                chrGrafico.ChartAreas[kk].CursorX.LineDashStyle = ChartDashStyle.Dot;
+                chrGrafico.ChartAreas[kk].CursorX.SelectionColor = System.Drawing.Color.DeepSkyBlue;
+                // Melhoras no visual
+                chrGrafico.ChartAreas[kk].AxisX.ScrollBar.Size = 10;
+                chrGrafico.ChartAreas[kk].AxisX.ScrollBar.IsPositionedInside = false;
+                // Habilita o zoom
+                chrGrafico.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
+                // Resolução máxima
+                chrGrafico.ChartAreas[kk].CursorX.IntervalType = DateTimeIntervalType.Minutes;
+                chrGrafico.ChartAreas[kk].CursorX.Interval = 1;// minutos
+                chrGrafico.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSize = 1;
+                chrGrafico.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSizeType = DateTimeIntervalType.Minutes;
+
+            }
+
+
+            // desabilita as barras de rolagem dos gráficos de cima
+            chrGrafico.ChartAreas["P"].AxisX.ScrollBar.Enabled =
+                chrGrafico.ChartAreas["Vl"].AxisX.ScrollBar.Enabled =
+                chrGrafico.ChartAreas["Vf"].AxisX.ScrollBar.Enabled =
+                chrGrafico.ChartAreas["I"].AxisX.ScrollBar.Enabled = false;
+
+            // Desabilita a escala no eixo X para quase todos os gráficos (exceto no gráfico do nível de óleo, esse fica na parte inferior)
+            chrGrafico.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
+                chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
+                chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
+            // Alinhamento dos gráficos das chartareas (alinhados com o gráfico debaixo)
+            chrGrafico.ChartAreas["P"].AlignWithChartArea =
+                chrGrafico.ChartAreas["Vl"].AlignWithChartArea =
+                chrGrafico.ChartAreas["Vf"].AlignWithChartArea =
+                chrGrafico.ChartAreas["I"].AlignWithChartArea = "T";
+            float fLarguraLegenda = 15f; //%
+            float fAltura = 20f;
+            float fLargura = 100 - fLarguraLegenda; // = 100f * (chrGrafico.Width - fTamanhoLegenda) / (chrGrafico.Width * 1f);
+            chrGrafico.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, fAltura)); // 80% da largura e 20 % da altura do chart
+            chrGrafico.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, fAltura)); //20 % da largura e 20% da altura
+
+            chrGrafico.ChartAreas["Vl"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 20f, fLargura, fAltura));
+            chrGrafico.Legends["Vl"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, fAltura, fLarguraLegenda - 0.2f, fAltura));
+
+            chrGrafico.ChartAreas["Vf"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 40f, fLargura, fAltura));
+            chrGrafico.Legends["Vf"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, fAltura * 2, fLarguraLegenda - 0.2f, fAltura));
+
+            chrGrafico.ChartAreas["I"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 60f, fLargura, fAltura));
+            chrGrafico.Legends["I"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, fAltura * 3, fLarguraLegenda - 0.2f, fAltura));
+
+            chrGrafico.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, fAltura));
+            chrGrafico.Legends["T"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, fAltura * 4, fLarguraLegenda - 0.2f, fAltura));
+            //Título nas legendas
+            chrGrafico.Legends["P"].Title = "Potência";
+            chrGrafico.Legends["Vl"].Title = "Tensão de Linha";
+            chrGrafico.Legends["Vf"].Title = "Tensão de Fase";
+            chrGrafico.Legends["I"].Title = "Corrente";
+            chrGrafico.Legends["T"].Title = "Temperatura";
+
         }
 
+        private string Func2str(func funcao)
+        {
+            if (funcao == func.Il) return "I";
+            if (funcao == func.Po) return "P";
+            if (funcao == func.Te) return "T";
+            if (funcao == func.Vf) return "Vf";
+            if (funcao == func.Vl) return "Vl";
+            return "";
+
+        }
         private void PlotaGrafico()
         {
+            chrGrafico.Series.Clear();
+            for (int jj = 0; jj < vars.Length; jj++)
+            {
+                if (Func2str(vars[jj].Funcao) != "")
+                {
+                    int Indice = vars[jj].indice;
+                    Series serie = new Series(vars[jj].NomeFeed);
+                    serie.ChartArea = serie.Legend = Func2str(vars[jj].Funcao);
+                    serie.BorderWidth = 2;
+                    serie.Color = vars[jj].Cor;
+                    serie.ChartType = SeriesChartType.StepLine;
+                    serie.XValueType = ChartValueType.DateTime;
+
+                    for (int mm = 0; mm < Registros.Count; mm++)
+                    {
+                        serie.Points.AddXY(Uteis.Unix2time(Registros[mm].Horario), Registros[mm].P[Indice]);
+                    }
+                    if (Registros[Registros.Count - 1].Horario - Registros[0].Horario <= 24 * 60 * 60)
+                    {
+                        serie.XValueType = ChartValueType.Time;
+                    }
+                    chrGrafico.Series.Add(serie);
+                }
+            }
         }
 
         private void btnExcel_Click(object sender, EventArgs e)
@@ -161,7 +285,6 @@ namespace InterfaceDesktop
                                 using (StreamWriter GravarArquivoCSV = new StreamWriter(SalvaArquivo.FileName, false))
                                 {
                                     System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.CurrentInfo;// System.Globalization.NumberFormatInfo.InvariantInfo;
-                                    FeedServidor[] vars = Variaveis.strVariaveis();
                                     StringBuilder bstr = new StringBuilder("Horario");
                                     for (int jj = 0; jj < vars.Length; jj++)
                                     {
@@ -207,6 +330,7 @@ namespace InterfaceDesktop
                             // Salvar
                             new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, UInt32.MinValue, UInt32.MaxValue, Registros);
                             Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
+                            // Abrir arquivo
                             //if (VerificaExcel == null)
                             //{
                             //    System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
@@ -218,6 +342,68 @@ namespace InterfaceDesktop
                             //}
                             break;
                         }
+                }
+            }
+        }
+
+        private void chrGrafico_AxisViewChanged(object sender, ViewEventArgs e)
+        {
+            ChartValueType Escala = ChartValueType.Time;
+            if (e.NewSize < double.MaxValue)
+            {
+                if (e.NewSize > 1)
+                {
+                    Escala = ChartValueType.DateTime;
+                }
+            }
+            else
+            {
+                if (Registros.Count > 1)
+                {
+                    if ((Registros[Registros.Count - 1].Horario - Registros[0].Horario) > (60 * 60 * 24))
+                    {
+                        Escala = ChartValueType.DateTime;
+                    }
+                }
+            }
+            if (chrGrafico.Series.Count > 0)
+            {
+                if (chrGrafico.Series[0].XValueType != Escala)
+                {
+                    for (int mm = 0; mm < chrGrafico.Series.Count; mm++)
+                    {
+                        chrGrafico.Series[mm].XValueType = Escala;
+                    }
+                }
+            }
+        }
+
+        private void chrGrafico_CursorPositionChanged(object sender, CursorEventArgs e)
+        {
+            UInt32 posicao;
+            if (Registros.Count > 1)
+            {
+                RegistroDB reg = Registros[Registros.Count-1];            
+                if (!(double.IsNaN(e.NewPosition)))
+                {
+
+                    posicao = Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition));
+                    for (int jj = 0; jj < Registros.Count; jj++)
+                    {
+                        if (posicao <= Registros[jj].Horario)
+                        {
+                            reg = Registros[jj];
+                            break;
+                        }
+                    }
+                    lstValores.SuspendLayout();
+                    lstValores.Items.Clear();
+                    lstValores.Items.Add(string.Format("Horário = {0}",Uteis.Unix2time(reg.Horario)));
+                    for (int jj = 0; jj < vars.Length; jj++) 
+                    {
+                        lstValores.Items.Add(string.Format(vars[jj].formato,reg.P[vars[jj].indice]));
+                    }
+                    lstValores.ResumeLayout();
                 }
             }
         }

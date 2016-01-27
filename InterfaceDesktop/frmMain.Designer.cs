@@ -122,9 +122,9 @@
             // picStatus
             // 
             this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.picStatus.Location = new System.Drawing.Point(158, 18);
+            this.picStatus.Location = new System.Drawing.Point(147, 8);
             this.picStatus.Name = "picStatus";
-            this.picStatus.Size = new System.Drawing.Size(16, 16);
+            this.picStatus.Size = new System.Drawing.Size(32, 32);
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picStatus.TabIndex = 4;
             this.picStatus.TabStop = false;
@@ -235,9 +235,9 @@
             // picValvula
             // 
             this.picValvula.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.picValvula.Location = new System.Drawing.Point(477, 18);
+            this.picValvula.Location = new System.Drawing.Point(477, 8);
             this.picValvula.Name = "picValvula";
-            this.picValvula.Size = new System.Drawing.Size(16, 16);
+            this.picValvula.Size = new System.Drawing.Size(32, 32);
             this.picValvula.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picValvula.TabIndex = 4;
             this.picValvula.TabStop = false;

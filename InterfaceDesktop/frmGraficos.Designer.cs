@@ -30,13 +30,14 @@
         {
             this.dtpInicio = new System.Windows.Forms.DateTimePicker();
             this.dtpFim = new System.Windows.Forms.DateTimePicker();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lstValores = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.chrGrafico = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnBuscar = new System.Windows.Forms.ToolStripButton();
             this.btnExcel = new System.Windows.Forms.ToolStripButton();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -59,13 +60,16 @@
             this.dtpFim.Size = new System.Drawing.Size(161, 20);
             this.dtpFim.TabIndex = 0;
             // 
-            // listBox1
+            // lstValores
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(508, 4);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(306, 43);
-            this.listBox1.TabIndex = 1;
+            this.lstValores.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstValores.FormattingEnabled = true;
+            this.lstValores.IntegralHeight = false;
+            this.lstValores.Location = new System.Drawing.Point(787, 4);
+            this.lstValores.Name = "lstValores";
+            this.lstValores.Size = new System.Drawing.Size(187, 502);
+            this.lstValores.TabIndex = 1;
             // 
             // label1
             // 
@@ -93,9 +97,11 @@
             this.chrGrafico.BackColor = System.Drawing.Color.Yellow;
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
-            this.chrGrafico.Size = new System.Drawing.Size(802, 457);
+            this.chrGrafico.Size = new System.Drawing.Size(770, 457);
             this.chrGrafico.TabIndex = 3;
             this.chrGrafico.Text = "chart1";
+            this.chrGrafico.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chrGrafico_CursorPositionChanged);
+            this.chrGrafico.AxisViewChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.ViewEventArgs>(this.chrGrafico_AxisViewChanged);
             // 
             // toolStrip1
             // 
@@ -139,12 +145,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(826, 518);
+            this.ClientSize = new System.Drawing.Size(986, 518);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.chrGrafico);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.lstValores);
             this.Controls.Add(this.dtpFim);
             this.Controls.Add(this.dtpInicio);
             this.Name = "frmGraficos";
@@ -163,12 +169,13 @@
 
         private System.Windows.Forms.DateTimePicker dtpInicio;
         private System.Windows.Forms.DateTimePicker dtpFim;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox lstValores;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chrGrafico;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnBuscar;
         private System.Windows.Forms.ToolStripButton btnExcel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

@@ -14,6 +14,9 @@ namespace InterfaceDesktop
 
         private bool verificaSenha()
         {
+#if DEBUG
+            Servidor.Senha = Uteis.getMD5(txtSenha.Text);
+#endif
             bool retorno = false;
             if (Servidor.Senha == Uteis.getMD5(txtSenha.Text))
             {

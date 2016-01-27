@@ -25,7 +25,7 @@ namespace InterfaceDesktop
         /// <summary>Converte Horário em horário Unix</summary>
         public static UInt32 Time2Unix(DateTime Horario)
         {
-            return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
 
 

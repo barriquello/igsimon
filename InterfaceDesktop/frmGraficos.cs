@@ -76,21 +76,29 @@ namespace InterfaceDesktop
             //Registros.Sort();
             Registros =
                 Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
-            lstValores.Items.Clear();
             GeraGrafico();
             if (Registros.Count > 1)
             {
-                PlotaGrafico();
                 btnExcel.Enabled = true;
-                lstValores.SuspendLayout();
-                RegistroDB reg = Registros[Registros.Count - 1];
-                lstValores.Items.Add(string.Format("Horário = {0}", Uteis.Unix2time(reg.Horario)));
-                for (int jj = 0; jj < vars.Length; jj++)
-                {
-                    lstValores.Items.Add(string.Format(vars[jj].formato, reg.P[vars[jj].indice]));
-                }
-                lstValores.ResumeLayout();
+                PlotaGrafico();
+                AtualizaLista(Registros[Registros.Count - 1]);
             }
+            else
+            {
+                lstValores.Items.Clear();
+            }
+        }
+
+        private void AtualizaLista(RegistroDB registroDB)
+        {
+            lstValores.Items.Clear();
+            lstValores.SuspendLayout();
+            lstValores.Items.Add(string.Format("Horário = {0}", Uteis.Unix2time(registroDB.Horario)));
+            for (int jj = 0; jj < vars.Length; jj++)
+            {
+                lstValores.Items.Add(string.Format(vars[jj].formato, registroDB.P[vars[jj].indice]));
+            }
+            lstValores.ResumeLayout();
         }
 
         private void BuscaDadosCSV(DateTime _inicio, DateTime _fim)
@@ -98,8 +106,48 @@ namespace InterfaceDesktop
             DateTime inicio = _inicio;
             FeedServidor[] fdd = Variaveis.strVariaveis();
             int[] indices = new int[fdd.Length + 1];
-            string Arquivo = "";
-            while (inicio < Fim)
+            string Arquivo = ComandosCSV.ArquivoCSV(inicio);
+            // primeiro arquivo: verificar horário de inicio antes de adicionar
+            if (File.Exists(Arquivo))
+            {
+                using (StreamReader leitor = new StreamReader(Arquivo))
+                {
+                    // Identifica a ordem das variáveis
+                    Arquivo = leitor.ReadLine();
+                    string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                    for (int jj = 1; jj < campos.Length; jj++)
+                    {
+                        for (int mm = 0; mm < fdd.Length; mm++)
+                        {
+                            if (campos[jj] == fdd[mm].NomeFeed)
+                            {
+                                indices[jj] = mm;
+                                break;
+                            }
+                        }
+                    }
+                    DateTime horariodoregistro;
+                    while (!leitor.EndOfStream)
+                    {
+                        RegistroDB reg = new RegistroDB();
+                        Arquivo = leitor.ReadLine().Replace('.', ',');
+                        campos = Arquivo.Split(Global.SeparadorCSV);
+                        reg.Horario = Convert.ToUInt32(campos[0]);
+                        for (int jj = 1; jj < campos.Length; jj++)
+                        {
+                            reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                        }
+                        horariodoregistro = Uteis.Unix2time(reg.Horario);
+                        if ((inicio.Subtract(horariodoregistro).TotalSeconds < 0) & (Fim.Subtract(horariodoregistro).TotalSeconds > 0))
+                        {
+                            Registros.Add(reg);
+                        }
+                    }
+                }
+            }
+            inicio = inicio.AddDays(1); //próximo
+            // Não precisa verificar nada
+            while (Fim.Subtract(inicio).Days>1)
             {
                 Arquivo = ComandosCSV.ArquivoCSV(inicio);
                 if (File.Exists(Arquivo))
@@ -136,6 +184,44 @@ namespace InterfaceDesktop
                 }
                 inicio = inicio.AddDays(1); //próximo
             }
+            // último dia (verificar horário de término)
+            Arquivo = ComandosCSV.ArquivoCSV(inicio);
+            if (File.Exists(Arquivo) & (inicio<Fim))
+            {
+                using (StreamReader leitor = new StreamReader(Arquivo))
+                {
+                    // Identifica a ordem das variáveis
+                    Arquivo = leitor.ReadLine();
+                    string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                    for (int jj = 1; jj < campos.Length; jj++)
+                    {
+                        for (int mm = 0; mm < fdd.Length; mm++)
+                        {
+                            if (campos[jj] == fdd[mm].NomeFeed)
+                            {
+                                indices[jj] = mm;
+                                break;
+                            }
+                        }
+                    }
+                    while (!leitor.EndOfStream)
+                    {
+                        RegistroDB reg = new RegistroDB();
+                        Arquivo = leitor.ReadLine().Replace('.', ',');
+                        campos = Arquivo.Split(Global.SeparadorCSV);
+                        reg.Horario = Convert.ToUInt32(campos[0]);
+                        for (int jj = 1; jj < campos.Length; jj++)
+                        {
+                            reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                        }
+                        if (Fim.Subtract(Uteis.Unix2time(reg.Horario)).TotalSeconds > 0)
+                        {
+                            Registros.Add(reg);
+                        }
+                    }
+                }
+            }
+
         }
 
         private void GeraGrafico()
@@ -380,32 +466,31 @@ namespace InterfaceDesktop
 
         private void chrGrafico_CursorPositionChanged(object sender, CursorEventArgs e)
         {
-            UInt32 posicao;
             if (Registros.Count > 1)
             {
-                RegistroDB reg = Registros[Registros.Count - 1];
                 if (!(double.IsNaN(e.NewPosition)))
                 {
 
-                    posicao = Time2Unix(DateTime.FromOADate(e.NewPosition));
+                    UInt32 posicao = Time2Unix(DateTime.FromOADate(e.NewPosition));
+                    int indice = 0;
                     for (int jj = 0; jj < Registros.Count; jj++)
                     {
                         if (posicao <= Registros[jj].Horario)
                         {
-                            reg = Registros[jj];
+                            indice = jj;
                             break;
                         }
                     }
-                    lstValores.SuspendLayout();
-                    lstValores.Items.Clear();
-                    lstValores.Items.Add(string.Format("Horário = {0}", Uteis.Unix2time(reg.Horario)));
-                    for (int jj = 0; jj < vars.Length; jj++)
-                    {
-                        lstValores.Items.Add(string.Format(vars[jj].formato, reg.P[vars[jj].indice]));
-                    }
-                    lstValores.ResumeLayout();
+                    AtualizaLista(Registros[indice]);
+                    chrGrafico.ChartAreas["T"].CursorX.Position = Uteis.Unix2time(Registros[indice].Horario).ToOADate();
                 }
             }
+        }
+
+        /// <summary>Converte Horário em horário Unix</summary>
+        public static UInt32 Time2Unix(DateTime Horario)
+        {
+            return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
 
         private void chrGrafico_MouseUp(object sender, MouseEventArgs e)
@@ -427,10 +512,13 @@ namespace InterfaceDesktop
                 }
             }
         }
-        /// <summary>Transforma datetime para unixtime Rotina para contrornar o problema de fusohorário</summary>
-        private static UInt32 Time2Unix(DateTime Horario)
+
+        private void tmrRelogio_Tick(object sender, EventArgs e)
         {
-            return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+            // Relógio
+            lblHora.Text = Convert.ToString(DateTime.Now);
+            System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
         }
     }
 }

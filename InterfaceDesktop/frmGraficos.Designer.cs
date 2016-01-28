@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dtpInicio = new System.Windows.Forms.DateTimePicker();
             this.dtpFim = new System.Windows.Forms.DateTimePicker();
             this.lstValores = new System.Windows.Forms.ListBox();
@@ -38,8 +39,14 @@
             this.btnBuscar = new System.Windows.Forms.ToolStripButton();
             this.btnExcel = new System.Windows.Forms.ToolStripButton();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
+            this.lblMEM = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dtpInicio
@@ -140,12 +147,49 @@
             this.btnExcel.ToolTipText = "Exportar gráfico atual";
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblMEM,
+            this.toolStripStatusLabel1,
+            this.lblHora});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 496);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(986, 22);
+            this.statusStrip1.TabIndex = 10;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tmrRelogio
+            // 
+            this.tmrRelogio.Enabled = true;
+            this.tmrRelogio.Interval = 500;
+            this.tmrRelogio.Tick += new System.EventHandler(this.tmrRelogio_Tick);
+            // 
+            // lblMEM
+            // 
+            this.lblMEM.Name = "lblMEM";
+            this.lblMEM.Size = new System.Drawing.Size(10, 17);
+            this.lblMEM.Text = " ";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(920, 17);
+            this.toolStripStatusLabel1.Spring = true;
+            // 
+            // lblHora
+            // 
+            this.lblHora.Name = "lblHora";
+            this.lblHora.Size = new System.Drawing.Size(10, 17);
+            this.lblHora.Text = " ";
+            // 
             // frmGraficos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(986, 518);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.chrGrafico);
             this.Controls.Add(this.label2);
@@ -153,6 +197,7 @@
             this.Controls.Add(this.lstValores);
             this.Controls.Add(this.dtpFim);
             this.Controls.Add(this.dtpInicio);
+            this.MinimumSize = new System.Drawing.Size(675, 500);
             this.Name = "frmGraficos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Graficos";
@@ -160,6 +205,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,5 +224,10 @@
         private System.Windows.Forms.ToolStripButton btnBuscar;
         private System.Windows.Forms.ToolStripButton btnExcel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.Timer tmrRelogio;
+        private System.Windows.Forms.ToolStripStatusLabel lblMEM;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel lblHora;
     }
 }

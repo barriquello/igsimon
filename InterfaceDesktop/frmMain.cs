@@ -263,9 +263,10 @@ namespace InterfaceDesktop
         // Busca todas as informações do intervalo informado
         private void BuscaDados(UInt32 Inicio, UInt32 Final)
         {
+            toolStrip1.Enabled =
+                chartTemperatura.Enabled = false;
             List<RegistroDB> Registros2 = new List<RegistroDB>();
             // Medir performance:
-            //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch(); sw.Start();
             //Verifica qual é o último registro no servidor
             string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
             UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime));// Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
@@ -284,107 +285,146 @@ namespace InterfaceDesktop
             FeedServidor[] strTodas = Variaveis.strVariaveis();
             // para cada variável do servidor:
             List<int> Salvar = new List<int>();
-            toolStripProgressBar1.Maximum = strTodas.Length + 1;
-            for (int jj = 0; jj < strTodas.Length; jj++)
+
+            UInt32 Inicio2 = Inicio;
+            UInt32 janela = 24 * 60 * 60; // 1 dia
+            toolStripProgressBar1.Maximum = 1000; //100%
+            float progresso = 0;
+            float passo = 1000 / ((float)(strTodas.Length + 1) * (float)(Ultimo - Inicio) / (float)janela);
+            do
             {
-                toolStripProgressBar1.Value = jj;
-                // Busca todos os valores do servidor
-                string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio, Ultimo, strTodas[jj].IndiceFeed);
-
-                List<RegistroCSV> Dados = CSV2Matriz(strTemp);
-                // Guarda os dados em uma variável temporária
-                for (int kk = 0; kk < Dados.Count; kk++)
+                Salvar.Clear();
+                Registros2.Clear();
+                UInt32 final;
+                if ((Inicio2 + janela) > Ultimo)
                 {
-                    UInt32 Horario_ = Dados[kk].timeUnix();
-
-                    int indice = Registros2.FindIndex(x => x.Horario == Horario_); //2,5s
-                    //int indice = BuscaIndice(Horario_);
-
-                    //int indice = Registros.IndexOf(new RegistroDB() { Horario = Horario_ }); //8 segundos
-                    //int indice = Registros.TakeWhile(hora => hora.Horario !=Horario_ ).Count(); // 3,5s
-                    if (indice < 0) // se não existe vamos criar um novo
-                    {
-                        Registros2.Add(new RegistroDB() { Horario = Horario_ });
-                        indice = Registros2.Count - 1;
-                        //Registros2[indice].Horario = Horario_;
-                    }
-                    Registros2[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();
-                }
-            }
-            for (int mm = 0; mm < Registros2.Count; mm++)
-            {
-                int indice = Registros.FindIndex(x => x.Horario == Registros2[mm].Horario); //2,5s
-
-                if (indice < 0)
-                {
-                    Registros.Add(Registros2[mm]);
-                    Salvar.Add(mm);
+                    final = Ultimo;
                 }
                 else
                 {
-                    // já deve estar lá
-                    //Registros[indice] = Registros2[mm];
+                    final = Inicio2 + janela;
                 }
-            }
+
+                for (int jj = 0; jj < strTodas.Length; jj++)
+                {
+                    try
+                    {
+                        toolStripProgressBar1.Value = (int)(progresso);
+                    }
+                    catch
+                    {
+                        toolStripProgressBar1.Value = toolStripProgressBar1.Maximum;
+                    }
+                    progresso += passo;
+                    // Busca todos os valores do servidor
+                    string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio2, final, strTodas[jj].IndiceFeed);
+                    Application.DoEvents();
+                    List<RegistroCSV> Dados = CSV2Matriz(strTemp);
+                    // sw.Stop(); Console.WriteLine(string.Format("decodifica para matriz {0} jj={1}", sw.ElapsedMilliseconds, jj)); sw.Restart();
+
+                    // Guarda os dados em uma variável temporária
+                    UInt32 Horario_;
+                    for (int kk = 0; kk < Dados.Count; kk++)
+                    {
+                        Horario_ = Dados[kk].timeUnix();
+                        int indice = Registros2.FindIndex(x => x.Horario == Horario_); //2,5s
+                        //int indice = BuscaIndice(Horario_);
+                        //int indice = Registros.IndexOf(new RegistroDB() { Horario = Horario_ }); //8 segundos
+                        //int indice = Registros.TakeWhile(hora => hora.Horario !=Horario_ ).Count(); // 3,5s
+                        if (indice < 0) // se não existe vamos criar um novo
+                        {
+                            Registros2.Add(new RegistroDB() { Horario = Horario_ });
+                            indice = Registros2.Count - 1;
+                            //Registros2[indice].Horario = Horario_;
+                        }
+                        Registros2[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();
+                    }
+
+                }
+                for (int mm = 0; mm < Registros2.Count; mm++)
+                {
+                    int indice = Registros.FindIndex(x => x.Horario == Registros2[mm].Horario); //2,5s
+
+                    if (indice < 0)
+                    {
+                        Registros.Add(Registros2[mm]);
+                        Salvar.Add(mm);
+                    }
+                    else
+                    {
+                        // já deve estar lá
+                        //Registros[indice] = Registros2[mm];
+                    }
+                }
+                Inicio2 += janela;
+                if (Salvar.Count > 0)
+                {
+                    HashSet<string> Conteudo;
+                    DateTime Data = new DateTime(1970, 1, 1);
+                    DateTime DataNova = Uteis.Unix2time(Registros2[Salvar[0]].Horario);
+                    string Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(DataNova));
+                    //string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
+                    StreamWriter Gravar;// = new StreamWriter(Arquivo, true);
+                    string strLinha = "";
+                    if (!(new FileInfo(Arquivo).Exists))
+                    {
+                        Conteudo = new HashSet<string>();
+                        Gravar = new StreamWriter(Arquivo, true);
+                        // Gera Arquivo CSV com cabeçalho
+                        strLinha = "Horario";
+                        for (int mmm = 0; mmm < strTodas.Length; mmm++)
+                        {
+                            strLinha += Global.SeparadorCSV + strTodas[mmm].NomeFeed;
+                        }
+                        Gravar.WriteLine(strLinha);
+                    }
+                    else
+                    {
+                        Conteudo = new HashSet<string>(File.ReadAllLines(Arquivo));
+                        Gravar = new StreamWriter(Arquivo, true);
+                    }
+                    for (int mm = 0; mm < Salvar.Count; mm++)
+                    {
+                        DataNova = Uteis.Unix2time(Registros2[Salvar[mm]].Horario);
+                        if (Data.Date != DataNova.Date)
+                        {
+                            Data = DataNova;
+                            Gravar.Dispose();
+                            Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(Data));
+                            if (!(new FileInfo(Arquivo).Exists))
+                            {
+                                Conteudo = new HashSet<string>();
+                                Gravar = new StreamWriter(Arquivo, true);
+                                // Gera Arquivo CSV com cabeçalho
+                                strLinha = "Horario";
+                                for (int mmm = 0; mmm < strTodas.Length; mmm++)
+                                {
+                                    strLinha += Global.SeparadorCSV + strTodas[mmm].NomeFeed;
+                                }
+                                Gravar.WriteLine(strLinha);
+                            }
+                            else
+                            {
+                                Conteudo = new HashSet<string>(File.ReadAllLines(Arquivo));
+                                Gravar = new StreamWriter(Arquivo, true);
+                            }
+                        }
+                        SalvarCSV(Registros2[Salvar[mm]], Gravar, Conteudo);
+
+                    }
+                    Gravar.Close();
+                    Registros =
+                        Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
+                    while (Registros.Count > Global.RegistrosMAXIMO)
+                    {
+                        Registros.RemoveAt(0);
+                    }
+                }
+            } while (Inicio2 + janela < Ultimo);
 
             toolStripProgressBar1.Value = 0;
-            if (Salvar.Count > 0)
-            {
-                HashSet<string> Conteudo;
-                DateTime Data = new DateTime(1970, 1, 1);
-                DateTime DataNova = Uteis.Unix2time(Registros2[Salvar[0]].Horario);
-                string Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(DataNova));
-                //string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
-                StreamWriter Gravar;// = new StreamWriter(Arquivo, true);
-                string strLinha = "";
-                if (!(new FileInfo(Arquivo).Exists))
-                {
-                    Conteudo = new HashSet<string>();
-                    Gravar = new StreamWriter(Arquivo, true);
-                    // Gera Arquivo CSV com cabeçalho
-                    strLinha = "Horario";
-                    for (int mmm = 0; mmm < strTodas.Length; mmm++)
-                    {
-                        strLinha += Global.SeparadorCSV + strTodas[mmm].NomeFeed;
-                    }
-                    Gravar.WriteLine(strLinha);
-                }
-                else
-                {
-                    Conteudo = new HashSet<string>(File.ReadAllLines(Arquivo));
-                    Gravar = new StreamWriter(Arquivo, true);
-                }
-                for (int mm = 0; mm < Salvar.Count; mm++)
-                {
-                    DataNova = Uteis.Unix2time(Registros2[Salvar[mm]].Horario);
-                    if (Data.Date != DataNova.Date)
-                    {
-                        Data = DataNova;
-                        Gravar.Dispose();
-                        Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(Data));
-                        if (!(new FileInfo(Arquivo).Exists))
-                        {
-                            Conteudo = new HashSet<string>();
-                            Gravar = new StreamWriter(Arquivo, true);
-                            // Gera Arquivo CSV com cabeçalho
-                            strLinha = "Horario";
-                            for (int mmm = 0; mmm < strTodas.Length; mmm++)
-                            {
-                                strLinha += Global.SeparadorCSV + strTodas[mmm].NomeFeed;
-                            }
-                            Gravar.WriteLine(strLinha);
-                        }
-                        else
-                        {
-                            Conteudo = new HashSet<string>(File.ReadAllLines(Arquivo));
-                            Gravar = new StreamWriter(Arquivo, true);
-                        }
-                    }
-                    SalvarCSV(Registros2[Salvar[mm]], Gravar, Conteudo);
-
-                }
-                Gravar.Close();
-            }
+            toolStrip1.Enabled =
+                chartTemperatura.Enabled = true;
         }
 
         /// <summary>Salva num arquivo CSV os dados</summary>
@@ -605,6 +645,7 @@ namespace InterfaceDesktop
         // Atualiza os gráficos
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
+            tmrGraficos.Enabled = false;
             bool Plotar = false;
             // Rotina para buscar novas informações no servidor e exibir na tela
             string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
@@ -1162,6 +1203,14 @@ namespace InterfaceDesktop
                 }
                 catch { }
             }
+            chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled =
+                !((chartTemperatura.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fTOleo.NomeFeed].Enabled));
+            chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
+                (!((chartTemperatura.Series[Variaveis.fIa.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fIb.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fIc.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled;
+            chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
+                (!((chartTemperatura.Series[Variaveis.fVan.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbn.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVcn.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled;
+            chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                (!((chartTemperatura.Series[Variaveis.fVab.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVca.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled;
         }
         /// <summary>Procura um item na treeview e marca/desmarca tudo abaixo</summary>
         private void MarcarTodasAbaixo(TreeNodeCollection Item, string p1, bool p2)

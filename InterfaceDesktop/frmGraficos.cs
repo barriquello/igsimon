@@ -147,10 +147,51 @@ namespace InterfaceDesktop
             }
             inicio = inicio.AddDays(1); //próximo
             // Não precisa verificar nada
-            while (Fim.Subtract(inicio).Days>1)
+            if (inicio < Fim)
+            {
+                do
+                {
+                    Arquivo = ComandosCSV.ArquivoCSV(inicio);
+                    if (File.Exists(Arquivo))
+                    {
+                        using (StreamReader leitor = new StreamReader(Arquivo))
+                        {
+                            // Identifica a ordem das variáveis
+                            Arquivo = leitor.ReadLine();
+                            string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                            for (int jj = 1; jj < campos.Length; jj++)
+                            {
+                                for (int mm = 0; mm < fdd.Length; mm++)
+                                {
+                                    if (campos[jj] == fdd[mm].NomeFeed)
+                                    {
+                                        indices[jj] = mm;
+                                        break;
+                                    }
+                                }
+                            }
+                            while (!leitor.EndOfStream)
+                            {
+                                RegistroDB reg = new RegistroDB();
+                                Arquivo = leitor.ReadLine().Replace('.', ',');
+                                campos = Arquivo.Split(Global.SeparadorCSV);
+                                reg.Horario = Convert.ToUInt32(campos[0]);
+                                for (int jj = 1; jj < campos.Length; jj++)
+                                {
+                                    reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                                }
+                                Registros.Add(reg);
+                            }
+                        }
+                    }
+                    inicio = inicio.AddDays(1); //próximo
+                } while (Fim.Subtract(inicio).Days > 1);
+            }
+            // último dia (verificar horário de término)
+            if (Fim > inicio)
             {
                 Arquivo = ComandosCSV.ArquivoCSV(inicio);
-                if (File.Exists(Arquivo))
+                if (File.Exists(Arquivo) & (inicio < Fim))
                 {
                     using (StreamReader leitor = new StreamReader(Arquivo))
                     {
@@ -178,50 +219,14 @@ namespace InterfaceDesktop
                             {
                                 reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
                             }
-                            Registros.Add(reg);
-                        }
-                    }
-                }
-                inicio = inicio.AddDays(1); //próximo
-            }
-            // último dia (verificar horário de término)
-            Arquivo = ComandosCSV.ArquivoCSV(inicio);
-            if (File.Exists(Arquivo) & (inicio<Fim))
-            {
-                using (StreamReader leitor = new StreamReader(Arquivo))
-                {
-                    // Identifica a ordem das variáveis
-                    Arquivo = leitor.ReadLine();
-                    string[] campos = Arquivo.Split(Global.SeparadorCSV);
-                    for (int jj = 1; jj < campos.Length; jj++)
-                    {
-                        for (int mm = 0; mm < fdd.Length; mm++)
-                        {
-                            if (campos[jj] == fdd[mm].NomeFeed)
+                            if (Fim.Subtract(Uteis.Unix2time(reg.Horario)).TotalSeconds > 0)
                             {
-                                indices[jj] = mm;
-                                break;
+                                Registros.Add(reg);
                             }
                         }
                     }
-                    while (!leitor.EndOfStream)
-                    {
-                        RegistroDB reg = new RegistroDB();
-                        Arquivo = leitor.ReadLine().Replace('.', ',');
-                        campos = Arquivo.Split(Global.SeparadorCSV);
-                        reg.Horario = Convert.ToUInt32(campos[0]);
-                        for (int jj = 1; jj < campos.Length; jj++)
-                        {
-                            reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
-                        }
-                        if (Fim.Subtract(Uteis.Unix2time(reg.Horario)).TotalSeconds > 0)
-                        {
-                            Registros.Add(reg);
-                        }
-                    }
                 }
             }
-
         }
 
         private void GeraGrafico()
@@ -518,7 +523,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PagedMemorySize64/1024f/1024f);
         }
     }
 }

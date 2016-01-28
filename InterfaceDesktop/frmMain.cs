@@ -264,6 +264,7 @@ namespace InterfaceDesktop
         private void BuscaDados(UInt32 Inicio, UInt32 Final)
         {
             toolStrip1.Enabled =
+                tmrGraficos.Enabled =
                 chartTemperatura.Enabled = false;
             List<RegistroDB> Registros2 = new List<RegistroDB>();
             // Medir performance:
@@ -316,9 +317,12 @@ namespace InterfaceDesktop
                         toolStripProgressBar1.Value = toolStripProgressBar1.Maximum;
                     }
                     progresso += passo;
+                    tmrGraficos.Enabled = false;
                     // Busca todos os valores do servidor
                     string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio2, final, strTodas[jj].IndiceFeed);
+                    tmrGraficos.Enabled = false;
                     Application.DoEvents();
+                    tmrGraficos.Enabled = false;
                     List<RegistroCSV> Dados = CSV2Matriz(strTemp);
                     // sw.Stop(); Console.WriteLine(string.Format("decodifica para matriz {0} jj={1}", sw.ElapsedMilliseconds, jj)); sw.Restart();
 
@@ -581,7 +585,7 @@ namespace InterfaceDesktop
             JanelaDeTempo = new TimeSpan(2, 0, 0);
             cmbJanela.Text = Properties.Settings.Default.Janela;
             //toolStripComboBox1_TextChanged(new object(), new EventArgs());
-            tmrGraficos.Enabled = true;
+            //tmrGraficos.Enabled = true;
         }
 
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
@@ -639,7 +643,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PeakPagedMemorySize64 / 1024f / 1024f);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PagedMemorySize64 / 1024f / 1024f);
         }
 
         // Atualiza os gráficos
@@ -655,7 +659,7 @@ namespace InterfaceDesktop
             //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             else
                 return;
-            tmrGraficos.Enabled = false;
+            //tmrGraficos.Enabled = false;
             if (tmrGraficos.Interval != Global.intTaxaAtualizacao)
             {
                 // Primeira execução

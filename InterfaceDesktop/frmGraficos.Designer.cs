@@ -40,10 +40,10 @@
             this.btnExcel = new System.Windows.Forms.ToolStripButton();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
             this.lblMEM = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -71,11 +71,12 @@
             // 
             this.lstValores.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstValores.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lstValores.FormattingEnabled = true;
             this.lstValores.IntegralHeight = false;
             this.lstValores.Location = new System.Drawing.Point(773, 4);
             this.lstValores.Name = "lstValores";
-            this.lstValores.Size = new System.Drawing.Size(201, 502);
+            this.lstValores.Size = new System.Drawing.Size(201, 489);
             this.lstValores.TabIndex = 1;
             // 
             // label1
@@ -103,7 +104,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
-            this.chrGrafico.Size = new System.Drawing.Size(755, 457);
+            this.chrGrafico.Size = new System.Drawing.Size(755, 444);
             this.chrGrafico.TabIndex = 3;
             this.chrGrafico.Text = "chart1";
             this.chrGrafico.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chrGrafico_CursorPositionChanged);
@@ -155,15 +156,10 @@
             this.lblHora});
             this.statusStrip1.Location = new System.Drawing.Point(0, 496);
             this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip1.Size = new System.Drawing.Size(986, 22);
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // tmrRelogio
-            // 
-            this.tmrRelogio.Enabled = true;
-            this.tmrRelogio.Interval = 500;
-            this.tmrRelogio.Tick += new System.EventHandler(this.tmrRelogio_Tick);
             // 
             // lblMEM
             // 
@@ -174,7 +170,7 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(920, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(951, 17);
             this.toolStripStatusLabel1.Spring = true;
             // 
             // lblHora
@@ -182,6 +178,12 @@
             this.lblHora.Name = "lblHora";
             this.lblHora.Size = new System.Drawing.Size(10, 17);
             this.lblHora.Text = " ";
+            // 
+            // tmrRelogio
+            // 
+            this.tmrRelogio.Enabled = true;
+            this.tmrRelogio.Interval = 500;
+            this.tmrRelogio.Tick += new System.EventHandler(this.tmrRelogio_Tick);
             // 
             // frmGraficos
             // 

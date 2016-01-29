@@ -30,4 +30,9 @@ namespace InterfaceDesktop
         /// <summary>Energia</summary>
         En, En0
     }
+    /// <summary>Identificador da chamada para exportar para excel (xlsx)</summary>
+    public enum FormSalvarExcel
+    {
+        frmMain, frmGraficos, frmComparacao
+    }
 }

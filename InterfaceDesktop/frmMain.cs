@@ -1328,7 +1328,7 @@ namespace InterfaceDesktop
                     default:
                         {
                             // Salvar
-                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao),Registros);
+                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), Uteis.Time2Unix(tUltimaAtualizacao),FormSalvarExcel.frmMain);
                             Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
                             if (VerificaExcel == null)
                             {

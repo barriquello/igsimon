@@ -11,7 +11,7 @@ namespace InterfaceDesktop
 {
     public partial class frmGraficos : Form
     {
-        private static List<RegistroDB> Registros = new List<RegistroDB>();
+        public static List<RegistroDB> Registros = new List<RegistroDB>();
         FeedServidor[] vars = Variaveis.strVariaveis();
 
         private static DateTime Inicio;
@@ -355,10 +355,11 @@ namespace InterfaceDesktop
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             SaveFileDialog SalvaArquivo = new SaveFileDialog();
-            SalvaArquivo.FileName = System.IO.Path.Combine(Pasta, "Exportar.xlsx");
             SalvaArquivo.InitialDirectory = Pasta;
+
+            SalvaArquivo.FileName = System.IO.Path.Combine(Pasta, "Exportar.xlsx");
             SalvaArquivo.Filter = "Arquivo XLSX|*.xlsx|Arquivo CSV|*.csv|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
-            SalvaArquivo.DefaultExt = "*.xlsx";
+
             if (SalvaArquivo.ShowDialog() == DialogResult.OK)
             {
                 int ponto = SalvaArquivo.FileName.LastIndexOf('.');
@@ -419,18 +420,18 @@ namespace InterfaceDesktop
                     default:
                         {
                             // Salvar
-                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, UInt32.MinValue, UInt32.MaxValue, Registros);
+                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, UInt32.MinValue, UInt32.MaxValue, FormSalvarExcel.frmGraficos);// Registros);
                             Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
                             // Abrir arquivo
-                            //if (VerificaExcel == null)
-                            //{
-                            //    System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
-                            //    //System.Diagnostics.Process.Start(SalvaArquivo.FileName);
-                            //}
-                            //else
-                            //{
-                            //    System.Diagnostics.Process.Start(SalvaArquivo.FileName);
-                            //}
+                            if (VerificaExcel == null)
+                            {
+                                System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
+                                //System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            }
+                            else
+                            {
+                                System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            }
                             break;
                         }
                 }
@@ -523,7 +524,7 @@ namespace InterfaceDesktop
             // Relógio
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
-            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PagedMemorySize64/1024f/1024f);
+            lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PagedMemorySize64 / 1024f / 1024f);
         }
     }
 }

@@ -65,7 +65,7 @@
             this.dtpFim.Location = new System.Drawing.Point(187, 23);
             this.dtpFim.Name = "dtpFim";
             this.dtpFim.Size = new System.Drawing.Size(170, 20);
-            this.dtpFim.TabIndex = 0;
+            this.dtpFim.TabIndex = 1;
             // 
             // lstValores
             // 
@@ -77,7 +77,7 @@
             this.lstValores.Location = new System.Drawing.Point(773, 4);
             this.lstValores.Name = "lstValores";
             this.lstValores.Size = new System.Drawing.Size(201, 489);
-            this.lstValores.TabIndex = 1;
+            this.lstValores.TabIndex = 3;
             // 
             // label1
             // 
@@ -105,7 +105,7 @@
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
             this.chrGrafico.Size = new System.Drawing.Size(755, 444);
-            this.chrGrafico.TabIndex = 3;
+            this.chrGrafico.TabIndex = 4;
             this.chrGrafico.Text = "chart1";
             this.chrGrafico.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chrGrafico_CursorPositionChanged);
             this.chrGrafico.AxisViewChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.ViewEventArgs>(this.chrGrafico_AxisViewChanged);
@@ -123,7 +123,7 @@
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip1.Size = new System.Drawing.Size(75, 39);
-            this.toolStrip1.TabIndex = 9;
+            this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "Ações";
             // 
             // btnBuscar

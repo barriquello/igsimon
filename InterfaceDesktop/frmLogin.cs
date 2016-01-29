@@ -1,7 +1,7 @@
 ﻿using System; // Alguns tipos de variáveis utilizados
 using System.Windows.Forms; // Formulários
-using System.IO;
-using System.Data; // Arquivos
+//using System.IO;
+//using System.Data; // Arquivos
 
 namespace InterfaceDesktop
 {

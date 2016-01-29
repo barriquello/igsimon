@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic; //Formulários e controles
-using System.IO; // Sistema de arquivos
+//using System.Collections.Generic; //Formulários e controles
+//using System.IO; // Sistema de arquivos
 using System.Security.Cryptography; // sistema de criptografia
 using System.Text; //Codificação de texto
-using System.Windows.Forms;
-using System.Linq;
+//using System.Windows.Forms;
+//using System.Linq;
 namespace InterfaceDesktop
 {
     class Uteis

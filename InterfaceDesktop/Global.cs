@@ -7,15 +7,15 @@ namespace InterfaceDesktop
     {
         #region Informações uteis
         /// <summary>Separador de campo do CSV no servidor web</summary>
-        public static readonly char SeparadorCSV = '\t';//',';// '\t';
+        public static readonly char charSeparadorCSV = '\t';//',';// '\t';
         /// <summary>Separador CSV para o arquivo CSV a ser exportado</summary>
-        public static readonly char SeparadorCSVCSV = ';';
+        public static readonly char charSeparadorCSVCSV = ';';
         /// <summary>Linha de cabeçalho no CSV</summary>
-        public static readonly bool CabecalhoCSV = true;
+        public static readonly bool boolCabecalhoCSV = true;
         /// <summary>Nível alto</summary>
-        public static readonly int NOleoAlto = 7;
+        public static readonly int intNOleoAlto = 7;
         /// <summary>Nível bbaixo</summary>
-        public static readonly int NOleoBaixo = 3;
+        public static readonly int intNOleoBaixo = 3;
 
         public static readonly string strNOleoAlto = "\u2191\tNível máximo";
         public static readonly string strNOleoBaixo = "\u2193\tNível baixo ";
@@ -23,7 +23,7 @@ namespace InterfaceDesktop
 
 
         /// <summary>Numero máximo de registros a manter na memória</summary>
-        public static readonly int RegistrosMAXIMO = 7 * 24 * 60 * 2; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
+        public static readonly int intRegistrosMAXIMO = 7 * 24 * 60 * 2; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias
         /// <summary>Intervalo entre comunicações com o servidor web</summary>
         public static readonly int intTaxaAtualizacao = 15000;  //ms
         /// <summary>Precisão de exibição de dados na tela</summary>
@@ -32,14 +32,14 @@ namespace InterfaceDesktop
 
         #region Configurações relativas ao comportamento do formulário de configurações
         // Flag para indicar somente a obrigatoriedade da criação de um usuário
-        public static bool tabPage1 = true;
+        public static bool boolNovoUsuario = true;
         // Flag para indicar a configuração obrigatória
-        public static bool tabPage2 = true;
+        //public static bool boolNovaConfiguracao = true;
 
         /// <summary>Flag para indiar a necessidade de reiniciar o formulário principal</summary>
-        public static bool restart = false;
+        public static bool boolReiniciar = false;
         /// <summary>Flag para controlar o comportamento do botão cancelar do formulário de configuração</summary>
-        public static bool ConfigObriatoria = false;
+        public static bool boolConfigObriatoria = false;
 
         #endregion
     }

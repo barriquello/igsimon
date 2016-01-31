@@ -6,21 +6,7 @@ namespace InterfaceDesktop
 {
     public class SalvarExcel
     {
-        private System.UInt32 Inicio = 0;
-        private System.UInt32 Final = 0;
-        private readonly string[] Colunas = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ" };
-        //private static List<RegistroDB> Registros = new List<RegistroDB>();
-        private FormSalvarExcel formulario = FormSalvarExcel.frmMain;
-        public void SalvarXLSX(string Arquivo, System.UInt32 __Inicio, System.UInt32 __Final, FormSalvarExcel frm)// List<RegistroDB> regs)
-        {
-            Inicio = __Inicio;
-            Final = __Final;
-            formulario = frm;
-            //Registros = regs;
-            CreatePackage(Arquivo);
-        }
-
-        private void CreatePackage(string Arquivo)
+        public void SalvarXLSX(string Arquivo, System.UInt32 Inicio, System.UInt32 Final, FormSalvarExcel formulario)
         {
             using (SpreadsheetDocument excel = SpreadsheetDocument.Create(Arquivo, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook))
             {

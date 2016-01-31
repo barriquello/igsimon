@@ -83,7 +83,7 @@ namespace CriarRegistrosLocalhost
                 // Van Vbn Vcn, 16bits
                 uc26.text() * 100 / 256, uc27.text() * 100 / 256, uc28.text() * 100 / 256,
                 // temperaturas, nível, válvula (não necessáriamente nessa ordem), 8bits
-                uc29.text(), uc30.text() * 100 / 256, uc31.text() * 100 / 256, uc32.text() * 100 / 256);
+                uc29.text(), uc30.text() * 100 / 256, ((int)uc31.text() & 0x01), ((int)uc32.text()) &0x07);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

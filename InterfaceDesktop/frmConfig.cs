@@ -86,14 +86,14 @@ namespace InterfaceDesktop
                 Properties.Settings.Default.Servidor = txtServidor.Text;
 
             Properties.Settings.Default.Save();
-            Global.restart = true;
+            Global.boolReiniciar = true;
             this.Close();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
 
-            if (Global.ConfigObriatoria)
+            if (Global.boolConfigObriatoria)
             {
                 // Encerra o programa
                 this.Close();
@@ -101,7 +101,7 @@ namespace InterfaceDesktop
             else
             {
                 // Encerra o formulário
-                Global.restart = false;
+                Global.boolReiniciar = false;
                 this.Close();
             }
         }
@@ -178,8 +178,9 @@ namespace InterfaceDesktop
 
         private void frmConfig_Load(object sender, EventArgs e)
         {
+            this.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             txtNome.Text = Servidor.Username;
-            if (!Global.tabPage1)
+            if (!Global.boolNovoUsuario)
             {
                 // Rearanja os controles, ocultando as configurações não relevantes 
                 tabControl1.TabPages.Remove(tabPage1);

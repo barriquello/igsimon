@@ -20,12 +20,12 @@ namespace InterfaceDesktop
                     return;
                 }
                 // Criar um novo usuário
-                Global.tabPage1 = false;
+                Global.boolNovoUsuario = false;
                 // Carrega o formulario de configuração para criar um novo usuário
                 //frmConfig Config = new frmConfig();
                 //Config.ShowDialog();
                 Application.Run(new frmConfig());
-                Global.tabPage1 = true;
+                Global.boolNovoUsuario = true;
                 CarregaConfig();
             }
             contador = 0;

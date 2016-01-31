@@ -130,7 +130,7 @@
             this.txtAPIKEY.Name = "txtAPIKEY";
             this.txtAPIKEY.Size = new System.Drawing.Size(217, 20);
             this.txtAPIKEY.TabIndex = 2;
-            this.txtAPIKEY.Text = "c604ff8b6c32f2ea1d32d9f1cf2c6c0c";
+            this.txtAPIKEY.Text = "a4b245ca16c183c2ad2286efb342d09a";
             // 
             // label17
             // 
@@ -143,7 +143,7 @@
             // 
             // btnGerar
             // 
-            this.btnGerar.Location = new System.Drawing.Point(12, 349);
+            this.btnGerar.Location = new System.Drawing.Point(12, 354);
             this.btnGerar.Name = "btnGerar";
             this.btnGerar.Size = new System.Drawing.Size(46, 23);
             this.btnGerar.TabIndex = 6;
@@ -163,7 +163,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(171, 352);
+            this.button1.Location = new System.Drawing.Point(171, 354);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(109, 23);
             this.button1.TabIndex = 9;

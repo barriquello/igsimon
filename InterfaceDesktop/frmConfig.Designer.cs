@@ -987,7 +987,6 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = global::InterfaceDesktop.Properties.Resources.ico16;
             this.MinimumSize = new System.Drawing.Size(473, 300);
             this.Name = "frmConfig";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

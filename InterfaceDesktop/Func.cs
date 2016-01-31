@@ -9,8 +9,7 @@ namespace InterfaceDesktop
     public enum func
     {
         /// <summary>Potência (ativa, reativa, aparente...)</summary>
-        Po,
-        Po0, //0 = não plotar
+        Po, Po0, //0 = não plotar
         /// <summary>Tensão de fase (Van...)</summary>
         Vf, Vf0,
         /// <summary>Tensão de linha (Vab...)</summary>

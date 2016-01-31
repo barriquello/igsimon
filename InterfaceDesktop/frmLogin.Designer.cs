@@ -174,7 +174,6 @@
             this.Controls.Add(this.txtSenha);
             this.Controls.Add(this.txtUsername);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = global::InterfaceDesktop.Properties.Resources.ico16;
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(429, 361);
             this.Name = "frmLogin";

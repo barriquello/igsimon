@@ -14,8 +14,8 @@ namespace InterfaceDesktop
         public static List<RegistroDB> Registros = new List<RegistroDB>();
         FeedServidor[] vars = Variaveis.strVariaveis();
 
-        private static DateTime Inicio;
-        private static DateTime Fim;
+        private DateTime Inicio;
+        private DateTime Fim;
 
         public frmGraficos()
         {
@@ -24,6 +24,7 @@ namespace InterfaceDesktop
 
         private void Graficos_Load(object sender, EventArgs e)
         {
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
             if (ListaDeArquivos.Length > 0)
             {
@@ -114,7 +115,7 @@ namespace InterfaceDesktop
                 {
                     // Identifica a ordem das variáveis
                     Arquivo = leitor.ReadLine();
-                    string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                    string[] campos = Arquivo.Split(Global.charSeparadorCSV);
                     for (int jj = 1; jj < campos.Length; jj++)
                     {
                         for (int mm = 0; mm < fdd.Length; mm++)
@@ -131,7 +132,7 @@ namespace InterfaceDesktop
                     {
                         RegistroDB reg = new RegistroDB();
                         Arquivo = leitor.ReadLine().Replace('.', ',');
-                        campos = Arquivo.Split(Global.SeparadorCSV);
+                        campos = Arquivo.Split(Global.charSeparadorCSV);
                         reg.Horario = Convert.ToUInt32(campos[0]);
                         for (int jj = 1; jj < campos.Length; jj++)
                         {
@@ -158,7 +159,7 @@ namespace InterfaceDesktop
                         {
                             // Identifica a ordem das variáveis
                             Arquivo = leitor.ReadLine();
-                            string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                            string[] campos = Arquivo.Split(Global.charSeparadorCSV);
                             for (int jj = 1; jj < campos.Length; jj++)
                             {
                                 for (int mm = 0; mm < fdd.Length; mm++)
@@ -174,7 +175,7 @@ namespace InterfaceDesktop
                             {
                                 RegistroDB reg = new RegistroDB();
                                 Arquivo = leitor.ReadLine().Replace('.', ',');
-                                campos = Arquivo.Split(Global.SeparadorCSV);
+                                campos = Arquivo.Split(Global.charSeparadorCSV);
                                 reg.Horario = Convert.ToUInt32(campos[0]);
                                 for (int jj = 1; jj < campos.Length; jj++)
                                 {
@@ -197,7 +198,7 @@ namespace InterfaceDesktop
                     {
                         // Identifica a ordem das variáveis
                         Arquivo = leitor.ReadLine();
-                        string[] campos = Arquivo.Split(Global.SeparadorCSV);
+                        string[] campos = Arquivo.Split(Global.charSeparadorCSV);
                         for (int jj = 1; jj < campos.Length; jj++)
                         {
                             for (int mm = 0; mm < fdd.Length; mm++)
@@ -213,7 +214,7 @@ namespace InterfaceDesktop
                         {
                             RegistroDB reg = new RegistroDB();
                             Arquivo = leitor.ReadLine().Replace('.', ',');
-                            campos = Arquivo.Split(Global.SeparadorCSV);
+                            campos = Arquivo.Split(Global.charSeparadorCSV);
                             reg.Horario = Convert.ToUInt32(campos[0]);
                             for (int jj = 1; jj < campos.Length; jj++)
                             {
@@ -264,12 +265,11 @@ namespace InterfaceDesktop
                 chrGrafico.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
                 // Resolução máxima
                 chrGrafico.ChartAreas[kk].CursorX.IntervalType = DateTimeIntervalType.Minutes;
-                chrGrafico.ChartAreas[kk].CursorX.Interval = 1;// minutos
+                chrGrafico.ChartAreas[kk].CursorX.Interval = 20;// minutos
                 chrGrafico.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSize = 1;
                 chrGrafico.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSizeType = DateTimeIntervalType.Minutes;
 
             }
-
 
             // desabilita as barras de rolagem dos gráficos de cima
             chrGrafico.ChartAreas["P"].AxisX.ScrollBar.Enabled =
@@ -380,7 +380,7 @@ namespace InterfaceDesktop
                                     StringBuilder bstr = new StringBuilder("Horario");
                                     for (int jj = 0; jj < vars.Length; jj++)
                                     {
-                                        bstr.Append(Global.SeparadorCSVCSV);
+                                        bstr.Append(Global.charSeparadorCSVCSV);
                                         bstr.Append(vars[jj].NomeFeed);
                                     }
                                     GravarArquivoCSV.WriteLine(bstr);
@@ -389,7 +389,7 @@ namespace InterfaceDesktop
                                         bstr = new StringBuilder(Registros[jj].Horario.ToString());
                                         for (int kk = 0; kk < vars.Length; kk++)
                                         {
-                                            bstr.Append(Global.SeparadorCSVCSV);
+                                            bstr.Append(Global.charSeparadorCSVCSV);
                                             bstr.Append(Registros[jj].P[vars[kk].indice].ToString(SeparadorDecimal));
                                         }
                                         GravarArquivoCSV.WriteLine(bstr);
@@ -483,7 +483,7 @@ namespace InterfaceDesktop
                     {
                         if (posicao <= Registros[jj].Horario)
                         {
-                            indice = jj;
+                            indice = (jj > 0) ? jj - 1 : jj;
                             break;
                         }
                     }
@@ -494,7 +494,7 @@ namespace InterfaceDesktop
         }
 
         /// <summary>Converte Horário em horário Unix</summary>
-        public static UInt32 Time2Unix(DateTime Horario)
+        private UInt32 Time2Unix(DateTime Horario)
         {
             return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }

@@ -287,7 +287,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(12, 12);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(294, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(291, 39);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "Ações";
             // 
@@ -326,6 +326,7 @@
             this.toolComparar.Size = new System.Drawing.Size(36, 36);
             this.toolComparar.Text = "toolStripButton1";
             this.toolComparar.ToolTipText = "Comparar gráficos";
+            this.toolComparar.Click += new System.EventHandler(this.toolComparar_Click);
             // 
             // toolExcel
             // 
@@ -351,7 +352,7 @@
             "12 Horas",
             "1 Hora"});
             this.cmbJanela.Name = "cmbJanela";
-            this.cmbJanela.Size = new System.Drawing.Size(100, 39);
+            this.cmbJanela.Size = new System.Drawing.Size(130, 39);
             this.cmbJanela.Text = "0,5 Hora";
             this.cmbJanela.TextChanged += new System.EventHandler(this.toolStripComboBox1_TextChanged);
             // 
@@ -370,6 +371,7 @@
             // 
             // tmrBlink
             // 
+            this.tmrBlink.Enabled = true;
             this.tmrBlink.Interval = 500;
             this.tmrBlink.Tick += new System.EventHandler(this.tmrBlink_Tick);
             // 
@@ -385,11 +387,10 @@
             this.Controls.Add(this.tv1);
             this.Controls.Add(this.groupBox5);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = global::InterfaceDesktop.Properties.Resources.ico16;
             this.MinimumSize = new System.Drawing.Size(1024, 677);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmMain";
+            this.Text = "Interface Online";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).EndInit();

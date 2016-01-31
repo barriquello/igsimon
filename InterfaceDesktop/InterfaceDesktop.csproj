@@ -51,7 +51,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>RES\ico48.ico</ApplicationIcon>
+    <ApplicationIcon>Icone_tamanhos.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -155,6 +155,7 @@
     <Compile Include="Variaveis.cs" />
     <EmbeddedResource Include="Analogico.resx">
       <DependentUpon>Analogico.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCompara.resx">
       <DependentUpon>frmCompara.cs</DependentUpon>
@@ -199,6 +200,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icone.ico" />
+    <Content Include="Icone_tamanhos.ico" />
+    <None Include="RES\picture.png" />
     <None Include="RES\Config2.png" />
     <None Include="RES\Online.png" />
     <None Include="RES\Offline.png" />

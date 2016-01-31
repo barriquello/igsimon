@@ -56,6 +56,7 @@ namespace InterfaceDesktop
         {
             txtUsername.Text = Servidor.Username;
             txtSenha.Text = "";
+            this.Icon =System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
 
         private void btnOffline_Click(object sender, EventArgs e)

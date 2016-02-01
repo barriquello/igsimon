@@ -112,10 +112,10 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnBuscar,
             this.btnExcel});
-            this.toolStrip1.Location = new System.Drawing.Point(680, 9);
+            this.toolStrip1.Location = new System.Drawing.Point(706, 9);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(106, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(75, 39);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "Ações";
             // 
@@ -144,7 +144,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(209, 9);
+            this.label2.Location = new System.Drawing.Point(219, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(88, 13);
             this.label2.TabIndex = 6;
@@ -163,9 +163,9 @@
             // 
             this.dtpInicio2.CustomFormat = "dd / MM / yyyy   HH : mm : ss";
             this.dtpInicio2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpInicio2.Location = new System.Drawing.Point(209, 28);
+            this.dtpInicio2.Location = new System.Drawing.Point(219, 28);
             this.dtpInicio2.Name = "dtpInicio2";
-            this.dtpInicio2.Size = new System.Drawing.Size(156, 20);
+            this.dtpInicio2.Size = new System.Drawing.Size(170, 20);
             this.dtpInicio2.TabIndex = 1;
             // 
             // dtpInicio1
@@ -174,7 +174,7 @@
             this.dtpInicio1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpInicio1.Location = new System.Drawing.Point(12, 28);
             this.dtpInicio1.Name = "dtpInicio1";
-            this.dtpInicio1.Size = new System.Drawing.Size(156, 20);
+            this.dtpInicio1.Size = new System.Drawing.Size(170, 20);
             this.dtpInicio1.TabIndex = 0;
             // 
             // chrGrafico1
@@ -191,7 +191,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(406, 9);
+            this.label3.Location = new System.Drawing.Point(426, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(136, 13);
             this.label3.TabIndex = 6;
@@ -204,7 +204,7 @@
             "1 Dia",
             "2 Horas",
             "1 Hora"});
-            this.cmbJanela.Location = new System.Drawing.Point(406, 27);
+            this.cmbJanela.Location = new System.Drawing.Point(426, 27);
             this.cmbJanela.Name = "cmbJanela";
             this.cmbJanela.Size = new System.Drawing.Size(144, 21);
             this.cmbJanela.TabIndex = 2;
@@ -253,7 +253,7 @@
             // pic1
             // 
             this.pic1.BackColor = System.Drawing.Color.Red;
-            this.pic1.Location = new System.Drawing.Point(174, 29);
+            this.pic1.Location = new System.Drawing.Point(189, 29);
             this.pic1.Name = "pic1";
             this.pic1.Size = new System.Drawing.Size(19, 19);
             this.pic1.TabIndex = 11;
@@ -263,7 +263,7 @@
             // pic2
             // 
             this.pic2.BackColor = System.Drawing.Color.Green;
-            this.pic2.Location = new System.Drawing.Point(371, 29);
+            this.pic2.Location = new System.Drawing.Point(396, 29);
             this.pic2.Name = "pic2";
             this.pic2.Size = new System.Drawing.Size(19, 19);
             this.pic2.TabIndex = 11;
@@ -292,7 +292,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(171, 9);
+            this.label4.Location = new System.Drawing.Point(186, 9);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(23, 13);
             this.label4.TabIndex = 7;
@@ -301,7 +301,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(368, 9);
+            this.label5.Location = new System.Drawing.Point(393, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(23, 13);
             this.label5.TabIndex = 7;
@@ -313,7 +313,7 @@
             this.cmbCategoria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbCategoria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategoria.FormattingEnabled = true;
-            this.cmbCategoria.Location = new System.Drawing.Point(556, 27);
+            this.cmbCategoria.Location = new System.Drawing.Point(579, 27);
             this.cmbCategoria.Name = "cmbCategoria";
             this.cmbCategoria.Size = new System.Drawing.Size(121, 21);
             this.cmbCategoria.TabIndex = 13;
@@ -321,7 +321,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(555, 9);
+            this.label6.Location = new System.Drawing.Point(578, 9);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(109, 13);
             this.label6.TabIndex = 6;
@@ -352,6 +352,7 @@
             this.Name = "frmCompara";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Comparações";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCompara_FormClosing);
             this.Load += new System.EventHandler(this.frmCompara_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

@@ -22,7 +22,7 @@ namespace InterfaceDesktop
             InitializeComponent();
         }
 
-        private void Graficos_Load(object sender, EventArgs e)
+        private void frmGraficos_Load(object sender, EventArgs e)
         {
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
@@ -525,6 +525,13 @@ namespace InterfaceDesktop
             lblHora.Text = Convert.ToString(DateTime.Now);
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
             lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PagedMemorySize64 / 1024f / 1024f);
+        }
+
+        private void frmGraficos_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Registros.Clear();
+            chrGrafico.Dispose();
+            GC.Collect(); GC.WaitForPendingFinalizers();
         }
     }
 }

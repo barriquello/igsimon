@@ -1235,6 +1235,9 @@ namespace InterfaceDesktop
         {
             Properties.Settings.Default.Janela = cmbJanela.Text;
             Properties.Settings.Default.Save();
+            Registros.Clear();
+            chartTemperatura.Dispose();
+            GC.Collect(); GC.WaitForPendingFinalizers();
         }
 
         private void toolGraficos_Click(object sender, EventArgs e)
@@ -1243,6 +1246,7 @@ namespace InterfaceDesktop
             frmGraficos Graficos = new frmGraficos();
             Hide();
             Graficos.ShowDialog();
+            Graficos.Dispose();
             Show();
             tmrGraficos.Enabled = true;
             tmrGraficos_Tick(null, null);
@@ -1380,8 +1384,10 @@ namespace InterfaceDesktop
         private void toolComparar_Click(object sender, EventArgs e)
         {
             tmrGraficos.Enabled = false;
+            frmCompara Compara = new frmCompara();
             this.Hide();
-            new frmCompara().ShowDialog();
+            Compara.ShowDialog();
+            Compara.Dispose();
             this.Show();
             tmrGraficos.Enabled = true;
         }

@@ -46,17 +46,30 @@ namespace InterfaceDesktop
                 dtpInicio1.MaxDate =
                     dtpInicio2.MaxDate =
                     ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]).Add(new TimeSpan(23, 59, 59));
-            }
 
-            dtpInicio2.Value = DateTime.Now.Date;
-            dtpInicio1.Value = dtpInicio2.Value.AddDays(-7);
-            pic1.BackColor = Cor1;
-            pic2.BackColor = Cor2;
-            for (int jj = 0; jj < vars.Length; jj++)
-            {
-                cmbCategoria.Items.Add(vars[jj].NomeFeed);
+                dtpInicio2.Value = dtpInicio2.MaxDate.Date;
+                if (dtpInicio1.MinDate < dtpInicio1.MaxDate.AddDays(-7))
+                {
+                    dtpInicio1.Value = dtpInicio1.MaxDate.Date.AddDays(-7);
+                }
+                else
+                {
+                    dtpInicio1.Value = dtpInicio1.MinDate;//.AddDays(-7);
+                }
+
+                pic1.BackColor = Cor1;
+                pic2.BackColor = Cor2;
+                for (int jj = 0; jj < vars.Length; jj++)
+                {
+                    cmbCategoria.Items.Add(vars[jj].NomeFeed);
+                }
+                cmbCategoria.SelectedIndex = 0;
             }
-            cmbCategoria.SelectedIndex = 0;
+            else
+            {
+                MessageBox.Show("Nenhum registro armazenado");
+                this.Close();
+            }
         }
 
         private DateTime ArquivoParaData(string p)
@@ -614,6 +627,13 @@ namespace InterfaceDesktop
                         }
                 }
             }
+        }
+
+        private void frmCompara_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Registros.Clear();
+            chrGrafico1.Dispose();
+            GC.Collect(); GC.WaitForPendingFinalizers();
         }
     }
 }

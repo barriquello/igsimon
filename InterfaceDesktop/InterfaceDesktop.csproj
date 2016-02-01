@@ -201,6 +201,7 @@
   <ItemGroup>
     <Content Include="Icone.ico" />
     <Content Include="Icone_tamanhos.ico" />
+    <None Include="RES\Comparacoes %282%29.png" />
     <None Include="RES\picture.png" />
     <None Include="RES\Config2.png" />
     <None Include="RES\Online.png" />
@@ -247,12 +248,12 @@
   <ItemGroup>
     <PublishFile Include="Icone.ico">
       <Visible>False</Visible>
+      <PublishState>Auto</PublishState>
+      <IncludeHash>False</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
-      <PublishState>Auto</PublishState>
-      <IncludeHash>False</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>

@@ -82,5 +82,17 @@ namespace InterfaceDesktop
                 this.Show();
             }
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (verificaSenha())
+            {
+                frmCompara Compara = new frmCompara();
+                this.Hide();
+                Compara.ShowDialog();
+                Compara.Dispose();
+                this.Show();
+            }
+        }
     }
 }

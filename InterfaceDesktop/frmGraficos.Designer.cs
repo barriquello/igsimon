@@ -203,7 +203,8 @@
             this.Name = "frmGraficos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Graficos";
-            this.Load += new System.EventHandler(this.Graficos_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGraficos_FormClosing);
+            this.Load += new System.EventHandler(this.frmGraficos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

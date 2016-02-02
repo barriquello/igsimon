@@ -355,6 +355,7 @@ namespace InterfaceDesktop
             chrGrafico1.ChartAreas["0"].CursorX.Interval = 10;// minutos
             chrGrafico1.ChartAreas["0"].AxisX.ScaleView.SmallScrollMinSize = 1;
             chrGrafico1.ChartAreas["0"].AxisX.ScaleView.SmallScrollMinSizeType = DateTimeIntervalType.Minutes;
+            chrGrafico1.ChartAreas["0"].AxisX.Enabled = AxisEnabled.False;
             Series srSerie1 = new Series("1"); // nova série
             Series srSerie2 = new Series("2"); // nova série
             srSerie1.Legend = //"LegendaOculta";
@@ -445,7 +446,7 @@ namespace InterfaceDesktop
             }
             inicio = inicio.AddDays(1); //próximo
             // Não precisa verificar nada
-            if (inicio < fim)
+            if (inicio.Date <= fim.Date)
             {
                 do
                 {
@@ -577,7 +578,7 @@ namespace InterfaceDesktop
                             }
                         }
                         AtualizaLista(Registros[indice1], Registros[indice2]);
-                        Text = string.Format("{0} {1}", indice1, indice2);
+                        //Text = string.Format("{0} {1}", indice1, indice2);
                         chrGrafico1.ChartAreas["0"].CursorX.Position = /*Uteis.Unix2time(*/Registros[indice1].Horario - Inicio1;//).ToOADate();
                     }
                 }

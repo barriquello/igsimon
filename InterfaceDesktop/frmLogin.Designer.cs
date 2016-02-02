@@ -38,7 +38,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnOffline = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.btnComparacoes = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -113,7 +113,7 @@
             this.toolStripSeparator1,
             this.btnOffline,
             this.toolStripSeparator3,
-            this.toolStripButton1,
+            this.btnComparacoes,
             this.toolStripSeparator2,
             this.btnConfig});
             this.toolStrip1.Location = new System.Drawing.Point(0, 215);
@@ -154,15 +154,15 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 135);
             // 
-            // toolStripButton1
+            // btnComparacoes
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::InterfaceDesktop.Properties.Resources.Comparacoes2;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(132, 132);
-            this.toolStripButton1.Text = "btnComparacoes";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.btnComparacoes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnComparacoes.Image = global::InterfaceDesktop.Properties.Resources.Comparacoes2;
+            this.btnComparacoes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnComparacoes.Name = "btnComparacoes";
+            this.btnComparacoes.Size = new System.Drawing.Size(132, 132);
+            this.btnComparacoes.Text = "Comparações";
+            this.btnComparacoes.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator2
             // 
@@ -221,7 +221,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton btnComparacoes;
     }
 }
 

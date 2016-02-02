@@ -10,9 +10,16 @@ namespace InterfaceDesktop
         /// <summary>Tamanho do poneiro</summary>
         private float TamanhoPonteiro = 5;
         private float _min = 0;
-        private float _max = 100;
+        private float _max = 200;
         private float _Valor = 0;
-        private float range = 100;
+        private float range = 200;
+        private float _ValorMaximo = 0;
+        private float _ValorMinimo = 0;
+        /// <summary>Retorna o valor máximo definido</summary>
+        public float ValorMaximo()
+        {
+            return _ValorMaximo;
+        }
         /// <summary>Retorna o valor mínimo da escala</summary>
         public float Min()
         {
@@ -27,6 +34,22 @@ namespace InterfaceDesktop
         public float Value()
         {
             return _Valor;
+        }
+        /// <summary>Aponta no dial o valor máximo ocorrido</summary>
+        public void ValorMaximo(float Maximo)
+        {
+            _ValorMaximo = Maximo;
+            if (_ValorMaximo > _max)
+                _ValorMaximo = _max;
+            Redesenha();
+        }
+        /// <summary>Aponta no dial o valor máximo ocorrido</summary>
+        public void ValorMinimo(float Minimo)
+        {
+            _ValorMinimo = Minimo;
+            if (_ValorMinimo < _min)
+                _ValorMinimo = _min;
+            Redesenha();
         }
         /// <summary>Define o valor máximo</summary>
         public void Max(float Valor)
@@ -58,11 +81,10 @@ namespace InterfaceDesktop
         {
             if (Valor > _max)
                 _Valor = _max;
+            else if (Valor < _min)
+                _Valor = _min;
             else
-                if (Valor < _min)
-                    _Valor = _min;
-                else
-                    _Valor = Valor;
+                _Valor = Valor;
             Redesenha();
         }
         /// <summary>Define a imagem de fundo</summary>
@@ -77,7 +99,11 @@ namespace InterfaceDesktop
             Centraliza();
             range = _max - _min;
             lineShape1.X1 = (int)(TamanhoPonteiro * Math.Cos(Math.PI * (_max - _Valor) / (range))) + lineShape1.X2;
+            lineShape2.X1 = (int)(TamanhoPonteiro * 1.1 * Math.Cos(Math.PI * (_max - _ValorMaximo) / (range))) + lineShape2.X2;
+            lineShape3.X1 = (int)(TamanhoPonteiro * 1.1 * Math.Cos(Math.PI * (_max - _ValorMinimo) / (range))) + lineShape3.X2;
             lineShape1.Y1 = (int)(-TamanhoPonteiro * 2 * Height / Width * Math.Sin(Math.PI * (_max - _Valor) / range)) + lineShape1.Y2;
+            lineShape2.Y1 = (int)(-TamanhoPonteiro * 1.1 * 2 * Height / Width * Math.Sin(Math.PI * (_max - _ValorMaximo) / range)) + lineShape2.Y2;
+            lineShape3.Y1 = (int)(-TamanhoPonteiro * 1.1 * 2 * Height / Width * Math.Sin(Math.PI * (_max - _ValorMinimo) / range)) + lineShape3.Y2;
             this.Refresh();
             this.ResumeLayout();
         }
@@ -85,8 +111,12 @@ namespace InterfaceDesktop
         /// <summary>Centraliza a base do ponteiro</summary>
         private void Centraliza()
         {
-            lineShape1.X2 = Width / 2;
-            lineShape1.Y2 = Height - lineShape1.BorderWidth / 2;
+            lineShape3.X2 =
+                lineShape2.X2 =
+                lineShape1.X2 = Width / 2;
+            lineShape3.Y2 =
+                lineShape2.Y2 =
+                lineShape1.Y2 = Height - lineShape1.BorderWidth / 2;
             TamanhoPonteiro = Width * EscalaTamanho;
             ovalShape1.Location = new Point((Width - ovalShape1.Width) / 2, Height - ovalShape1.Height / 2 + lineShape1.BorderWidth / 2);
 
@@ -98,6 +128,9 @@ namespace InterfaceDesktop
             lblMin.Left = 30;
             lblMeio.Top = 30;
             lblMeio.Left = (Width - lblMeio.Width) / 2;
+            lblMax.Text = _max.ToString();
+            lblMin.Text = _min.ToString();
+            lblMeio.Text = (_min + range / 2).ToString();
         }
 
         public Analogico()

@@ -320,7 +320,7 @@ namespace InterfaceDesktop
             dgLista.Rows.Add(new string[] { "    Enrolamentos", registro1.P[Variaveis.fTEnrolamento.indice].ToString(), registro2.P[Variaveis.fTEnrolamento.indice].ToString() });
             dgLista.Rows.Add(new string[] { "    Óleo", registro1.P[Variaveis.fTOleo.indice].ToString(), registro2.P[Variaveis.fTOleo.indice].ToString() });
             dgLista.Rows.Add(new string[] { "  Nível do óleo", registro1.P[Variaveis.fNivelOleo.indice].ToString(), registro2.P[Variaveis.fNivelOleo.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "  Válvula de segurança", registro1.P[Variaveis.fValvulaPressao.indice].ToString(), registro2.P[Variaveis.fValvulaPressao.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "  Válvula de alívio de pressão", registro1.P[Variaveis.fValvulaPressao.indice].ToString(), registro2.P[Variaveis.fValvulaPressao.indice].ToString() });
 
             dgLista.ResumeLayout();
         }

@@ -30,10 +30,12 @@
         {
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.ovalShape1 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
+            this.lineShape2 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.lblMin = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
             this.lblMeio = new System.Windows.Forms.Label();
+            this.lineShape3 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.SuspendLayout();
             // 
             // shapeContainer1
@@ -43,6 +45,8 @@
             this.shapeContainer1.Name = "shapeContainer1";
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.ovalShape1,
+            this.lineShape3,
+            this.lineShape2,
             this.lineShape1});
             this.shapeContainer1.Size = new System.Drawing.Size(280, 140);
             this.shapeContainer1.TabIndex = 0;
@@ -60,6 +64,16 @@
             this.ovalShape1.Name = "ovalShape1";
             this.ovalShape1.SelectionColor = System.Drawing.Color.Transparent;
             this.ovalShape1.Size = new System.Drawing.Size(30, 30);
+            // 
+            // lineShape2
+            // 
+            this.lineShape2.BorderColor = System.Drawing.Color.Red;
+            this.lineShape2.Name = "lineShape2";
+            this.lineShape2.SelectionColor = System.Drawing.Color.Transparent;
+            this.lineShape2.X1 = 43;
+            this.lineShape2.X2 = 138;
+            this.lineShape2.Y1 = 124;
+            this.lineShape2.Y2 = 140;
             // 
             // lineShape1
             // 
@@ -110,6 +124,16 @@
             this.lblMeio.Text = "50";
             this.lblMeio.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // lineShape3
+            // 
+            this.lineShape3.BorderColor = System.Drawing.Color.Red;
+            this.lineShape3.Name = "lineShape3";
+            this.lineShape3.SelectionColor = System.Drawing.Color.Transparent;
+            this.lineShape3.X1 = 53;
+            this.lineShape3.X2 = 148;
+            this.lineShape3.Y1 = 115;
+            this.lineShape3.Y2 = 131;
+            // 
             // Analogico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,10 +156,12 @@
         #endregion
 
         private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
-        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape1;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape2;
         private System.Windows.Forms.Label lblMin;
         private System.Windows.Forms.Label lblMax;
         private System.Windows.Forms.Label lblMeio;
+        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape3;
     }
 }

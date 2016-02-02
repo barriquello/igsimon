@@ -61,6 +61,7 @@
             this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.tv1 = new System.Windows.Forms.TreeView();
             this.tmrBlink = new System.Windows.Forms.Timer(this.components);
+            this.lblVL = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -110,9 +111,9 @@
             // picStatus
             // 
             this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.picStatus.Location = new System.Drawing.Point(147, 8);
+            this.picStatus.Location = new System.Drawing.Point(147, 10);
             this.picStatus.Name = "picStatus";
-            this.picStatus.Size = new System.Drawing.Size(32, 32);
+            this.picStatus.Size = new System.Drawing.Size(28, 28);
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picStatus.TabIndex = 4;
             this.picStatus.TabStop = false;
@@ -196,6 +197,7 @@
             this.groupBox6.Controls.Add(this.aTe);
             this.groupBox6.Controls.Add(this.aTo);
             this.groupBox6.Controls.Add(this.lblTe);
+            this.groupBox6.Controls.Add(this.lblVL);
             this.groupBox6.Controls.Add(this.lblNo);
             this.groupBox6.Controls.Add(this.lblValvula);
             this.groupBox6.Controls.Add(this.lblNivel);
@@ -211,9 +213,9 @@
             // picValvula
             // 
             this.picValvula.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.picValvula.Location = new System.Drawing.Point(477, 8);
+            this.picValvula.Location = new System.Drawing.Point(518, 10);
             this.picValvula.Name = "picValvula";
-            this.picValvula.Size = new System.Drawing.Size(32, 32);
+            this.picValvula.Size = new System.Drawing.Size(28, 28);
             this.picValvula.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picValvula.TabIndex = 4;
             this.picValvula.TabStop = false;
@@ -256,9 +258,9 @@
             this.lblValvula.Font = new System.Drawing.Font("Verdana", 9.75F);
             this.lblValvula.Location = new System.Drawing.Point(326, 18);
             this.lblValvula.Name = "lblValvula";
-            this.lblValvula.Size = new System.Drawing.Size(149, 16);
+            this.lblValvula.Size = new System.Drawing.Size(191, 16);
             this.lblValvula.TabIndex = 4;
-            this.lblValvula.Text = "Válvula de segurança";
+            this.lblValvula.Text = "Válvula de alívio de pressão";
             // 
             // lblNivel
             // 
@@ -287,7 +289,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(12, 12);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(324, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(291, 39);
             this.toolStrip1.TabIndex = 8;
             this.toolStrip1.Text = "Ações";
             // 
@@ -375,6 +377,16 @@
             this.tmrBlink.Interval = 500;
             this.tmrBlink.Tick += new System.EventHandler(this.tmrBlink_Tick);
             // 
+            // lblVL
+            // 
+            this.lblVL.AutoSize = true;
+            this.lblVL.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblVL.Location = new System.Drawing.Point(556, 18);
+            this.lblVL.Name = "lblVL";
+            this.lblVL.Size = new System.Drawing.Size(25, 16);
+            this.lblVL.TabIndex = 5;
+            this.lblVL.Text = "No";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -441,5 +453,6 @@
         private System.Windows.Forms.PictureBox picValvula;
         private System.Windows.Forms.Label lblValvula;
         private System.Windows.Forms.Timer tmrBlink;
+        private System.Windows.Forms.Label lblVL;
     }
 }

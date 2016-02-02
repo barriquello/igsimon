@@ -86,6 +86,6 @@ namespace InterfaceDesktop
         //nível de óleo (alto, médio, baixo)
         public static FeedServidor fNivelOleo = new FeedServidor(func.Ni, 31, "NNO", "Nível do óleo = {0}", Color.Black, "Nível do Óleo");
         //estado da válvula de pressão (atuado ou não-atuado)
-        public static FeedServidor fValvulaPressao = new FeedServidor(func.Pr0, 32, "NVP", "Válvula de segurança = {0}", Color.Black, "Válvula de pressão");
+        public static FeedServidor fValvulaPressao = new FeedServidor(func.Pr0, 32, "NVP", "Válvula de alívio de pressão = {0}", Color.Black, "Válvula de alívio de pressão");
     }
 }

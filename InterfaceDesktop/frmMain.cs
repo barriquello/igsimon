@@ -721,6 +721,27 @@ namespace InterfaceDesktop
             //aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
             aTo.Value(registroDB.P[Variaveis.fTOleo.indice]);
             aTe.Value(registroDB.P[Variaveis.fTEnrolamento.indice]);
+            float f_Max_TE = float.MinValue; float f_Min_TE = float.MaxValue;
+            float f_Max_TO = float.MinValue; float f_Min_TO = float.MaxValue;
+            UInt32 Inicio = Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo));
+            for (int jj = 0; jj < Registros.Count; jj++)
+            {
+                if (Registros[jj].Horario >= Inicio)
+                {
+                    if (Registros[jj].P[Variaveis.fTOleo.indice] > f_Max_TO) 
+                        f_Max_TO = Registros[jj].P[Variaveis.fTOleo.indice];
+                    if (Registros[jj].P[Variaveis.fTOleo.indice] < f_Min_TO) 
+                        f_Min_TO = Registros[jj].P[Variaveis.fTOleo.indice];
+                    if (Registros[jj].P[Variaveis.fTEnrolamento.indice] > f_Max_TE) 
+                        f_Max_TE = Registros[jj].P[Variaveis.fTEnrolamento.indice];
+                    if (Registros[jj].P[Variaveis.fTEnrolamento.indice] < f_Min_TE) 
+                        f_Min_TE = Registros[jj].P[Variaveis.fTEnrolamento.indice];
+                }
+            }
+            aTo.ValorMaximo(f_Max_TO);
+            aTo.ValorMinimo(f_Min_TO);
+            aTe.ValorMaximo(f_Max_TE);
+            aTe.ValorMinimo(f_Min_TE);
 
             lblTo.Text = string.Format(Variaveis.fTOleo.formato, registroDB.P[Variaveis.fTOleo.indice]);
             lblTe.Text = string.Format(Variaveis.fTEnrolamento.formato, registroDB.P[Variaveis.fTEnrolamento.indice]);
@@ -1136,6 +1157,8 @@ namespace InterfaceDesktop
                     {
                         //Text = string.Format("Antiga = {0}, Nova = {1}", JanelaDeTempo, NovaJanela);
                         JanelaDeTempo = NovaJanela;// new TimeSpan(dia, hora, minuto, segundo);
+                        if (Registros.Count>0)
+                            AtualizaLabels(Registros[Registros.Count-1]);
                         // Atualizar tudo
                         tmrGraficos.Enabled = false; tmrGraficos.Enabled = true;
                         //timerRelogio_Tick(new object(), new EventArgs());
@@ -1361,7 +1384,7 @@ namespace InterfaceDesktop
                     lblNivel.BackColor = Color.Transparent;
                 }
 
-                // Válvula de segurança
+                // Válvula de alívio de pressão
 
                 if (Registros[Registros.Count - 1].P[Variaveis.fValvulaPressao.indice] != 0)
                 {

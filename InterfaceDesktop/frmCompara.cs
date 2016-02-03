@@ -22,6 +22,8 @@ namespace InterfaceDesktop
         Color Cor2 = Color.Red;
         FeedServidor[] vars = Variaveis.strVariaveis();
 
+        public static List<RegistroDB> reg1 = new List<RegistroDB>();
+
         public static List<RegistroDB> Registros = new List<RegistroDB>();
 
         public frmCompara()
@@ -250,6 +252,9 @@ namespace InterfaceDesktop
 
         private void AtualizaLista(RegistroDB registro1, RegistroDB registro2)
         {
+            reg1.Clear();
+            reg1.Add(registro1);
+            reg1.Add(registro2);
             if ((registro1.Horario < Inicio1) | (registro1.Horario > Inicio1 + JanelaTempo.TotalSeconds))
             {
                 registro1 = new RegistroDB();
@@ -589,12 +594,13 @@ namespace InterfaceDesktop
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             SaveFileDialog SalvaArquivo = new SaveFileDialog();
-            SalvaArquivo.FileName = "Comparativo.png";
+            SalvaArquivo.FileName = "Comparativo.xlsx";
             //SalvaArquivo.FileName = "testes.xlsx";
             SalvaArquivo.InitialDirectory = Pasta;
             //Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
-            SalvaArquivo.Filter = "Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
-            SalvaArquivo.DefaultExt = "*.png";
+            SalvaArquivo.Filter = "Arquivo XLSX|*.xlsx|Arquivo CSV|*.csv|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
+            //SalvaArquivo.Filter = "Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
+            SalvaArquivo.DefaultExt = "xlsx";
             //SalvaArquivo.ShowDialog();
             //if (SalvaArquivo.FileName.Length > 3)
             if (SalvaArquivo.ShowDialog() == DialogResult.OK)
@@ -604,6 +610,34 @@ namespace InterfaceDesktop
                 string Formato = SalvaArquivo.FileName.Substring(ponto).ToLower();
                 switch (Formato)
                 {
+                    case ".csv":
+                        {
+                            {
+                                // Salvar CSV
+                                using (StreamWriter GravarArquivoCSV = new StreamWriter(SalvaArquivo.FileName, false))
+                                {
+                                    System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.CurrentInfo;// System.Globalization.NumberFormatInfo.InvariantInfo;
+                                    StringBuilder bstr = new StringBuilder("Horario");
+                                    for (int jj = 0; jj < vars.Length; jj++)
+                                    {
+                                        bstr.Append(Global.charSeparadorCSVCSV);
+                                        bstr.Append(vars[jj].NomeFeed);
+                                    }
+                                    GravarArquivoCSV.WriteLine(bstr);
+                                    for (int jj = 0; jj < reg1.Count; jj++)
+                                    {
+                                        bstr = new StringBuilder(Registros[jj].Horario.ToString());
+                                        for (int kk = 0; kk < vars.Length; kk++)
+                                        {
+                                            bstr.Append(Global.charSeparadorCSVCSV);
+                                            bstr.Append(reg1[jj].P[vars[kk].indice].ToString(SeparadorDecimal));
+                                        }
+                                        GravarArquivoCSV.WriteLine(bstr);
+                                    }
+                                }
+                            }
+                            break;
+                        }
                     case ".png":
                     case ".jpg":
                     case ".jpeg":
@@ -619,8 +653,24 @@ namespace InterfaceDesktop
                             if (Formato == ".png")
                                 imgFormato = System.Drawing.Imaging.ImageFormat.Png;
                             bitmat.Save(SalvaArquivo.FileName, imgFormato);
+                            break;
                         }
-                        break;
+                    case ".xlsx":
+                    case ".xls":
+                        {
+                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName,0, uint.MaxValue, FormSalvarExcel.frmComparacao);
+                            Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
+                            if (VerificaExcel == null)
+                            {
+                                System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
+                                //System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            }
+                            else
+                            {
+                                System.Diagnostics.Process.Start(SalvaArquivo.FileName);
+                            }
+                            break;
+                        }
                     default:
                         {
                             MessageBox.Show("Formato não suportado");

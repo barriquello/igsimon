@@ -115,7 +115,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(706, 9);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(75, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(106, 39);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "Ações";
             // 
@@ -133,7 +133,7 @@
             // 
             this.btnExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnExcel.Enabled = false;
-            this.btnExcel.Image = global::InterfaceDesktop.Properties.Resources.Figura;
+            this.btnExcel.Image = global::InterfaceDesktop.Properties.Resources.Excel;
             this.btnExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(36, 36);

@@ -22,7 +22,7 @@ namespace InterfaceDesktop
                         NumRegs = frmGraficos.Registros.Count;
                         break;
                     case FormSalvarExcel.frmComparacao:
-                        NumRegs = frmCompara.Registros.Count;
+                        NumRegs = 2;
                         break;
                 }
 
@@ -80,13 +80,13 @@ namespace InterfaceDesktop
                                     registro = frmGraficos.Registros[jj];
                                     break;
                                 case FormSalvarExcel.frmComparacao:
-                                    registro = frmCompara.Registros[jj];
+                                    registro = frmCompara.reg1[jj];
                                     break;
                                 default:
                                     registro = new RegistroDB();
                                     break;
                             }
-                            if ((Inicio < registro.Horario) & (Final > registro.Horario))
+                            if ((Inicio <= registro.Horario) & (Final >= registro.Horario))
                             {
                                 {
                                     Writer.WriteStartElement(new Row());

@@ -46,8 +46,6 @@ namespace InterfaceDesktop
                 fmrmain.ShowDialog();
                 fmrmain.Dispose();
                 // exibe novamente o formulário de autenticação
-                //this.Show();
-                // Encerra o programa
                 this.Show();
             }
         }

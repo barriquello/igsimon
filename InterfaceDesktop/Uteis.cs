@@ -33,7 +33,7 @@ namespace InterfaceDesktop
         public static DateTime Unix2time(UInt32 Unix)
         {
             DateTime Horario  = 
-            /*return*/ new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(Unix);
+            new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(Unix);
             return Horario.ToLocalTime();
         }
 

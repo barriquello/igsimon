@@ -45,9 +45,11 @@
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.picNivelOleo = new System.Windows.Forms.PictureBox();
             this.picValvula = new System.Windows.Forms.PictureBox();
             this.aTe = new InterfaceDesktop.Analogico();
             this.aTo = new InterfaceDesktop.Analogico();
+            this.lblVL = new System.Windows.Forms.Label();
             this.lblNo = new System.Windows.Forms.Label();
             this.lblValvula = new System.Windows.Forms.Label();
             this.lblNivel = new System.Windows.Forms.Label();
@@ -61,12 +63,12 @@
             this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.tv1 = new System.Windows.Forms.TreeView();
             this.tmrBlink = new System.Windows.Forms.Timer(this.components);
-            this.lblVL = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picNivelOleo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picValvula)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -92,7 +94,7 @@
             // 
             this.lblTe.AutoSize = true;
             this.lblTe.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTe.Location = new System.Drawing.Point(326, 36);
+            this.lblTe.Location = new System.Drawing.Point(236, 23);
             this.lblTe.Name = "lblTe";
             this.lblTe.Size = new System.Drawing.Size(213, 16);
             this.lblTe.TabIndex = 1;
@@ -102,7 +104,7 @@
             // 
             this.lblTo.AutoSize = true;
             this.lblTo.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTo.Location = new System.Drawing.Point(7, 38);
+            this.lblTo.Location = new System.Drawing.Point(6, 23);
             this.lblTo.Name = "lblTo";
             this.lblTo.Size = new System.Drawing.Size(145, 16);
             this.lblTo.TabIndex = 1;
@@ -111,9 +113,9 @@
             // picStatus
             // 
             this.picStatus.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.picStatus.Location = new System.Drawing.Point(147, 10);
+            this.picStatus.Location = new System.Drawing.Point(608, 17);
             this.picStatus.Name = "picStatus";
-            this.picStatus.Size = new System.Drawing.Size(28, 28);
+            this.picStatus.Size = new System.Drawing.Size(22, 22);
             this.picStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picStatus.TabIndex = 4;
             this.picStatus.TabStop = false;
@@ -124,7 +126,7 @@
             this.chartTemperatura.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chartTemperatura.Location = new System.Drawing.Point(3, 19);
             this.chartTemperatura.Name = "chartTemperatura";
-            this.chartTemperatura.Size = new System.Drawing.Size(688, 425);
+            this.chartTemperatura.Size = new System.Drawing.Size(860, 425);
             this.chartTemperatura.TabIndex = 0;
             this.chartTemperatura.Text = "chart1";
             this.chartTemperatura.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chartTemperatura_CursorPositionChanged);
@@ -142,7 +144,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 628);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip1.Size = new System.Drawing.Size(1016, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1188, 22);
             this.statusStrip1.TabIndex = 7;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -160,7 +162,7 @@
             // lblSpring
             // 
             this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(879, 17);
+            this.lblSpring.Size = new System.Drawing.Size(1051, 17);
             this.lblSpring.Spring = true;
             this.lblSpring.Text = " ";
             // 
@@ -184,7 +186,7 @@
             this.groupBox5.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(308, 178);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(694, 447);
+            this.groupBox5.Size = new System.Drawing.Size(866, 447);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
@@ -192,6 +194,7 @@
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.picNivelOleo);
             this.groupBox6.Controls.Add(this.picValvula);
             this.groupBox6.Controls.Add(this.picStatus);
             this.groupBox6.Controls.Add(this.aTe);
@@ -205,17 +208,27 @@
             this.groupBox6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(308, 12);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(694, 170);
+            this.groupBox6.Size = new System.Drawing.Size(866, 170);
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Nível / Temperatura";
             // 
+            // picNivelOleo
+            // 
+            this.picNivelOleo.Image = global::InterfaceDesktop.Properties.Resources.NivelOleo0;
+            this.picNivelOleo.Location = new System.Drawing.Point(507, 43);
+            this.picNivelOleo.Name = "picNivelOleo";
+            this.picNivelOleo.Size = new System.Drawing.Size(64, 121);
+            this.picNivelOleo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picNivelOleo.TabIndex = 9;
+            this.picNivelOleo.TabStop = false;
+            // 
             // picValvula
             // 
             this.picValvula.Image = global::InterfaceDesktop.Properties.Resources.Vermelho;
-            this.picValvula.Location = new System.Drawing.Point(518, 10);
+            this.picValvula.Location = new System.Drawing.Point(833, 17);
             this.picValvula.Name = "picValvula";
-            this.picValvula.Size = new System.Drawing.Size(28, 28);
+            this.picValvula.Size = new System.Drawing.Size(22, 22);
             this.picValvula.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picValvula.TabIndex = 4;
             this.picValvula.TabStop = false;
@@ -224,7 +237,7 @@
             // 
             this.aTe.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTe.BackgroundImage")));
             this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTe.Location = new System.Drawing.Point(382, 58);
+            this.aTe.Location = new System.Drawing.Point(249, 43);
             this.aTe.Margin = new System.Windows.Forms.Padding(5);
             this.aTe.Name = "aTe";
             this.aTe.Size = new System.Drawing.Size(214, 107);
@@ -235,28 +248,38 @@
             // 
             this.aTo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("aTo.BackgroundImage")));
             this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTo.Location = new System.Drawing.Point(63, 58);
+            this.aTo.Location = new System.Drawing.Point(9, 43);
             this.aTo.Margin = new System.Windows.Forms.Padding(4);
             this.aTo.Name = "aTo";
             this.aTo.Size = new System.Drawing.Size(214, 107);
             this.aTo.TabIndex = 8;
             this.aTo.TabStop = false;
             // 
+            // lblVL
+            // 
+            this.lblVL.Font = new System.Drawing.Font("Verdana", 9.75F);
+            this.lblVL.Location = new System.Drawing.Point(647, 43);
+            this.lblVL.Name = "lblVL";
+            this.lblVL.Size = new System.Drawing.Size(183, 16);
+            this.lblVL.TabIndex = 5;
+            this.lblVL.Text = "em estado indeterminado";
+            this.lblVL.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // lblNo
             // 
             this.lblNo.AutoSize = true;
             this.lblNo.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblNo.Location = new System.Drawing.Point(180, 18);
+            this.lblNo.Location = new System.Drawing.Point(577, 81);
             this.lblNo.Name = "lblNo";
-            this.lblNo.Size = new System.Drawing.Size(25, 16);
+            this.lblNo.Size = new System.Drawing.Size(144, 16);
             this.lblNo.TabIndex = 5;
-            this.lblNo.Text = "No";
+            this.lblNo.Text = "Nível\\nDesconhecido";
             // 
             // lblValvula
             // 
             this.lblValvula.AutoSize = true;
             this.lblValvula.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblValvula.Location = new System.Drawing.Point(326, 18);
+            this.lblValvula.Location = new System.Drawing.Point(639, 23);
             this.lblValvula.Name = "lblValvula";
             this.lblValvula.Size = new System.Drawing.Size(191, 16);
             this.lblValvula.TabIndex = 4;
@@ -266,7 +289,7 @@
             // 
             this.lblNivel.AutoSize = true;
             this.lblNivel.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblNivel.Location = new System.Drawing.Point(7, 18);
+            this.lblNivel.Location = new System.Drawing.Point(508, 23);
             this.lblNivel.Name = "lblNivel";
             this.lblNivel.Size = new System.Drawing.Size(94, 16);
             this.lblNivel.TabIndex = 4;
@@ -377,22 +400,12 @@
             this.tmrBlink.Interval = 500;
             this.tmrBlink.Tick += new System.EventHandler(this.tmrBlink_Tick);
             // 
-            // lblVL
-            // 
-            this.lblVL.AutoSize = true;
-            this.lblVL.Font = new System.Drawing.Font("Verdana", 9.75F);
-            this.lblVL.Location = new System.Drawing.Point(556, 18);
-            this.lblVL.Name = "lblVL";
-            this.lblVL.Size = new System.Drawing.Size(25, 16);
-            this.lblVL.TabIndex = 5;
-            this.lblVL.Text = "No";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1016, 650);
+            this.ClientSize = new System.Drawing.Size(1188, 650);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox6);
@@ -412,6 +425,7 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picNivelOleo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picValvula)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -454,5 +468,6 @@
         private System.Windows.Forms.Label lblValvula;
         private System.Windows.Forms.Timer tmrBlink;
         private System.Windows.Forms.Label lblVL;
+        private System.Windows.Forms.PictureBox picNivelOleo;
     }
 }

@@ -31,19 +31,18 @@
             this.components = new System.ComponentModel.Container();
             this.dtpInicio = new System.Windows.Forms.DateTimePicker();
             this.dtpFim = new System.Windows.Forms.DateTimePicker();
-            this.lstValores = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.chrGrafico = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnBuscar = new System.Windows.Forms.ToolStripButton();
             this.btnExcel = new System.Windows.Forms.ToolStripButton();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblMEM = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblHora = new System.Windows.Forms.ToolStripStatusLabel();
             this.tmrRelogio = new System.Windows.Forms.Timer(this.components);
+            this.lstValores = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.chrGrafico)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -66,18 +65,6 @@
             this.dtpFim.Name = "dtpFim";
             this.dtpFim.Size = new System.Drawing.Size(170, 20);
             this.dtpFim.TabIndex = 1;
-            // 
-            // lstValores
-            // 
-            this.lstValores.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstValores.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lstValores.FormattingEnabled = true;
-            this.lstValores.IntegralHeight = false;
-            this.lstValores.Location = new System.Drawing.Point(773, 4);
-            this.lstValores.Name = "lstValores";
-            this.lstValores.Size = new System.Drawing.Size(201, 489);
-            this.lstValores.TabIndex = 3;
             // 
             // label1
             // 
@@ -104,7 +91,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
-            this.chrGrafico.Size = new System.Drawing.Size(755, 444);
+            this.chrGrafico.Size = new System.Drawing.Size(712, 444);
             this.chrGrafico.TabIndex = 4;
             this.chrGrafico.Text = "chart1";
             this.chrGrafico.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chrGrafico_CursorPositionChanged);
@@ -185,18 +172,31 @@
             this.tmrRelogio.Interval = 500;
             this.tmrRelogio.Tick += new System.EventHandler(this.tmrRelogio_Tick);
             // 
+            // lstValores
+            // 
+            this.lstValores.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstValores.CheckOnClick = true;
+            this.lstValores.FormattingEnabled = true;
+            this.lstValores.IntegralHeight = false;
+            this.lstValores.Location = new System.Drawing.Point(730, 4);
+            this.lstValores.Name = "lstValores";
+            this.lstValores.Size = new System.Drawing.Size(244, 489);
+            this.lstValores.TabIndex = 11;
+            this.lstValores.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lstValores_ItemCheck);
+            // 
             // frmGraficos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(986, 518);
+            this.Controls.Add(this.lstValores);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.chrGrafico);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lstValores);
             this.Controls.Add(this.dtpFim);
             this.Controls.Add(this.dtpInicio);
             this.MinimumSize = new System.Drawing.Size(675, 500);
@@ -219,18 +219,17 @@
 
         private System.Windows.Forms.DateTimePicker dtpInicio;
         private System.Windows.Forms.DateTimePicker dtpFim;
-        private System.Windows.Forms.ListBox lstValores;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chrGrafico;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnBuscar;
         private System.Windows.Forms.ToolStripButton btnExcel;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Timer tmrRelogio;
         private System.Windows.Forms.ToolStripStatusLabel lblMEM;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lblHora;
+        private System.Windows.Forms.CheckedListBox lstValores;
     }
 }

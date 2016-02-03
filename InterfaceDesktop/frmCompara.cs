@@ -276,9 +276,6 @@ namespace InterfaceDesktop
             }
             dgLista.Rows.Add(new string[] { string.Format("Registros (Total: {0})", Registros.Count), chrGrafico1.Series["1"].Points.Count.ToString(), chrGrafico1.Series["2"].Points.Count.ToString() });
 
-            //dgLista.Rows.Add(new string[] {"Número total de registros", Registros.Count.ToString() });
-            //dgLista.Rows.Add(new string[] { "Primeira ocorrência", Inicio1.ToString(), Inicio2.ToString() });
-            //dgLista.Rows.Add(new string[] { "Última ocorrência", , DateTime.Now.AddSeconds(120).ToString() });
             dgLista.Rows.Add(new string[] { "Horário", Uteis.Unix2time(registro1.Horario).ToString(), Uteis.Unix2time(registro2.Horario).ToString() });
             dgLista.Rows.Add(new string[] { "Variáveis elétricas" });
             dgLista.Rows.Add(new string[] { "  Grandezas instanâneas" });
@@ -366,8 +363,7 @@ namespace InterfaceDesktop
             srSerie1.Legend = //"LegendaOculta";
                 srSerie2.Legend =
                 srSerie1.ChartArea =
-                srSerie2.ChartArea = "0";// Tipos[jj].ToString();// Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
-            //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
+                srSerie2.ChartArea = "0";// cada série associada com a chartárea e a legenda adequadas
             srSerie1.XValueType =
                 srSerie2.XValueType = ChartValueType.Time;
             srSerie1.ChartType =
@@ -541,15 +537,6 @@ namespace InterfaceDesktop
                 {
                     chrGrafico1.ChartAreas["0"].AxisX.ScaleView.ZoomReset();
                 }
-                //ChartValueType EscalaX = ChartValueType.DateTime;
-                //if (Registros[Registros.Count - 1].Horario - Registros[0].Horario <= (24 * 60 * 60))
-                //{
-                //    EscalaX = ChartValueType.Time;
-                //}
-                //for (int mm = 0; mm < chrGrafico1.Series.Count; mm++)
-                //{
-                //    chrGrafico1.Series[mm].XValueType = EscalaX;
-                //}
             }
         }
 
@@ -561,7 +548,7 @@ namespace InterfaceDesktop
                 {
                     if (e.NewPosition > 0)
                     {
-                        UInt32 posicao = Convert.ToUInt32(e.NewPosition);// Time2Unix(DateTime.FromOADate(e.NewPosition));
+                        UInt32 posicao = Convert.ToUInt32(e.NewPosition);
                         int indice1 = 0;
                         int indice2 = 0;
                         for (int jj = 0; jj < Registros.Count; jj++)
@@ -572,7 +559,6 @@ namespace InterfaceDesktop
                                 {
                                     indice1 = (jj > 0) ? jj - 1 : jj;
                                 }
-                                //break;
                             }
                             if (posicao + Inicio2 <= Registros[jj].Horario)
                             {
@@ -583,8 +569,7 @@ namespace InterfaceDesktop
                             }
                         }
                         AtualizaLista(Registros[indice1], Registros[indice2]);
-                        //Text = string.Format("{0} {1}", indice1, indice2);
-                        chrGrafico1.ChartAreas["0"].CursorX.Position = /*Uteis.Unix2time(*/Registros[indice1].Horario - Inicio1;//).ToOADate();
+                        chrGrafico1.ChartAreas["0"].CursorX.Position = Registros[indice1].Horario - Inicio1;
                     }
                 }
             }
@@ -597,7 +582,6 @@ namespace InterfaceDesktop
             SalvaArquivo.FileName = "Comparativo.xlsx";
             //SalvaArquivo.FileName = "testes.xlsx";
             SalvaArquivo.InitialDirectory = Pasta;
-            //Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
             SalvaArquivo.Filter = "Arquivo XLSX|*.xlsx|Arquivo CSV|*.csv|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
             //SalvaArquivo.Filter = "Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
             SalvaArquivo.DefaultExt = "xlsx";
@@ -658,12 +642,11 @@ namespace InterfaceDesktop
                     case ".xlsx":
                     case ".xls":
                         {
-                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName,0, uint.MaxValue, FormSalvarExcel.frmComparacao);
+                            new SalvarExcel().SalvarXLSX(SalvaArquivo.FileName, 0, uint.MaxValue, FormSalvarExcel.frmComparacao);
                             Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
                             if (VerificaExcel == null)
                             {
                                 System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
-                                //System.Diagnostics.Process.Start(SalvaArquivo.FileName);
                             }
                             else
                             {

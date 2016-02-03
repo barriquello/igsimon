@@ -13,14 +13,16 @@ namespace InterfaceDesktop
         /// <summary>Linha de cabeçalho no CSV</summary>
         public static readonly bool boolCabecalhoCSV = true;
         /// <summary>Nível alto</summary>
-        public static readonly int intNOleoAlto = 7;
+        public static readonly int intNOleoAlto = 5;
         /// <summary>Nível bbaixo</summary>
         public static readonly int intNOleoBaixo = 3;
 
-        public static readonly string strNOleoAlto = "\u2191\tNível máximo";
-        public static readonly string strNOleoBaixo = "\u2193\tNível baixo ";
-        public static readonly string strNOleoNormal = "\tNível médio";
+        public static readonly string strNOleoAlto = "Nível\nAlto";
+        public static readonly string strNOleoBaixo = "Nível\nBaixo ";
+        public static readonly string strNOleoNormal = "Nível\nMédio";
 
+        public static readonly string strValvulaNormal = " em condições normais";
+        public static readonly string strValvulaAtivada = " ativada";
 
         /// <summary>Numero máximo de registros a manter na memória</summary>
         public static readonly int intRegistrosMAXIMO = 7 * 24 * 60 * 2; // 7 * 24 * 60 * 2 = 1 registro a cada 30 segundos por 7 dias

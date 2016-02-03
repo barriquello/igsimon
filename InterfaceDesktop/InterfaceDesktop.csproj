@@ -202,6 +202,17 @@
   <ItemGroup>
     <Content Include="Icone.ico" />
     <Content Include="Icone_tamanhos.ico" />
+    <None Include="RES\NivelOleo0.png" />
+    <None Include="RES\NivelOleoNG.png" />
+    <None Include="RES\NivelOleoLY.png" />
+    <None Include="RES\NivelOleoLR.png" />
+    <None Include="RES\NivelOleoHY.png" />
+    <None Include="RES\NivelOleoHR.png" />
+    <None Include="Resources\NivelOleoLR.png" />
+    <None Include="Resources\NivelOleoLY.png" />
+    <None Include="Resources\NivelOleoNG.png" />
+    <None Include="Resources\NivelOleoHY.png" />
+    <None Include="Resources\NivelOleoHR.png" />
     <None Include="RES\Comparacoes %282%29.png" />
     <None Include="RES\picture.png" />
     <None Include="RES\Config2.png" />

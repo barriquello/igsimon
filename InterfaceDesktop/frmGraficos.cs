@@ -74,7 +74,7 @@ namespace InterfaceDesktop
             chrGrafico.Legends.Clear();
 
             BuscaDadosCSV(Inicio, Fim);
-            //Registros.Sort();
+
             Registros =
                 Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
             GeraGrafico();
@@ -97,7 +97,18 @@ namespace InterfaceDesktop
             lstValores.Items.Add(string.Format("Horário = {0}", Uteis.Unix2time(registroDB.Horario)));
             for (int jj = 0; jj < vars.Length; jj++)
             {
-                lstValores.Items.Add(string.Format(vars[jj].formato, registroDB.P[vars[jj].indice]));
+                if (vars[jj] == Variaveis.fNivelOleo)
+                {
+                    lstValores.Items.Add(string.Format(vars[jj].formato, ((registroDB.P[vars[jj].indice] < Global.intNOleoBaixo) ? Global.strNOleoBaixo : (registroDB.P[vars[jj].indice] > Global.intNOleoAlto) ? Global.strNOleoAlto : Global.strNOleoNormal)).Replace('\n', ' '), (Func2str(vars[jj].Funcao) != ""));
+                }
+                else if (vars[jj] == Variaveis.fValvulaPressao)
+                {
+                    lstValores.Items.Add(string.Format(vars[jj].formato, ((registroDB.P[vars[jj].indice] > 0) ? Global.strValvulaAtivada : Global.strValvulaNormal)), (Func2str(vars[jj].Funcao) != ""));
+                }
+                else
+                {
+                    lstValores.Items.Add(string.Format(vars[jj].formato, registroDB.P[vars[jj].indice]), (Func2str(vars[jj].Funcao) != ""));
+                }
             }
             lstValores.ResumeLayout();
         }
@@ -532,6 +543,29 @@ namespace InterfaceDesktop
             Registros.Clear();
             chrGrafico.Dispose();
             GC.Collect(); GC.WaitForPendingFinalizers();
+        }
+
+        private void lstValores_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            int IndiceMarcado = e.Index;
+            if (IndiceMarcado > 0)
+            {
+                IndiceMarcado -= 1;
+                CheckState Marcado = e.NewValue;
+                if (Func2str(vars[IndiceMarcado].Funcao) != "")
+                {
+                    chrGrafico.Series[vars[IndiceMarcado].NomeFeed].Enabled = Marcado == CheckState.Checked;
+
+                    chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled =
+                        !((chrGrafico.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fTOleo.NomeFeed].Enabled));
+                    chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
+                        (!((chrGrafico.Series[Variaveis.fIa.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fIb.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fIc.NomeFeed].Enabled))) & chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled;
+                    chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
+                        (!((chrGrafico.Series[Variaveis.fVan.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVbn.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVcn.NomeFeed].Enabled))) & chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled;
+                    chrGrafico.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                        (!((chrGrafico.Series[Variaveis.fVab.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVca.NomeFeed].Enabled))) & chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled;
+                }
+            }
         }
     }
 }

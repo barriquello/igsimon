@@ -16,8 +16,6 @@ namespace InterfaceDesktop
         public static readonly string strComandoValor = "/feed/get.json?field=value&id=";
         /// <summary>Comando para obter a lista de feeds</summary>
         public static readonly string strComandoFeedList = "/feed/list.json?apikey=";
-        /// <summary>Comando para obter a hora no servidor</summary>
-        //public const string strComandoHora = "/time/server.json?id=";//apikey=";
         /// <summary>Rotina para gerar o nome do arquivo CSV com base na data</summary>
         public static string ArquivoCSV(DateTime Data)
         {

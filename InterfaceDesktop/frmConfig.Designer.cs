@@ -119,6 +119,7 @@
             this.btnAddUser = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.chkAdmin = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -851,6 +852,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.chkAdmin);
             this.tabPage2.Controls.Add(this.txtSenha2);
             this.tabPage2.Controls.Add(this.txtSenha);
             this.tabPage2.Controls.Add(this.txtSenhaAntiga);
@@ -894,6 +896,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSenhaAntiga.Location = new System.Drawing.Point(10, 19);
             this.txtSenhaAntiga.Name = "txtSenhaAntiga";
+            this.txtSenhaAntiga.PasswordChar = '*';
             this.txtSenhaAntiga.Size = new System.Drawing.Size(413, 21);
             this.txtSenhaAntiga.TabIndex = 0;
             // 
@@ -975,6 +978,16 @@
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // chkAdmin
+            // 
+            this.chkAdmin.AutoSize = true;
+            this.chkAdmin.Location = new System.Drawing.Point(10, 165);
+            this.chkAdmin.Name = "chkAdmin";
+            this.chkAdmin.Size = new System.Drawing.Size(121, 17);
+            this.chkAdmin.TabIndex = 5;
+            this.chkAdmin.Text = "Acesso Irrestrito";
+            this.chkAdmin.UseVisualStyleBackColor = true;
             // 
             // frmConfig
             // 
@@ -1094,5 +1107,6 @@
         private System.Windows.Forms.ComboBox txtValvulaPressao;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.CheckBox chkAdmin;
     }
 }

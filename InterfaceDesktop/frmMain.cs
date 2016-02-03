@@ -25,6 +25,7 @@ namespace InterfaceDesktop
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
         /// <summary>Matriz de registros</summary>
         public static List<RegistroDB> Registros = new List<RegistroDB>();
+        private bool Encerrando = false;
 
         public frmMain()
         {
@@ -43,10 +44,8 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas.Add("Vl");
             chartTemperatura.ChartAreas.Add("Vf");
             chartTemperatura.ChartAreas.Add("I");
-            //chartTemperatura.ChartAreas.Add("N");
             chartTemperatura.ChartAreas.Add("T");
 
-            //chartTemperatura.ChartAreas.Add("X").Visible = false;
             // Adiciona legendas
             for (int kk = 0; kk < chartTemperatura.ChartAreas.Count; kk++)
             {
@@ -77,9 +76,7 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["Vl"].AxisX.ScrollBar.Enabled =
                 chartTemperatura.ChartAreas["Vf"].AxisX.ScrollBar.Enabled =
                 chartTemperatura.ChartAreas["I"].AxisX.ScrollBar.Enabled = false;
-            //chartTemperatura.ChartAreas["T"].AxisX.ScrollBar.Enabled = false;
             // Remove o botão zoom out
-            //chartTemperatura.ChartAreas["N"].AxisX.ScrollBar.ButtonStyle -= ScrollBarButtonStyles.ResetZoom;
 
             // Desabilita a escala no eixo X para quase todos os gráficos (exceto no gráfico do nível de óleo, esse fica na parte inferior)
             chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
@@ -94,25 +91,11 @@ namespace InterfaceDesktop
                 //chartTemperatura.ChartAreas["T"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
 
-            // Etiquetas personalizadas no eixo de nível do óleo
-            //chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(0, Global.NOleoBaixo, "Baixo");
-            //chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(Global.NOleoBaixo, Global.NOleoAlto, "Normal");
-            //chartTemperatura.ChartAreas["N"].AxisY.CustomLabels.Add(Global.NOleoAlto, 10, "Alto");
-
-            // Linhas entre os valores adjacentes:
-            //chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.Interval = Global.NOleoAlto - Global.NOleoBaixo; // Com essa técnica, se o número que indica o nível do óleo >= diferença entre nível alto e baixo outra(s) linha(s) aparece(m)
-            //chartTemperatura.ChartAreas["N"].AxisY.MajorGrid.IntervalOffset = Global.NOleoBaixo;
-            // Limites absolutos
-            //chartTemperatura.ChartAreas["N"].AxisY.Minimum = 0;
-            //chartTemperatura.ChartAreas["N"].AxisY.Maximum = 10;
-
             // Posiciona as várias chartáreas:
-            //chartTemperatura.Legends["P"].DockedToChartArea = "P";
             // talvez seja necessário rever esses valores:
-            //float fTamanhoLegenda = 100f;
             float fLarguraLegenda = 15f; //%
             float fAltura = 20f;
-            float fLargura = 100 - fLarguraLegenda; // = 100f * (chartTemperatura.Width - fTamanhoLegenda) / (chartTemperatura.Width * 1f);
+            float fLargura = 100 - fLarguraLegenda; 
             chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, fAltura)); // 80% da largura e 20 % da altura do chart
             chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, fAltura)); //20 % da largura e 20% da altura
 
@@ -128,13 +111,8 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas["T"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, fAltura));
             chartTemperatura.Legends["T"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, fAltura * 4, fLarguraLegenda - 0.2f, fAltura));
 
-            //chartTemperatura.ChartAreas["N"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 80f, fLargura, 20f)); // gráfico do nível do óleo menor por conta da escala
-            //chartTemperatura.Legends["N"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 80f, fLarguraLegenda - 0.2f, 20f));
-
-
             //Título nas legendas
             chartTemperatura.Legends["P"].Title = "Potência";
-            //chartTemperatura.Legends["P"].TitleAlignment = System.Drawing.StringAlignment.Near;
             chartTemperatura.Legends["Vl"].Title = "Tensão de Linha";
             chartTemperatura.Legends["Vf"].Title = "Tensão de Fase";
             chartTemperatura.Legends["I"].Title = "Corrente";
@@ -149,15 +127,13 @@ namespace InterfaceDesktop
             }
             FeedServidor[] strSeries = Variaveis.strVariaveis();
 
-            //func[] Tipos = new func[] { func.En, func.FP, func.Fr, func.Il, func.Ni, func.Po, func.Pr, func.Te, func.Vf, func.Vl };
-            for (int jj = 0; jj < strSeries.Length; jj++) //Tipos.Length;jj++)// Global.strCategoria.Length; jj++)
+            for (int jj = 0; jj < strSeries.Length; jj++)
             {
                 if (Func2str(strSeries[jj].Funcao) != "")
                 {
                     Series srSerie = new Series(strSeries[jj].NomeFeed); // nova série
                     srSerie.Legend = //"LegendaOculta";
-                        srSerie.ChartArea = Func2str(strSeries[jj].Funcao);// Tipos[jj].ToString();// Global.strCategoria[jj]; // cada série associada com a chartárea e a legenda adequadas
-                    //srSerie.XValueType = ChartValueType.Auto; // Bug do .NET
+                        srSerie.ChartArea = Func2str(strSeries[jj].Funcao);// cada série associada com a chartárea e a legenda adequadas
                     srSerie.XValueType = ChartValueType.Time; //
                     srSerie.ChartType = SeriesChartType.StepLine; // gráfico em degraus (não sabemos o que acontece entre duas medidas
                     srSerie.BorderWidth = 2; // tamanho da linha
@@ -183,13 +159,8 @@ namespace InterfaceDesktop
 
         private string Func2str(func funcao)
         {
-            //if (funcao == func.En) return "E";
-            //if (funcao == func.FP) return "E";
-            //if (funcao == func.Fr) return "E";
             if (funcao == func.Il) return "I";
-            //if (funcao == func.Ni) return "N";
             if (funcao == func.Po) return "P";
-            //if (funcao == func.Pr) return "Pr";
             if (funcao == func.Te) return "T";
             if (funcao == func.Vf) return "Vf";
             if (funcao == func.Vl) return "Vl";
@@ -218,7 +189,6 @@ namespace InterfaceDesktop
             {
                 chartTemperatura.Series[jj].XValueType = ChartValueType.Auto;//bug do .NET
             }
-            //System.Diagnostics.Stopwatch A = new System.Diagnostics.Stopwatch();
             FeedServidor[] strTodas = Variaveis.strVariaveis();
             for (int mm = 0; mm < Registros.Count; mm++)
             {
@@ -261,10 +231,9 @@ namespace InterfaceDesktop
                 tmrGraficos.Enabled =
                 chartTemperatura.Enabled = false;
             List<RegistroDB> Registros2 = new List<RegistroDB>();
-            // Medir performance:
             //Verifica qual é o último registro no servidor
             string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
-            UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime));// Convert.ToUInt32(strTime); // Horário mais recente armazenado no servidor
+            UInt32 Ultimo = Uteis.Time2Unix(DTData2DateTime(strTime)); // Horário mais recente armazenado no servidor
             UInt32 _Final = Final;
             if (PrimeiroValor > Inicio)
             {
@@ -316,24 +285,20 @@ namespace InterfaceDesktop
                     string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio2, final, strTodas[jj].IndiceFeed);
                     tmrGraficos.Enabled = false;
                     Application.DoEvents();
+                    if (Encerrando) return;
                     tmrGraficos.Enabled = false;
                     List<RegistroCSV> Dados = CSV2Matriz(strTemp);
-                    // sw.Stop(); Console.WriteLine(string.Format("decodifica para matriz {0} jj={1}", sw.ElapsedMilliseconds, jj)); sw.Restart();
 
                     // Guarda os dados em uma variável temporária
                     UInt32 Horario_;
                     for (int kk = 0; kk < Dados.Count; kk++)
                     {
                         Horario_ = Dados[kk].timeUnix();
-                        int indice = Registros2.FindIndex(x => x.Horario == Horario_); //2,5s
-                        //int indice = BuscaIndice(Horario_);
-                        //int indice = Registros.IndexOf(new RegistroDB() { Horario = Horario_ }); //8 segundos
-                        //int indice = Registros.TakeWhile(hora => hora.Horario !=Horario_ ).Count(); // 3,5s
+                        int indice = Registros2.FindIndex(x => x.Horario == Horario_);
                         if (indice < 0) // se não existe vamos criar um novo
                         {
                             Registros2.Add(new RegistroDB() { Horario = Horario_ });
                             indice = Registros2.Count - 1;
-                            //Registros2[indice].Horario = Horario_;
                         }
                         Registros2[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();
                     }
@@ -348,11 +313,6 @@ namespace InterfaceDesktop
                         Registros.Add(Registros2[mm]);
                         Salvar.Add(mm);
                     }
-                    else
-                    {
-                        // já deve estar lá
-                        //Registros[indice] = Registros2[mm];
-                    }
                 }
                 Inicio2 += janela;
                 if (Salvar.Count > 0)
@@ -361,8 +321,7 @@ namespace InterfaceDesktop
                     DateTime Data = new DateTime(1970, 1, 1);
                     DateTime DataNova = Uteis.Unix2time(Registros2[Salvar[0]].Horario);
                     string Arquivo = Path.Combine(Application.StartupPath, ComandosCSV.ArquivoCSV(DataNova));
-                    //string Arquivo = Path.Combine(Application.StartupPath, Global.ArquivoCSV(Uteis.Unix2time(reg.Horario)));
-                    StreamWriter Gravar;// = new StreamWriter(Arquivo, true);
+                    StreamWriter Gravar;
                     string strLinha = "";
                     if (!(new FileInfo(Arquivo).Exists))
                     {
@@ -411,8 +370,6 @@ namespace InterfaceDesktop
 
                     }
                     Gravar.Close();
-                    //Registros =
-                    //    Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
                     while (Registros.Count > Global.intRegistrosMAXIMO)
                     {
                         Registros.RemoveAt(0);
@@ -429,11 +386,9 @@ namespace InterfaceDesktop
         /// <summary>Salva num arquivo CSV os dados</summary>
         private void SalvarCSV(RegistroDB reg, StreamWriter Gravar, HashSet<string> Lista)
         {
-            //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
-            //string Linha = reg.Horario.ToString();
             string HorarioNoCSV = reg.Horario.ToString();
-            if (!Lista.Any(x => x.StartsWith(HorarioNoCSV)))// == Linha.ToString()))
+            if (!Lista.Any(x => x.StartsWith(HorarioNoCSV)))
             {
                 StringBuilder Linha = new StringBuilder(HorarioNoCSV);
                 for (int jj = 0; jj < reg.P.Length; jj++)
@@ -448,25 +403,6 @@ namespace InterfaceDesktop
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // Lê as configurações armazenadas no banco de dados
-            //string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
-            //if (ListaDeArquivos.Length > 0)
-            //{
-            //    tUltimaAtualizacao = DateTime.Now.AddDays(-7);
-            //    // Ler os ultimos 7 dias
-            //    for (int jj = -7; jj < 1; jj++)
-            //    {
-            //        string Arquivo = ComandosCSV.ArquivoCSV(DateTime.Now.AddDays(jj));
-            //        try
-            //        {
-            //            Registros.AddRange(LeituraCSVs(Arquivo));
-            //        }
-            //        catch { }
-            //        //Registros = LeituraCSVs(ListaDeArquivos[ListaDeArquivos.Length - 1]);
-            //    }
-            //    if (Registros.Count > 0)
-            //        tUltimaAtualizacao = Uteis.Unix2time(Registros[Registros.Count - 1].Horario);
-            //}
             // Buscar índices no servidor:
             string Requisicao = Servidor.Server + ComandosCSV.strComandoFeedList + Servidor.APIKey;
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -580,8 +516,6 @@ namespace InterfaceDesktop
             }
             JanelaDeTempo = new TimeSpan(2, 0, 1);
             cmbJanela.Text = Properties.Settings.Default.Janela;
-            //toolStripComboBox1_TextChanged(new object(), new EventArgs());
-            //tmrGraficos.Enabled = true;
         }
 
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
@@ -652,15 +586,13 @@ namespace InterfaceDesktop
             DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
             if (strTime.Length > 1)
                 tUltimaAtualizacao = DTData2DateTime(strTime);
-            //Uteis.Unix2time(Convert.ToUInt32(strTime)); // Horário mais recente armazenado no servidor
             else
                 return;
-            //tmrGraficos.Enabled = false;
             if (tmrGraficos.Interval != Global.intTaxaAtualizacao)
             {
                 // Primeira execução
                 BuscaDados(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
-                //BuscaDados(VelhaUltimaAtualizacao, tUltimaAtualizacao);
+                if (Encerrando) return;
                 if (!GerarGrafico()) return;
                 if (Registros.Count > 0)
                     Plotar = true;
@@ -671,6 +603,7 @@ namespace InterfaceDesktop
                 {
                     Plotar = true;
                     BuscaDados(VelhaUltimaAtualizacao, tUltimaAtualizacao);
+                    if (Encerrando) return;
                     LimpaSeries();
 
                 }
@@ -678,7 +611,6 @@ namespace InterfaceDesktop
             }
             if (Plotar)
             {
-                //GerarGrafico();
                 PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
                 lblMensagens.Text = string.Format("Último registro: {0} |", tUltimaAtualizacao.ToLocalTime());
             }
@@ -687,9 +619,7 @@ namespace InterfaceDesktop
             if (Registros.Count > 0)
                 AtualizaLabels(Registros[Registros.Count - 1]);
 
-            //tmrGraficos.Enabled = false; return;
-            //strTime = GetCSV(Global.strComandoHorario,Uteis.Time2Unix( DateTime.Now), Uteis.Time2Unix(DateTime.Now), Global.striP).Replace("\"", "");
-            DateTime NovaAtualizaco = DTData2DateTime(strTime);// Uteis.Unix2time(Convert.ToUInt32(strTime));
+            DateTime NovaAtualizaco = DTData2DateTime(strTime);
             ResumeLayout();
             tmrGraficos.Interval = Global.intTaxaAtualizacao;
             tmrGraficos.Enabled = true;
@@ -718,7 +648,6 @@ namespace InterfaceDesktop
         private void AtualizaLabels(RegistroDB registroDB)
         {
             // relóginhos
-            //aTo.Value(registroDB.P[10]); aTe.Value(registroDB.P[11]);
             aTo.Value(registroDB.P[Variaveis.fTOleo.indice]);
             aTe.Value(registroDB.P[Variaveis.fTEnrolamento.indice]);
             float f_Max_TE = float.MinValue; float f_Min_TE = float.MaxValue;
@@ -746,8 +675,8 @@ namespace InterfaceDesktop
             lblTo.Text = string.Format(Variaveis.fTOleo.formato, registroDB.P[Variaveis.fTOleo.indice]);
             lblTe.Text = string.Format(Variaveis.fTEnrolamento.formato, registroDB.P[Variaveis.fTEnrolamento.indice]);
 
-            lblNo.Text = string.Format((registroDB.P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo) ? Global.strNOleoBaixo : ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) ? Global.strNOleoAlto : Global.strNOleoNormal));
-            //Variaveis.fNivelOleo.formato, registroDB.P[Variaveis.fNivelOleo.indice]);
+            lblNo.Text = (registroDB.P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo) ? Global.strNOleoBaixo : ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) ? Global.strNOleoAlto : Global.strNOleoNormal);
+            lblVL.Text = (registroDB.P[Variaveis.fValvulaPressao.indice] > 0) ? Global.strValvulaAtivada : Global.strValvulaNormal;
 
             if ((registroDB.P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) | (registroDB.P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo))
                 picStatus.Image = Properties.Resources.Vermelho;
@@ -790,7 +719,7 @@ namespace InterfaceDesktop
                         }
                         tv1.Nodes["ve"].Nodes["gi"].Nodes.Add("i", "Corrente");
                         {
-                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIa.NodeTv1, FormataTexto(Variaveis.fIa, registroDB)).Tag = Variaveis.fIa.NomeFeed;// string.Format(Variaveis.fIa.formato, Registros[Registros.Count - 1].P[Variaveis.fIa.indice]));
+                            tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIa.NodeTv1, FormataTexto(Variaveis.fIa, registroDB)).Tag = Variaveis.fIa.NomeFeed;
                             tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIb.NodeTv1, FormataTexto(Variaveis.fIb, registroDB)).Tag = Variaveis.fIb.NomeFeed;
                             tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes.Add(Variaveis.fIc.NodeTv1, FormataTexto(Variaveis.fIc, registroDB)).Tag = Variaveis.fIc.NomeFeed;
                         }
@@ -856,7 +785,7 @@ namespace InterfaceDesktop
                     {
                         {
                             {
-                                tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIa.NodeTv1].Text = FormataTexto(Variaveis.fIa, registroDB);// string.Format(Variaveis.fIa.formato, Registros[Registros.Count - 1].P[Variaveis.fIa.indice]));
+                                tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIa.NodeTv1].Text = FormataTexto(Variaveis.fIa, registroDB);
                                 tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIb.NodeTv1].Text = FormataTexto(Variaveis.fIb, registroDB);
                                 tv1.Nodes["ve"].Nodes["gi"].Nodes["i"].Nodes[Variaveis.fIc.NodeTv1].Text = FormataTexto(Variaveis.fIc, registroDB);
                             }
@@ -931,7 +860,6 @@ namespace InterfaceDesktop
             {
                 if (No.Nodes.Count > 0)
                     MarcarTodas(No.Nodes, Marcar);
-                //else
                 No.Checked = Marcar;
                 try
                 {
@@ -958,11 +886,6 @@ namespace InterfaceDesktop
 
         // Esta rotina deve ser utilizada considerando um intervalo de tempo limitado
         /// <summary>Retorna um arquivo CSV</summary>
-        /// <param name="Comando">Comando para o servidor</param>
-        /// <param name="Inicio">Tempo inicial</param>
-        /// <param name="Fim">Tempo final</param>
-        /// <param name="ID">ID do feed</param>
-        /// <returns>String CSV</returns>
         private string GetCSV(string Comando, UInt32 Inicio, UInt32 Fim, string ID)
         {
             try
@@ -1090,16 +1013,6 @@ namespace InterfaceDesktop
 
         private void chartTemperatura_CursorPositionChanged(object sender, CursorEventArgs e)
         {
-            //if (!(double.IsNaN(e.NewPosition)))
-            //{
-            //    // CORRIGIR ISSO
-            //    return;
-            //    e.NewPosition = chartTemperatura.Series[0].Points.FindByValue(e.NewPosition).XValue;
-            //    UInt32 horario = Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition));
-            //    int indice = Registros.FindIndex(x => x.Horario == horario);
-            //    Text = indice.ToString();
-            //    //Text = string.Format("{0} - {1}", DateTime.FromOADate(e.NewPosition).ToString(), Uteis.Time2Unix(DateTime.FromOADate(e.NewPosition)));
-            //}
         }
 
         private void toolStripComboBox1_TextChanged(object sender, EventArgs e)
@@ -1107,7 +1020,6 @@ namespace InterfaceDesktop
             // Converter o texto para intervalo de tempo
             try
             {
-                // Horário[0] = 1, //horário[1] = Hora
                 string[] horario = cmbJanela.Text.ToLower().Split(' ');
                 int dia = 0; int hora = 0; int minuto = 0; int segundo = 0;
                 double detectado = Convert.ToDouble(horario[0]);
@@ -1155,19 +1067,18 @@ namespace InterfaceDesktop
                     TimeSpan NovaJanela = new TimeSpan(dia, hora, minuto, segundo);
                     if (NovaJanela != JanelaDeTempo)
                     {
-                        //Text = string.Format("Antiga = {0}, Nova = {1}", JanelaDeTempo, NovaJanela);
-                        JanelaDeTempo = NovaJanela;// new TimeSpan(dia, hora, minuto, segundo);
+                        JanelaDeTempo = NovaJanela;
                         if (Registros.Count>0)
                             AtualizaLabels(Registros[Registros.Count-1]);
                         // Atualizar tudo
                         tmrGraficos.Enabled = false; tmrGraficos.Enabled = true;
-                        //timerRelogio_Tick(new object(), new EventArgs());
                         LimpaSeries();
                         try
                         {
                             if (Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)) < PrimeiroValor)
                             {
                                 BuscaDados(Uteis.Time2Unix(tUltimaAtualizacao.Subtract(JanelaDeTempo)), PrimeiroValor);
+                                if (Encerrando) return;
                             }
                             PlotaGrafico(tUltimaAtualizacao.Subtract(JanelaDeTempo), tUltimaAtualizacao);
                         }
@@ -1256,6 +1167,7 @@ namespace InterfaceDesktop
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Encerrando = true;
             Properties.Settings.Default.Janela = cmbJanela.Text;
             Properties.Settings.Default.Save();
             Registros.Clear();
@@ -1280,13 +1192,9 @@ namespace InterfaceDesktop
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             SaveFileDialog SalvaArquivo = new SaveFileDialog();
             SalvaArquivo.FileName = ComandosCSV.ArquivoCSV(tUltimaAtualizacao.ToLocalTime()).Replace(".csv", ".xlsx");
-            //SalvaArquivo.FileName = "testes.xlsx";
             SalvaArquivo.InitialDirectory = Pasta;
-            //Type VerificaExcel = Type.GetTypeFromProgID("Excel.Application");
             SalvaArquivo.Filter = "Arquivo XLSX|*.xlsx|Arquivo CSV|*.csv|Imagem PNG|*.png|Imagem JPG|*.jpg|Imagem BMP|*.bmp";
             SalvaArquivo.DefaultExt = "*.xlsx";
-            //SalvaArquivo.ShowDialog();
-            //if (SalvaArquivo.FileName.Length > 3)
             tmrGraficos.Enabled = false;
             if (SalvaArquivo.ShowDialog() == DialogResult.OK)
             {
@@ -1303,7 +1211,7 @@ namespace InterfaceDesktop
                             using (StreamWriter GravarArquivoCSV = new StreamWriter(SalvaArquivo.FileName, false))
                             {
 
-                                System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.CurrentInfo;// System.Globalization.NumberFormatInfo.InvariantInfo;
+                                System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.CurrentInfo;
                                 FeedServidor[] vars = Variaveis.strVariaveis();
                                 StringBuilder bstr = new StringBuilder("Horario");
                                 for (int jj = 0; jj < vars.Length; jj++)
@@ -1356,7 +1264,6 @@ namespace InterfaceDesktop
                             if (VerificaExcel == null)
                             {
                                 System.Diagnostics.Process.Start("explorer.exe", "/select," + SalvaArquivo.FileName);
-                                //System.Diagnostics.Process.Start(SalvaArquivo.FileName);
                             }
                             else
                             {
@@ -1378,14 +1285,36 @@ namespace InterfaceDesktop
                 if ((Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) | (Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo))
                 {
                     lblNivel.BackColor = Fundo[blink];
+                    if (Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto)
+                    {
+                        if (blink == 1)
+                        {
+                            picNivelOleo.Image = Properties.Resources.NivelOleoHR;
+                        }
+                        else
+                        {
+                            picNivelOleo.Image = Properties.Resources.NivelOleoHY;
+                        }
+                    }
+                    else
+                    {
+                        if (blink == 1)
+                        {
+                            picNivelOleo.Image = Properties.Resources.NivelOleoLR;
+                        }
+                        else
+                        {
+                            picNivelOleo.Image = Properties.Resources.NivelOleoLY;
+                        }
+                    }
                 }
                 else
                 {
                     lblNivel.BackColor = Color.Transparent;
+                    picNivelOleo.Image=Properties.Resources.NivelOleoNG;
                 }
 
                 // Válvula de alívio de pressão
-
                 if (Registros[Registros.Count - 1].P[Variaveis.fValvulaPressao.indice] != 0)
                 {
                     lblValvula.BackColor = Fundo[blink];
@@ -1395,9 +1324,9 @@ namespace InterfaceDesktop
                     lblValvula.BackColor = Color.Transparent;
                 }
 
-                // Temperatura do óleo
+                // Temperatura do óleo...
 
-                // Temperatura dos enrolamentos
+                // Temperatura dos enrolamentos...
             }
 
             blink = 1 - blink;

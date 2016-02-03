@@ -22,8 +22,6 @@ namespace InterfaceDesktop
                 // Criar um novo usuário
                 Global.boolNovoUsuario = false;
                 // Carrega o formulario de configuração para criar um novo usuário
-                //frmConfig Config = new frmConfig();
-                //Config.ShowDialog();
                 Application.Run(new frmConfig());
                 Global.boolNovoUsuario = true;
                 CarregaConfig();
@@ -42,8 +40,6 @@ namespace InterfaceDesktop
             }
 
             Application.Run(new frmLogin());
-            //Application.Run(new frmMain());
-            //Application.Run(new frmGraficos());
         }
 
         private static void CarregaConfig()

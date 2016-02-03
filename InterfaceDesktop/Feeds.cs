@@ -4,8 +4,8 @@ namespace InterfaceDesktop
     // Converte um registro CSV em DateTime e double
     class RegistroCSV
     {
-        public string Time;// { get; set; }
-        public string Valor;// { get; set; }
+        public string Time;
+        public string Valor;
         public UInt32 timeUnix()
         {
             return Convert.ToUInt32(Time);
@@ -24,7 +24,7 @@ namespace InterfaceDesktop
     // Informações do banco de dados do servidor armazenadas na memória (isso pode ocupar memória demais)
     public class RegistroDB
     {
-        public UInt32 Horario;// { get; set; }
+        public UInt32 Horario;
         public float[] P = new float[Variaveis.NumVars];
     }
     class Feed

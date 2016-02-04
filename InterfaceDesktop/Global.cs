@@ -2,7 +2,6 @@
 using System.Drawing;
 namespace InterfaceDesktop
 {
-
     class Global
     {
         #region Informações uteis

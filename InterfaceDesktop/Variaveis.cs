@@ -80,9 +80,9 @@ namespace InterfaceDesktop
         public static FeedServidor fSP = new FeedServidor(func.Po0, 28, "NSP", string.Format("SP = {0} VA", strPrecisao), Color.Black, "Potência Aparente Máxima");
 
         //temperatura do óleo,
-        public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", string.Format("Temperatura do óleo = {0} ºC", strPrecisao), Color.Red, "Temperatura do Óleo");
+        public static FeedServidor fTOleo = new FeedServidor(func.Te, 29, "NTO", string.Format("Temperatura do óleo = {0} °C", strPrecisao), Color.Red, "Temperatura do Óleo");
         //temperatura do enrolamento,
-        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", string.Format("Temperatura dos enrolamentos = {0} ºC", strPrecisao), Color.Green, "Temperatura dos Enrolamentos");
+        public static FeedServidor fTEnrolamento = new FeedServidor(func.Te, 30, "NTE", string.Format("Temperatura dos enrolamentos = {0} °C", strPrecisao), Color.Green, "Temperatura dos Enrolamentos");
         //nível de óleo (alto, médio, baixo)
         public static FeedServidor fNivelOleo = new FeedServidor(func.Ni, 31, "NNO", "Nível do óleo = {0}", Color.Black, "Nível do Óleo");
         //estado da válvula de pressão (atuado ou não-atuado)

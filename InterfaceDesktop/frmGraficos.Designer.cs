@@ -91,7 +91,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chrGrafico.Location = new System.Drawing.Point(12, 49);
             this.chrGrafico.Name = "chrGrafico";
-            this.chrGrafico.Size = new System.Drawing.Size(712, 444);
+            this.chrGrafico.Size = new System.Drawing.Size(652, 444);
             this.chrGrafico.TabIndex = 4;
             this.chrGrafico.Text = "chart1";
             this.chrGrafico.CursorPositionChanged += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chrGrafico_CursorPositionChanged);
@@ -179,9 +179,9 @@
             this.lstValores.CheckOnClick = true;
             this.lstValores.FormattingEnabled = true;
             this.lstValores.IntegralHeight = false;
-            this.lstValores.Location = new System.Drawing.Point(730, 4);
+            this.lstValores.Location = new System.Drawing.Point(670, 4);
             this.lstValores.Name = "lstValores";
-            this.lstValores.Size = new System.Drawing.Size(244, 489);
+            this.lstValores.Size = new System.Drawing.Size(304, 489);
             this.lstValores.TabIndex = 11;
             this.lstValores.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lstValores_ItemCheck);
             // 

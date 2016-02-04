@@ -6,7 +6,8 @@
         public static string Username = "";
         /// <summary>Senha para autenticação (criptografada) (local)</summary>
         public static string Senha = "";
-
+        /// <summary>Premissões do usuário: 0 = sem permissão para acessar configurações; 1 = com permissão para acessar configurações</summary>
+        public static int Permissoes = 0;
         /// <summary>APIKey para autenticação com o servidor web</summary>
         public static string APIKey = "";
 

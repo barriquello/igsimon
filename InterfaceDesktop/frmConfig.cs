@@ -139,9 +139,10 @@ namespace InterfaceDesktop
                                 {
                                     Servidor.Senha = Uteis.getMD5(txtSenha.Text);
                                     Servidor.Username = txtNome.Text;
-                                    Properties.Settings.Default.Usuario = txtNome.Text;
-                                    Properties.Settings.Default.Senha = Servidor.Senha;
-                                    Properties.Settings.Default.Save();
+                                    BancoDeDados.InserirUsuario(Servidor.Username, Servidor.Senha, chkAdmin.Checked ? 1 : 0);
+                                    //Properties.Settings.Default.Usuario = txtNome.Text;
+                                    //Properties.Settings.Default.Senha = Servidor.Senha;
+                                    //Properties.Settings.Default.Save();
                                     this.Close();
                                 }
                                 else

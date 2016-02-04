@@ -90,6 +90,9 @@
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>.\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -110,6 +113,7 @@
     <Compile Include="Analogico.Designer.cs">
       <DependentUpon>Analogico.cs</DependentUpon>
     </Compile>
+    <Compile Include="BancoDeDados.cs" />
     <Compile Include="ComandoCSV.cs" />
     <Compile Include="Feeds.cs" />
     <Compile Include="FeedServidor.cs" />
@@ -208,11 +212,6 @@
     <None Include="RES\NivelOleoLR.png" />
     <None Include="RES\NivelOleoHY.png" />
     <None Include="RES\NivelOleoHR.png" />
-    <None Include="Resources\NivelOleoLR.png" />
-    <None Include="Resources\NivelOleoLY.png" />
-    <None Include="Resources\NivelOleoNG.png" />
-    <None Include="Resources\NivelOleoHY.png" />
-    <None Include="Resources\NivelOleoHR.png" />
     <None Include="RES\Comparacoes %282%29.png" />
     <None Include="RES\picture.png" />
     <None Include="RES\Config2.png" />

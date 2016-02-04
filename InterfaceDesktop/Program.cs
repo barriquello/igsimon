@@ -12,7 +12,10 @@ namespace InterfaceDesktop
             Application.SetCompatibleTextRenderingDefault(false);
             CarregaConfig();
             int contador = 0;
-            while (Servidor.Username == "")
+            BancoDeDados.CriarTabela();
+            string[] Usuarios;
+            while ((Usuarios = BancoDeDados.ListaDeUsuarios()).Length == 0)
+            //            while (Servidor.Username == "")
             {
                 if (contador++ > 3)
                 {
@@ -81,8 +84,8 @@ namespace InterfaceDesktop
 
             Servidor.APIKey = Properties.Settings.Default.APIKEY;
             Servidor.Server = Properties.Settings.Default.Servidor;
-            Servidor.Username = Properties.Settings.Default.Usuario;
-            Servidor.Senha = Properties.Settings.Default.Senha;
+            //Servidor.Username = Properties.Settings.Default.Usuario;
+            //Servidor.Senha = Properties.Settings.Default.Senha;
 
         }
     }

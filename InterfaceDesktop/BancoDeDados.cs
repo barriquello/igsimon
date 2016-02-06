@@ -9,7 +9,8 @@ namespace InterfaceDesktop
     {
         public static string ComandoCriarTabelas = "CREATE TABLE IF NOT EXISTS [Usuarios] ([Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [Usuario] TEXT NULL, [Senha] TEXT NULL, [Permissao] INTEGER NULL)";
         public static string ComandoInserirUsuario = "INSERT INTO Usuarios (Usuario, Senha, Permissao) VALUES (@Usuario, @Senha, @Permissao)";
-        public static string ComandoSelect = "";
+        public static string ComandoSelect = "SELECT * FROM Usuarios";
+        public static string ComandoSenha = "SELECT * FROM Usuarios WHERE Usuario=\"{0}\" ORDER BY Usuario DESC LIMIT 0,1";
         public static string ConnectionString = "Data Source=|DataDirectory|\\Usuarios.db;Pooling=True;Synchronous=Off;journal mode=Wal";
 
         public static void CriarTabela()
@@ -62,29 +63,59 @@ namespace InterfaceDesktop
         public static string[] ListaDeUsuarios()
         {
             List<string> Usuarios = new List<string>();
-            SQLiteConnection Conexao = new SQLiteConnection(ConnectionString);
-            using (SQLiteCommand Comando = new SQLiteCommand(ComandoSelect, Conexao))
+            using (SQLiteConnection Conexao = new SQLiteConnection(ConnectionString))
             {
                 Conexao.Open();
-                SQLiteDataReader Reader = Comando.ExecuteReader();
-                while (Reader.Read())
+                using (SQLiteCommand Comando = new SQLiteCommand(ComandoSelect, Conexao))
                 {
-                    Usuarios.Add(Reader["Usuario"].ToString());
-                }
+                    SQLiteDataReader Reader = Comando.ExecuteReader();
+                    while (Reader.Read())
+                    {
+                        Usuarios.Add(Reader["Usuario"].ToString());
+                    }
 
-                Conexao.Close();
+                    Conexao.Close();
+                }
             }
             return Usuarios.ToArray();
         }
-        public string SenhaDoUsuario(string Usuario)
+        public static string SenhaDoUsuario(string Usuario)
         {
+            string Senha = "";
+            using (SQLiteConnection Conexao = new SQLiteConnection(ConnectionString))
+            {
+                Conexao.Open();
+                using (SQLiteCommand Comando = new SQLiteCommand(string.Format(ComandoSenha, Usuario), Conexao))
+                {
+                    SQLiteDataReader Reader = Comando.ExecuteReader();
+                    while (Reader.Read())
+                    {
+                        Senha = Reader["Senha"].ToString();
+                    }
 
-            return "";
+                    Conexao.Close();
+                }
+            }
+            return Senha;
         }
-        public int PermissoesDoUsuario(string Usuario)
+        public static int PermissoesDoUsuario(string Usuario)
         {
+            int Permissao = 0;
+            using (SQLiteConnection Conexao = new SQLiteConnection(ConnectionString))
+            {
+                Conexao.Open();
+                using (SQLiteCommand Comando = new SQLiteCommand(string.Format(ComandoSenha, Usuario), Conexao))
+                {
+                    SQLiteDataReader Reader = Comando.ExecuteReader();
+                    while (Reader.Read())
+                    {
+                        Permissao = Convert.ToInt32(Reader["Permissao"]);
+                    }
 
-            return 0;
+                    Conexao.Close();
+                }
+            }
+            return Permissao;
         }
     }
 }

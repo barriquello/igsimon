@@ -108,6 +108,7 @@
             this.lbl1 = new System.Windows.Forms.Label();
             this.txtQ = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.chkAdmin = new System.Windows.Forms.CheckBox();
             this.txtSenha2 = new System.Windows.Forms.TextBox();
             this.txtSenha = new System.Windows.Forms.TextBox();
             this.txtSenhaAntiga = new System.Windows.Forms.TextBox();
@@ -119,7 +120,6 @@
             this.btnAddUser = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.chkAdmin = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -870,6 +870,17 @@
             this.tabPage2.Text = "Trocar senha";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // chkAdmin
+            // 
+            this.chkAdmin.AutoSize = true;
+            this.chkAdmin.Enabled = false;
+            this.chkAdmin.Location = new System.Drawing.Point(10, 165);
+            this.chkAdmin.Name = "chkAdmin";
+            this.chkAdmin.Size = new System.Drawing.Size(121, 17);
+            this.chkAdmin.TabIndex = 5;
+            this.chkAdmin.Text = "Acesso Irrestrito";
+            this.chkAdmin.UseVisualStyleBackColor = true;
+            // 
             // txtSenha2
             // 
             this.txtSenha2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -978,16 +989,6 @@
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // chkAdmin
-            // 
-            this.chkAdmin.AutoSize = true;
-            this.chkAdmin.Location = new System.Drawing.Point(10, 165);
-            this.chkAdmin.Name = "chkAdmin";
-            this.chkAdmin.Size = new System.Drawing.Size(121, 17);
-            this.chkAdmin.TabIndex = 5;
-            this.chkAdmin.Text = "Acesso Irrestrito";
-            this.chkAdmin.UseVisualStyleBackColor = true;
             // 
             // frmConfig
             // 

@@ -991,23 +991,30 @@ namespace InterfaceDesktop
 
         private void tooConfig_Click(object sender, EventArgs e)
         {
-            // Botão "Configurações"
-            Form frmconfig1 = new frmConfig();
-            this.Hide();
-            Global.boolReiniciar = false;
-            Global.boolConfigObriatoria = false;
-            tmrGraficos.Enabled = false;
-            frmconfig1.ShowDialog();
-            tmrGraficos.Enabled = true;
-            if (Global.boolReiniciar)
+            if (Servidor.Permissoes == 1)
             {
+                // Botão "Configurações"
+                Form frmconfig1 = new frmConfig();
+                this.Hide();
                 Global.boolReiniciar = false;
-                MessageBox.Show("É necessário reiniciar o programa");
-                this.Close();
+                Global.boolConfigObriatoria = false;
+                tmrGraficos.Enabled = false;
+                frmconfig1.ShowDialog();
+                tmrGraficos.Enabled = true;
+                if (Global.boolReiniciar)
+                {
+                    Global.boolReiniciar = false;
+                    MessageBox.Show("É necessário reiniciar o programa");
+                    this.Close();
+                }
+                else
+                {
+                    this.Show();
+                }
             }
             else
             {
-                this.Show();
+                MessageBox.Show("Este usuário não tem permissões para acessar o painel de configurações");
             }
         }
 

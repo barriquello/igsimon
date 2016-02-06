@@ -10,7 +10,7 @@ namespace InterfaceDesktop
         /// <summary>Tamanho do poneiro</summary>
         private float TamanhoPonteiro = 5;
         private float _min = 0;
-        private float _max = 200;
+        private float _max = 150;
         private float _Valor = 0;
         private float range = 200;
         private float _ValorMaximo = 0;

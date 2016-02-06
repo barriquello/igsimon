@@ -16,14 +16,16 @@ namespace InterfaceDesktop
         {
 #if DEBUG
             // Pula a parte da senha
-            Servidor.Senha = Uteis.getMD5(txtSenha.Text);
+            //Servidor.Senha = Uteis.getMD5(txtSenha.Text);
 #endif
             bool retorno = false;
-            if (Servidor.Senha == Uteis.getMD5(txtSenha.Text))
+            //if (Servidor.Senha == Uteis.getMD5(txtSenha.Text))
+            if (BancoDeDados.SenhaDoUsuario(txtUsername.Text) == Uteis.getMD5(txtSenha.Text))
             {
                 txtSenha.Visible = txtUsername.Visible = label2.Visible = label3.Visible = false;
                 pictureBox1.Height = Height - toolStrip1.Height - 4 * pictureBox1.Top;
                 retorno = true;
+                Servidor.Permissoes = BancoDeDados.PermissoesDoUsuario(txtUsername.Text);
             }
             else
             {
@@ -73,11 +75,18 @@ namespace InterfaceDesktop
         {
             if (verificaSenha())
             {
-                frmConfig Config = new frmConfig();
-                this.Hide();
-                Config.ShowDialog();
-                Config.Dispose();
-                this.Show();
+                if (Servidor.Permissoes == 1)
+                {
+                    frmConfig Config = new frmConfig();
+                    this.Hide();
+                    Config.ShowDialog();
+                    Config.Dispose();
+                    this.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Este usuário não tem permissão para acessar a interface de configurações");
+                }
             }
         }
 

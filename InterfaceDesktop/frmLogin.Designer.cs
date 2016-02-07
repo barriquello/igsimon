@@ -90,7 +90,7 @@
             this.txtSenha.Name = "txtSenha";
             this.txtSenha.PasswordChar = '*';
             this.txtSenha.Size = new System.Drawing.Size(521, 21);
-            this.txtSenha.TabIndex = 0;
+            this.txtSenha.TabIndex = 1;
             // 
             // txtUsername
             // 
@@ -100,7 +100,7 @@
             this.txtUsername.Location = new System.Drawing.Point(12, 148);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(521, 21);
-            this.txtUsername.TabIndex = 1;
+            this.txtUsername.TabIndex = 0;
             // 
             // toolStrip1
             // 
@@ -116,10 +116,10 @@
             this.btnComparacoes,
             this.toolStripSeparator2,
             this.btnConfig});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 215);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 226);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(547, 135);
+            this.toolStrip1.Size = new System.Drawing.Size(555, 135);
             this.toolStrip1.TabIndex = 23;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -185,7 +185,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(547, 350);
+            this.ClientSize = new System.Drawing.Size(555, 361);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label3);

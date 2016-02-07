@@ -15,7 +15,10 @@ namespace InterfaceDesktop
         public static readonly int intNOleoAlto = 5;
         /// <summary>Nível bbaixo</summary>
         public static readonly int intNOleoBaixo = 3;
-
+        /// <summary>Temperatura crítica para o óleo do transformador</summary>
+        public static readonly float floatTOleoH = 105f;
+        /// <summary>Temperatura crítica para os enrolamentos do transformador</summary>
+        public static readonly float floatTEnrH = 105f;
         public static readonly string strNOleoAlto = "Nível\nAlto";
         public static readonly string strNOleoBaixo = "Nível\nBaixo ";
         public static readonly string strNOleoNormal = "Nível\nMédio";

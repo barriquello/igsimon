@@ -1332,8 +1332,24 @@ namespace InterfaceDesktop
                 }
 
                 // Temperatura do óleo...
+                if (Registros[Registros.Count - 1].P[Variaveis.fTOleo.indice] >= Global.floatTOleoH)
+                {
+                    lblTo.BackColor = Fundo[blink];
+                }
+                else
+                {
+                    lblTo.BackColor = Color.Transparent;
+                }
 
                 // Temperatura dos enrolamentos...
+                if (Registros[Registros.Count - 1].P[Variaveis.fTEnrolamento.indice] >= Global.floatTEnrH)
+                {
+                    lblTe.BackColor = Fundo[blink];
+                }
+                else
+                {
+                    lblTe.BackColor = Color.Transparent;
+                }
             }
 
             blink = 1 - blink;

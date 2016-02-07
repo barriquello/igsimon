@@ -839,9 +839,9 @@
             this.lbl1.AutoSize = true;
             this.lbl1.Location = new System.Drawing.Point(177, 19);
             this.lbl1.Name = "lbl1";
-            this.lbl1.Size = new System.Drawing.Size(82, 13);
+            this.lbl1.Size = new System.Drawing.Size(83, 13);
             this.lbl1.TabIndex = 0;
-            this.lbl1.Text = "Read APIKEY";
+            this.lbl1.Text = "Write APIKEY";
             // 
             // txtQ
             // 

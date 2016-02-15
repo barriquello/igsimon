@@ -16,6 +16,8 @@ namespace InterfaceDesktop
         {
 #if DEBUG
             // Pula a parte da senha
+            Servidor.Permissoes = 1;
+            return true;
             //Servidor.Senha = Uteis.getMD5(txtSenha.Text);
 #endif
             bool retorno = false;

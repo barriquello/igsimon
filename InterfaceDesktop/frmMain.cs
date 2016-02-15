@@ -252,9 +252,16 @@ namespace InterfaceDesktop
 
             UInt32 Inicio2 = Inicio;
             UInt32 janela = 24 * 60 * 60; // 1 dia
-            toolStripProgressBar1.Maximum = 1000; //100%
-            float progresso = 0;
-            float passo = 1000 / ((float)(strTodas.Length + 1) * (float)(Ultimo - Inicio) / (float)janela);
+            if (_Final - Inicio >= janela)
+            {
+                toolStripProgressBar1.Maximum = (Convert.ToInt32(Math.Floor((double)(Ultimo - Inicio) / janela))) * strTodas.Length; //1000; //100%
+            }
+            else
+            {
+                toolStripProgressBar1.Maximum = (Convert.ToInt32(Math.Ceiling((double)(Ultimo - Inicio) / janela))) * strTodas.Length; //1000; //100%
+            }
+            int progresso = 0;
+            //float passo = 1000 / ((float)(strTodas.Length + 1) * (float)(Ultimo - Inicio) / (float)janela);
             do
             {
                 Salvar.Clear();
@@ -273,13 +280,13 @@ namespace InterfaceDesktop
                 {
                     try
                     {
-                        toolStripProgressBar1.Value = (int)(progresso);
+                        toolStripProgressBar1.Value = progresso;
                     }
                     catch
                     {
                         toolStripProgressBar1.Value = toolStripProgressBar1.Maximum;
                     }
-                    progresso += passo;
+                    progresso ++;
                     tmrGraficos.Enabled = false;
                     // Busca todos os valores do servidor
                     string strTemp = GetCSV(ComandosCSV.strComandoCSV, Inicio2, final, strTodas[jj].IndiceFeed);

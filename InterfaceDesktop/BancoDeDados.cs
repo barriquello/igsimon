@@ -10,7 +10,7 @@ namespace InterfaceDesktop
         public static string ComandoCriarTabelas = "CREATE TABLE IF NOT EXISTS [Usuarios] ([Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [Usuario] TEXT NULL, [Senha] TEXT NULL, [Permissao] INTEGER NULL)";
         public static string ComandoInserirUsuario = "INSERT INTO Usuarios (Usuario, Senha, Permissao) VALUES (@Usuario, @Senha, @Permissao)";
         public static string ComandoSelect = "SELECT * FROM Usuarios";
-        public static string ComandoSenha = "SELECT * FROM Usuarios WHERE Usuario=\"{0}\" ORDER BY Usuario DESC LIMIT 0,1";
+        public static string ComandoSenha = "SELECT * FROM Usuarios WHERE Usuario='{0}' ORDER BY Usuario DESC LIMIT 0,1";
         public static string ConnectionString = "Data Source=|DataDirectory|\\Usuarios.db;Pooling=True;Synchronous=Off;journal mode=Wal";
 
         public static void CriarTabela()

@@ -16,14 +16,15 @@ namespace InterfaceDesktop
         {
 #if DEBUG
             // Pula a parte da senha
-            Servidor.Permissoes = 1;
-            return true;
+            //Servidor.Permissoes = 1;
+            //return true;
             //Servidor.Senha = Uteis.getMD5(txtSenha.Text);
 #endif
             bool retorno = false;
             //if (Servidor.Senha == Uteis.getMD5(txtSenha.Text))
             if (BancoDeDados.SenhaDoUsuario(txtUsername.Text) == Uteis.getMD5(txtSenha.Text))
             {
+                Servidor.Username = txtUsername.Text;
                 txtSenha.Visible = txtUsername.Visible = label2.Visible = label3.Visible = false;
                 pictureBox1.Height = Height - toolStrip1.Height - 4 * pictureBox1.Top;
                 retorno = true;

@@ -138,7 +138,7 @@ namespace InterfaceDesktop
                                 if (txtSenha.Text == txtSenha2.Text)
                                 {
                                     Servidor.Senha = Uteis.getMD5(txtSenha.Text);
-                                    chkAdmin.Checked = Servidor.Username == txtNome.Text;
+                                    chkAdmin.Checked |= Servidor.Username == txtNome.Text;
                                     Servidor.Username = txtNome.Text;
                                     BancoDeDados.InserirUsuario(Servidor.Username, Servidor.Senha, chkAdmin.Checked ? 1 : 0);
                                     //Properties.Settings.Default.Usuario = txtNome.Text;

@@ -16,7 +16,16 @@ namespace InterfaceDesktop
         }
         public double valor()
         {
-            return Convert.ToDouble(Valor);
+            double retorno;
+            try
+            {
+                retorno = Convert.ToDouble(Valor);
+            }
+            catch
+            {
+                retorno = -1;
+            }
+            return retorno;
         }
 
     }

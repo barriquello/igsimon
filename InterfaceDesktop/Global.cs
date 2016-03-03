@@ -12,9 +12,9 @@ namespace InterfaceDesktop
         /// <summary>Linha de cabeçalho no CSV</summary>
         public static readonly bool boolCabecalhoCSV = true;
         /// <summary>Nível alto</summary>
-        public static readonly int intNOleoAlto = 5;
+        public static readonly int intNOleoAlto = 1; // 0 = baixo, 1 = normal, 2 = alto
         /// <summary>Nível bbaixo</summary>
-        public static readonly int intNOleoBaixo = 3;
+        public static readonly int intNOleoBaixo = 1;
         /// <summary>Temperatura crítica para o óleo do transformador</summary>
         public static readonly float floatTOleoH = 105f;
         /// <summary>Temperatura crítica para os enrolamentos do transformador</summary>

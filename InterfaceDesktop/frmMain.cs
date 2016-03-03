@@ -305,7 +305,27 @@ namespace InterfaceDesktop
                         int indice = Registros2.FindIndex(x => x.Horario == Horario_);
                         if (indice < 0) // se não existe vamos criar um novo
                         {
-                            Registros2.Add(new RegistroDB() { Horario = Horario_ });
+                            RegistroDB novoRegistro = new RegistroDB() { Horario = Horario_ };
+
+                            if (Registros2.Count > 0) //igual ao anterior
+                            {
+                                for (int jjj = 0; jjj < novoRegistro.P.Length; jjj++)
+                                {
+                                    novoRegistro.P[jjj] = Registros2[Registros2.Count - 1].P[jjj];
+                                }
+                            }
+                            else
+                            {
+                                if (Registros.Count > 0) // igual ao último registro já ordenado
+                                {
+                                    for (int jjj = 0; jjj < novoRegistro.P.Length; jjj++)
+                                    {
+                                        novoRegistro.P[jjj] = Registros[Registros.Count - 1].P[jjj];
+                                    }
+                                }
+                            //    else  // tudo zerado
+                            }
+                            Registros2.Add(novoRegistro);
                             indice = Registros2.Count - 1;
                         }
                         Registros2[indice].P[strTodas[jj].indice] = (float)Dados[kk].valor();

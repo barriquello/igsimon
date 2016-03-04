@@ -93,7 +93,14 @@ namespace InterfaceDesktop
                                     Writer.WriteElement(new Cell { CellValue = new CellValue(Uteis.Unix2time(registro.Horario).ToString()), DataType = CellValues.String });
                                     for (int kk = 0; kk < feeds.Length; kk++)
                                     {
-                                        Writer.WriteElement(new Cell { CellValue = new CellValue(registro.P[feeds[kk].indice].ToString(SeparadorDecimal)), DataType = CellValues.Number });
+                                        if (float.IsNaN(registro.P[feeds[kk].indice]))
+                                        {
+                                            Writer.WriteElement(new Cell { CellValue = new CellValue(""), DataType = CellValues.String });
+                                        }
+                                        else
+                                        {
+                                            Writer.WriteElement(new Cell { CellValue = new CellValue(registro.P[feeds[kk].indice].ToString(SeparadorDecimal)), DataType = CellValues.Number });
+                                        }
                                     }
                                     Writer.WriteEndElement();
                                 }

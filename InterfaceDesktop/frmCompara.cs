@@ -631,7 +631,10 @@ namespace InterfaceDesktop
                                         for (int kk = 0; kk < vars.Length; kk++)
                                         {
                                             bstr.Append(Global.charSeparadorCSVCSV);
-                                            bstr.Append(reg1[jj].P[vars[kk].indice].ToString(SeparadorDecimal));
+                                            if (!float.IsNaN(reg1[jj].P[vars[kk].indice]))
+                                            {
+                                                bstr.Append(reg1[jj].P[vars[kk].indice].ToString(SeparadorDecimal));
+                                            }
                                         }
                                         GravarArquivoCSV.WriteLine(bstr);
                                     }

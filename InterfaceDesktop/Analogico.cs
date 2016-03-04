@@ -83,6 +83,8 @@ namespace InterfaceDesktop
                 _Valor = _max;
             else if (Valor < _min)
                 _Valor = _min;
+            else if (float.IsNaN(Valor))
+                _Valor = 0;
             else
                 _Valor = Valor;
             Redesenha();

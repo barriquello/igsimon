@@ -203,11 +203,17 @@ namespace InterfaceDesktop
             {
                 if ((Registros[mm].Horario > Inicio1) & (Registros[mm].Horario < _Final_1))
                 {
-                    chrGrafico1.Series["1"].Points.AddXY(Registros[mm].Horario - Inicio1, Registros[mm].P[indice]);
+                    if (!float.IsNaN(Registros[mm].P[indice]))
+                    {
+                        chrGrafico1.Series["1"].Points.AddXY(Registros[mm].Horario - Inicio1, Registros[mm].P[indice]);
+                    }
                 }
                 if ((Registros[mm].Horario > Inicio2) & (Registros[mm].Horario < _Final_2))
                 {
-                    chrGrafico1.Series["2"].Points.AddXY(Registros[mm].Horario - Inicio2, Registros[mm].P[indice]);
+                    if (!float.IsNaN(Registros[mm].P[indice]))
+                    {
+                        chrGrafico1.Series["2"].Points.AddXY(Registros[mm].Horario - Inicio2, Registros[mm].P[indice]);
+                    }
                 }
             }
             chrGrafico1.ResumeLayout();
@@ -436,7 +442,14 @@ namespace InterfaceDesktop
                         reg.Horario = Convert.ToUInt32(campos[0]);
                         for (int jj = 1; jj < campos.Length; jj++)
                         {
-                            reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                            if (campos[jj] == "")
+                            {
+                                reg.P[indices[jj]] = float.NaN;
+                            }
+                            else
+                            {
+                                reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                            }
                         }
                         horariodoregistro = Uteis.Unix2time(reg.Horario);
                         if ((inicio.Subtract(horariodoregistro).TotalSeconds < 0) & (fim.Subtract(horariodoregistro).TotalSeconds > 0))

@@ -46,6 +46,8 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.picNivelOleo = new System.Windows.Forms.PictureBox();
             this.picValvula = new System.Windows.Forms.PictureBox();
+            this.aTe = new InterfaceDesktop.Analogico();
+            this.aTo = new InterfaceDesktop.Analogico();
             this.lblVL = new System.Windows.Forms.Label();
             this.lblNo = new System.Windows.Forms.Label();
             this.lblValvula = new System.Windows.Forms.Label();
@@ -60,8 +62,6 @@
             this.cmbJanela = new System.Windows.Forms.ToolStripComboBox();
             this.tv1 = new System.Windows.Forms.TreeView();
             this.tmrBlink = new System.Windows.Forms.Timer(this.components);
-            this.aTe = new InterfaceDesktop.Analogico();
-            this.aTo = new InterfaceDesktop.Analogico();
             ((System.ComponentModel.ISupportInitialize)(this.picStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTemperatura)).BeginInit();
             this.statusStrip1.SuspendLayout();
@@ -232,6 +232,28 @@
             this.picValvula.TabIndex = 4;
             this.picValvula.TabStop = false;
             // 
+            // aTe
+            // 
+            this.aTe.BackgroundImage = global::InterfaceDesktop.Properties.Resources.Relogio;
+            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTe.Location = new System.Drawing.Point(249, 43);
+            this.aTe.Margin = new System.Windows.Forms.Padding(5);
+            this.aTe.Name = "aTe";
+            this.aTe.Size = new System.Drawing.Size(214, 107);
+            this.aTe.TabIndex = 8;
+            this.aTe.TabStop = false;
+            // 
+            // aTo
+            // 
+            this.aTo.BackgroundImage = global::InterfaceDesktop.Properties.Resources.Relogio;
+            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.aTo.Location = new System.Drawing.Point(9, 43);
+            this.aTo.Margin = new System.Windows.Forms.Padding(4);
+            this.aTo.Name = "aTo";
+            this.aTo.Size = new System.Drawing.Size(214, 107);
+            this.aTo.TabIndex = 8;
+            this.aTo.TabStop = false;
+            // 
             // lblVL
             // 
             this.lblVL.Font = new System.Drawing.Font("Verdana", 9.75F);
@@ -376,28 +398,6 @@
             this.tmrBlink.Enabled = true;
             this.tmrBlink.Interval = 500;
             this.tmrBlink.Tick += new System.EventHandler(this.tmrBlink_Tick);
-            // 
-            // aTe
-            // 
-            this.aTe.BackgroundImage = global::InterfaceDesktop.Properties.Resources.Relogio;
-            this.aTe.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTe.Location = new System.Drawing.Point(249, 43);
-            this.aTe.Margin = new System.Windows.Forms.Padding(5);
-            this.aTe.Name = "aTe";
-            this.aTe.Size = new System.Drawing.Size(214, 107);
-            this.aTe.TabIndex = 8;
-            this.aTe.TabStop = false;
-            // 
-            // aTo
-            // 
-            this.aTo.BackgroundImage = global::InterfaceDesktop.Properties.Resources.Relogio;
-            this.aTo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.aTo.Location = new System.Drawing.Point(9, 43);
-            this.aTo.Margin = new System.Windows.Forms.Padding(4);
-            this.aTo.Name = "aTo";
-            this.aTo.Size = new System.Drawing.Size(214, 107);
-            this.aTo.TabIndex = 8;
-            this.aTo.TabStop = false;
             // 
             // frmMain
             // 

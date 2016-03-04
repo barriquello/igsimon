@@ -147,7 +147,14 @@ namespace InterfaceDesktop
                         reg.Horario = Convert.ToUInt32(campos[0]);
                         for (int jj = 1; jj < campos.Length; jj++)
                         {
-                            reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                            if (campos[jj] == "")
+                            {
+                                reg.P[indices[jj]] = float.NaN;
+                            }
+                            else
+                            {
+                                reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                            }
                         }
                         horariodoregistro = Uteis.Unix2time(reg.Horario);
                         if ((inicio.Subtract(horariodoregistro).TotalSeconds < 0) & (Fim.Subtract(horariodoregistro).TotalSeconds > 0))
@@ -251,7 +258,7 @@ namespace InterfaceDesktop
             chrGrafico.ChartAreas.Add("Vf");
             chrGrafico.ChartAreas.Add("I");
             chrGrafico.ChartAreas.Add("T");
-
+            chrGrafico.Legends.Add("Oculta").Enabled = false;
             for (int kk = 0; kk < chrGrafico.ChartAreas.Count; kk++)
             {
                 // por consequência do chrGrafico.Legends.clear(), jj será o índice da nova legenda
@@ -351,7 +358,10 @@ namespace InterfaceDesktop
 
                     for (int mm = 0; mm < Registros.Count; mm++)
                     {
-                        serie.Points.AddXY(Uteis.Unix2time(Registros[mm].Horario), Registros[mm].P[Indice]);
+                        if (!float.IsNaN(Registros[mm].P[Indice]))
+                        {
+                            serie.Points.AddXY(Uteis.Unix2time(Registros[mm].Horario), Registros[mm].P[Indice]);
+                        }
                     }
                     if (Registros[Registros.Count - 1].Horario - Registros[0].Horario <= 24 * 60 * 60)
                     {
@@ -359,6 +369,20 @@ namespace InterfaceDesktop
                     }
                     chrGrafico.Series.Add(serie);
                 }
+            }
+
+            for (int jj = 0; jj < chrGrafico.ChartAreas.Count; jj++)
+            {
+                Series serie = new Series();
+                serie.ChartArea = chrGrafico.ChartAreas[jj].Name;
+                serie.Color = Color.Transparent;
+                serie.Legend = "Oculta";
+                for (int mm = 0; mm < Registros.Count; mm++)
+                {
+                    serie.Points.AddXY(Uteis.Unix2time(Registros[mm].Horario), 0);
+                }
+                serie.XValueType = chrGrafico.Series[0].XValueType;
+                chrGrafico.Series.Add(serie);
             }
         }
 

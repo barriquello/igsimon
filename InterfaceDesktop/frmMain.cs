@@ -45,7 +45,7 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas.Add("Vf");
             chartTemperatura.ChartAreas.Add("I");
             chartTemperatura.ChartAreas.Add("T");
-
+            chartTemperatura.Legends.Add("Oculta").Enabled = false; ;
             // Adiciona legendas
             for (int kk = 0; kk < chartTemperatura.ChartAreas.Count; kk++)
             {
@@ -86,16 +86,16 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
             // Alinhamento dos gráficos das chartareas (alinhados com o gráfico debaixo)
             chartTemperatura.ChartAreas["P"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["Vl"].AlignWithChartArea =
+                //chartTemperatura.ChartAreas["Vl"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["Vf"].AlignWithChartArea =
-                //chartTemperatura.ChartAreas["T"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
+                chartTemperatura.ChartAreas["T"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "Vl";
 
             // Posiciona as várias chartáreas:
             // talvez seja necessário rever esses valores:
             float fLarguraLegenda = 15f; //%
             float fAltura = 20f;
-            float fLargura = 100 - fLarguraLegenda; 
+            float fLargura = 100 - fLarguraLegenda;
             chartTemperatura.ChartAreas["P"].Position.FromRectangleF(new System.Drawing.RectangleF(0f, 0f, fLargura, fAltura)); // 80% da largura e 20 % da altura do chart
             chartTemperatura.Legends["P"].Position.FromRectangleF(new System.Drawing.RectangleF(fLargura + 0.2f, 0f, fLarguraLegenda - 0.2f, fAltura)); //20 % da largura e 20% da altura
 
@@ -154,6 +154,17 @@ namespace InterfaceDesktop
                     }
                 }
             }
+            // séries de dados não visíveis (para garantir o alinhamento das escalas)
+            for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
+            {
+                Series srSerie = new Series(string.Format("{0}!{1}", chartTemperatura.ChartAreas[jj].Name, jj));
+                srSerie.Legend = "Oculta";
+                srSerie.ChartArea = chartTemperatura.ChartAreas[jj].Name;
+                srSerie.XValueType = ChartValueType.Time;
+                srSerie.ChartType = SeriesChartType.FastPoint;
+                srSerie.Color = Color.Transparent;
+                chartTemperatura.Series.Add(srSerie);
+            }
             return true;
         }
 
@@ -203,7 +214,24 @@ namespace InterfaceDesktop
                         for (int kk = 0; kk < strTodas.Length; kk++)
                         {
                             if (Func2str(strTodas[kk].Funcao) != "")
-                                chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[strTodas[kk].indice]);
+                            {
+                                if (!float.IsNaN(Registros[mm].P[strTodas[kk].indice]))
+                                {
+                                    chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[strTodas[kk].indice]);
+                                }
+                                if (kk == 0)
+                                {
+                                    for (int jjj = 0; jjj < chartTemperatura.ChartAreas.Count; jjj++)
+                                    {
+                                        chartTemperatura.Series[string.Format("{0}!{1}", chartTemperatura.ChartAreas[jjj].Name, jjj)].Points.AddXY(Horario, 0);
+                                    }
+                                }
+                                //else
+                                //{
+                                //    int indiceEmpty = chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, double.NaN);
+                                //chartTemperatura.Series[strTodas[kk].NomeFeed].Points[indiceEmpty].IsEmpty = true;
+                                //}
+                            }
                         }
                     }
             }
@@ -220,7 +248,6 @@ namespace InterfaceDesktop
             {
                 chartTemperatura.Series[jj].XValueType = TipoJanela;
             }
-
             ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
 
@@ -307,24 +334,25 @@ namespace InterfaceDesktop
                         {
                             RegistroDB novoRegistro = new RegistroDB() { Horario = Horario_ };
 
-                            if (Registros2.Count > 0) //igual ao anterior
+                            //if (Registros2.Count > 0) //igual ao anterior
+                            //{
+                            for (int jjj = 0; jjj < novoRegistro.P.Length; jjj++)
                             {
-                                for (int jjj = 0; jjj < novoRegistro.P.Length; jjj++)
-                                {
-                                    novoRegistro.P[jjj] = Registros2[Registros2.Count - 1].P[jjj];
-                                }
+                                //novoRegistro.P[jjj] = Registros2[Registros2.Count - 1].P[jjj];
+                                novoRegistro.P[jjj] = float.NaN;
                             }
-                            else
-                            {
-                                if (Registros.Count > 0) // igual ao último registro já ordenado
-                                {
-                                    for (int jjj = 0; jjj < novoRegistro.P.Length; jjj++)
-                                    {
-                                        novoRegistro.P[jjj] = Registros[Registros.Count - 1].P[jjj];
-                                    }
-                                }
+                            //}
+                            //else
+                            //{
+                            //    if (Registros.Count > 0) // igual ao último registro já ordenado
+                            //    {
+                            //        for (int jjj = 0; jjj < novoRegistro.P.Length; jjj++)
+                            //        {
+                            //            novoRegistro.P[jjj] = Registros[Registros.Count - 1].P[jjj];
+                            //        }
+                            //    }
                             //    else  // tudo zerado
-                            }
+                            //}
                             Registros2.Add(novoRegistro);
                             indice = Registros2.Count - 1;
                         }
@@ -422,7 +450,14 @@ namespace InterfaceDesktop
                 for (int jj = 0; jj < reg.P.Length; jj++)
                 {
                     Linha.Append(Global.charSeparadorCSV);
-                    Linha.Append(reg.P[jj].ToString(SeparadorDecimal));
+                    if (!float.IsNaN(reg.P[jj]))
+                    {
+                        Linha.Append(reg.P[jj].ToString(SeparadorDecimal));
+                    }
+                    else
+                    {
+                        Linha.Append("");
+                    }
                 }
                 Gravar.WriteLine(Linha);
             }
@@ -685,13 +720,13 @@ namespace InterfaceDesktop
             {
                 if (Registros[jj].Horario >= Inicio)
                 {
-                    if (Registros[jj].P[Variaveis.fTOleo.indice] > f_Max_TO) 
+                    if (Registros[jj].P[Variaveis.fTOleo.indice] > f_Max_TO)
                         f_Max_TO = Registros[jj].P[Variaveis.fTOleo.indice];
-                    if (Registros[jj].P[Variaveis.fTOleo.indice] < f_Min_TO) 
+                    if (Registros[jj].P[Variaveis.fTOleo.indice] < f_Min_TO)
                         f_Min_TO = Registros[jj].P[Variaveis.fTOleo.indice];
-                    if (Registros[jj].P[Variaveis.fTEnrolamento.indice] > f_Max_TE) 
+                    if (Registros[jj].P[Variaveis.fTEnrolamento.indice] > f_Max_TE)
                         f_Max_TE = Registros[jj].P[Variaveis.fTEnrolamento.indice];
-                    if (Registros[jj].P[Variaveis.fTEnrolamento.indice] < f_Min_TE) 
+                    if (Registros[jj].P[Variaveis.fTEnrolamento.indice] < f_Min_TE)
                         f_Min_TE = Registros[jj].P[Variaveis.fTEnrolamento.indice];
                 }
             }
@@ -1103,8 +1138,25 @@ namespace InterfaceDesktop
                     if (NovaJanela != JanelaDeTempo)
                     {
                         JanelaDeTempo = NovaJanela;
-                        if (Registros.Count>0)
-                            AtualizaLabels(Registros[Registros.Count-1]);
+                        if (Registros.Count > 0)
+                        {
+                            RegistroDB ultimosDados = new RegistroDB() { Horario = Registros[Registros.Count - 1].Horario };
+                            for (int jj = 0; jj < ultimosDados.P.Length; jj++)
+                            {
+                                ultimosDados.P[jj] = float.NaN;
+                                for (int kk = Registros.Count - 1; kk >= 0; kk--)
+                                {
+                                    if (!float.IsNaN(Registros[kk].P[jj]))
+                                    {
+                                        ultimosDados.P[jj] = Registros[kk].P[jj];
+                                        break;
+                                    }
+                                }
+                            }
+                            AtualizaLabels(ultimosDados);
+                            //AtualizaLabels(Registros[Registros.Count - 1]);
+                        }
+
                         // Atualizar tudo
                         tmrGraficos.Enabled = false; tmrGraficos.Enabled = true;
                         LimpaSeries();
@@ -1346,7 +1398,7 @@ namespace InterfaceDesktop
                 else
                 {
                     lblNivel.BackColor = Color.Transparent;
-                    picNivelOleo.Image=Properties.Resources.NivelOleoNG;
+                    picNivelOleo.Image = Properties.Resources.NivelOleoNG;
                 }
 
                 // Válvula de alívio de pressão

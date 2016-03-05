@@ -25,6 +25,8 @@ namespace InterfaceDesktop
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
         /// <summary>Matriz de registros</summary>
         public static List<RegistroDB> Registros = new List<RegistroDB>();
+        /// <summary>Registro mais atualizado obtido pelo comando /feed/list.json</summary>
+        public static RegistroDB RegistroMaisAtualizado = new RegistroDB();
         private bool Encerrando = false;
 
         public frmMain()
@@ -65,6 +67,7 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.IsPositionedInside = false;
                 // Habilita o zoom
                 chartTemperatura.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
+                chartTemperatura.ChartAreas[kk].CursorY.IsUserSelectionEnabled = true;
                 // Resolução máxima
                 chartTemperatura.ChartAreas[kk].CursorX.IntervalType = DateTimeIntervalType.Minutes;
                 chartTemperatura.ChartAreas[kk].CursorX.Interval = 10;// minutos
@@ -648,9 +651,13 @@ namespace InterfaceDesktop
             string strTime = GetCSV(ComandosCSV.strComandoHorario, Uteis.Time2Unix(DateTime.Now), Uteis.Time2Unix(DateTime.Now), Variaveis.fP.IndiceFeed).Replace("\"", "");
             DateTime VelhaUltimaAtualizacao = tUltimaAtualizacao;
             if (strTime.Length > 1)
+            {
                 tUltimaAtualizacao = DTData2DateTime(strTime);
+            }
             else
+            {
                 return;
+            }
             if (tmrGraficos.Interval != Global.intTaxaAtualizacao)
             {
                 // Primeira execução
@@ -678,11 +685,68 @@ namespace InterfaceDesktop
                 lblMensagens.Text = string.Format("Último registro: {0} |", tUltimaAtualizacao.ToLocalTime());
             }
 
+            DateTime NovaAtualizaco = DTData2DateTime(strTime);
+
+            // Busca o registro mais recente através do comando /feed/list.json
+            string strRegistrosMaisRecentes = GetCSV(ComandosCSV.strComandoFeedList, 0, 0, "");
+
+            // Busca cada valor e armazena na variável registromaisrecente
+            string strListaRemover = "[{\":,}]";
+            // Requisição = [{campo:valor, campo:valor, ...}, {campo:valor, ...},...]
+            string[] Linha = strRegistrosMaisRecentes.Split('}');
+            float ValorValor;
+            int ValorFeed;
+            FeedServidor[] strTodas = Variaveis.strVariaveis();
+            for (int jj = 0; jj < Linha.Length; jj++)
+            {
+                string[] Campo = Linha[jj].Split(',');
+                ValorValor = float.NaN;
+                ValorFeed = -1;
+                for (int kk = 0; kk < Campo.Length; kk++)
+                {
+                    string[] Elemento = Campo[kk].Split(':');
+                    if (Elemento[0].Contains("\"id\""))
+                    {
+                        string strID = Elemento[1];
+                        for (int mm = 0; mm < strListaRemover.Length; mm++)
+                        {
+                            strID = strID.Replace(strListaRemover.Substring(mm, 1), "");
+                        }
+                        for (int mm = 0; mm < strTodas.Length; mm++)
+                        {
+                            if (strTodas[mm].IndiceFeed == strID)
+                            {
+                                ValorFeed = strTodas[mm].indice;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (Elemento[0].Contains("\"value\""))
+                    {
+                        string strValor = Elemento[1];
+                        for (int mm = 0; mm < strListaRemover.Length; mm++)
+                        {
+                            strValor = strValor.Replace(strListaRemover.Substring(mm, 1), "");
+                        }
+                        try
+                        {
+                            ValorValor = Convert.ToSingle(strValor.Replace('.', ','));
+                        }
+                        catch { }
+                    }
+                }
+                if (ValorFeed >= 0)
+                {
+                    RegistroMaisAtualizado.Horario = 1;
+                    RegistroMaisAtualizado.P[ValorFeed] = ValorValor;
+                }
+            }
+
             // Atualiza as etiquetas
             if (Registros.Count > 0)
-                AtualizaLabels(Registros[Registros.Count - 1]);
+                AtualizaLabels(RegistroMaisAtualizado);
 
-            DateTime NovaAtualizaco = DTData2DateTime(strTime);
             ResumeLayout();
             tmrGraficos.Interval = Global.intTaxaAtualizacao;
             tmrGraficos.Enabled = true;
@@ -710,6 +774,8 @@ namespace InterfaceDesktop
 
         private void AtualizaLabels(RegistroDB registroDB)
         {
+            tmrBlink_Tick(new object(), new EventArgs());
+            registroDB = RegistroMaisAtualizado;
             // relóginhos
             aTo.Value(registroDB.P[Variaveis.fTOleo.indice]);
             aTe.Value(registroDB.P[Variaveis.fTEnrolamento.indice]);
@@ -1370,12 +1436,14 @@ namespace InterfaceDesktop
         private void tmrBlink_Tick(object sender, EventArgs e)
         {
             // Nível do óleo alto ou baixo
-            if (Registros.Count > 0)
+            if (RegistroMaisAtualizado.Horario>0)
             {
-                if ((Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) | (Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo))
+                ////// Buscar o último registro completo
+                //if ((Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) | (Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo))
+                if ((RegistroMaisAtualizado.P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto) | (RegistroMaisAtualizado.P[Variaveis.fNivelOleo.indice] < Global.intNOleoBaixo))
                 {
                     lblNivel.BackColor = Fundo[blink];
-                    if (Registros[Registros.Count - 1].P[Variaveis.fNivelOleo.indice] > Global.intNOleoAlto)
+                    if (RegistroMaisAtualizado.P[Variaveis.fNivelOleo.indice] >= Global.intNOleoAlto)
                     {
                         if (blink == 1)
                         {
@@ -1405,7 +1473,7 @@ namespace InterfaceDesktop
                 }
 
                 // Válvula de alívio de pressão
-                if (Registros[Registros.Count - 1].P[Variaveis.fValvulaPressao.indice] != 0)
+                if (RegistroMaisAtualizado.P[Variaveis.fValvulaPressao.indice] != 0)
                 {
                     lblValvula.BackColor = Fundo[blink];
                 }
@@ -1415,7 +1483,7 @@ namespace InterfaceDesktop
                 }
 
                 // Temperatura do óleo...
-                if (Registros[Registros.Count - 1].P[Variaveis.fTOleo.indice] >= Global.floatTOleoH)
+                if (RegistroMaisAtualizado.P[Variaveis.fTOleo.indice] >= Global.floatTOleoH)
                 {
                     lblTo.BackColor = Fundo[blink];
                 }
@@ -1425,7 +1493,7 @@ namespace InterfaceDesktop
                 }
 
                 // Temperatura dos enrolamentos...
-                if (Registros[Registros.Count - 1].P[Variaveis.fTEnrolamento.indice] >= Global.floatTEnrH)
+                if (RegistroMaisAtualizado.P[Variaveis.fTEnrolamento.indice] >= Global.floatTEnrH)
                 {
                     lblTe.BackColor = Fundo[blink];
                 }

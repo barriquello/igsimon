@@ -280,61 +280,134 @@ namespace InterfaceDesktop
             {
                 dgLista.Columns[kk].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            dgLista.Rows.Add(new string[] { string.Format("Registros (Total: {0})", Registros.Count), chrGrafico1.Series["1"].Points.Count.ToString(), chrGrafico1.Series["2"].Points.Count.ToString() });
+            dgLista.Rows.Add(new string[] { string.Format("Registros (Total: {0})",  Registros.Count), 
+                chrGrafico1.Series["1"].Points.Count.ToString(), 
+                chrGrafico1.Series["2"].Points.Count.ToString() });
 
-            dgLista.Rows.Add(new string[] { "Horário", Uteis.Unix2time(registro1.Horario).ToString(), Uteis.Unix2time(registro2.Horario).ToString() });
+            dgLista.Rows.Add(new string[] { "Horário", 
+                Uteis.Unix2time(registro1.Horario).ToString(), 
+                Uteis.Unix2time(registro2.Horario).ToString() });
             dgLista.Rows.Add(new string[] { "Variáveis elétricas" });
             dgLista.Rows.Add(new string[] { "  Grandezas instanâneas" });
             dgLista.Rows.Add(new string[] { "    Potência" });
-            dgLista.Rows.Add(new string[] { "       P (kW)", registro1.P[Variaveis.fP.indice].ToString(), registro2.P[Variaveis.fP.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "       Q (kVAr)", registro1.P[Variaveis.fQ.indice].ToString(), registro2.P[Variaveis.fQ.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "       S (kVA)", registro1.P[Variaveis.fS.indice].ToString(), registro2.P[Variaveis.fS.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "       P (kW)", 
+                ExibeFloat(registro1.P[Variaveis.fP.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fP.indice]) });
+            dgLista.Rows.Add(new string[] { "       Q (kVAr)", 
+                ExibeFloat(registro1.P[Variaveis.fQ.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fQ.indice]) });
+            dgLista.Rows.Add(new string[] { "       S (kVA)", 
+                ExibeFloat(registro1.P[Variaveis.fS.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fS.indice]) });
             dgLista.Rows.Add(new string[] { "    Tensão" });
             dgLista.Rows.Add(new string[] { "      Tensão de linha" });
-            dgLista.Rows.Add(new string[] { "        Vab (V)", registro1.P[Variaveis.fVab.indice].ToString(), registro2.P[Variaveis.fVab.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "        Vbc (V)", registro1.P[Variaveis.fVbc.indice].ToString(), registro2.P[Variaveis.fVbc.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "        Vca (V)", registro1.P[Variaveis.fVca.indice].ToString(), registro2.P[Variaveis.fVca.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "        Vab (V)",
+                ExibeFloat(registro1.P[Variaveis.fVab.indice]),
+                ExibeFloat(registro2.P[Variaveis.fVab.indice]) });
+            dgLista.Rows.Add(new string[] { "        Vbc (V)",
+                ExibeFloat(registro1.P[Variaveis.fVbc.indice]),
+                ExibeFloat(registro2.P[Variaveis.fVbc.indice]) });
+            dgLista.Rows.Add(new string[] { "        Vca (V)", 
+                ExibeFloat(registro1.P[Variaveis.fVca.indice]),
+                ExibeFloat(registro2.P[Variaveis.fVca.indice]) });
             dgLista.Rows.Add(new string[] { "      Tensão de fase" });
             dgLista.Rows.Add(new string[] { "    Corrente" });
-            dgLista.Rows.Add(new string[] { "      Ia (A)", registro1.P[Variaveis.fIa.indice].ToString(), registro2.P[Variaveis.fIa.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "      Ib (A)", registro1.P[Variaveis.fIb.indice].ToString(), registro2.P[Variaveis.fIb.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "      Ic (A)", registro1.P[Variaveis.fIc.indice].ToString(), registro2.P[Variaveis.fIc.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "    Frequência (Hz)", registro1.P[Variaveis.fFreq.indice].ToString(), registro2.P[Variaveis.fFreq.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "    Fator de potência", registro1.P[Variaveis.fFatorPotencia.indice].ToString(), registro2.P[Variaveis.fFatorPotencia.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "      Ia (A)",
+                ExibeFloat(registro1.P[Variaveis.fIa.indice]),
+                ExibeFloat(registro2.P[Variaveis.fIa.indice]) });
+            dgLista.Rows.Add(new string[] { "      Ib (A)",
+                ExibeFloat(registro1.P[Variaveis.fIb.indice]),
+                ExibeFloat(registro2.P[Variaveis.fIb.indice]) });
+            dgLista.Rows.Add(new string[] { "      Ic (A)",
+                ExibeFloat(registro1.P[Variaveis.fIc.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fIc.indice]) });
+            dgLista.Rows.Add(new string[] { "    Frequência (Hz)",
+                ExibeFloat(registro1.P[Variaveis.fFreq.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fFreq.indice]) });
+            dgLista.Rows.Add(new string[] { "    Fator de potência",
+                ExibeFloat(registro1.P[Variaveis.fFatorPotencia.indice]),
+                ExibeFloat(registro2.P[Variaveis.fFatorPotencia.indice]) });
             dgLista.Rows.Add(new string[] { "  Valores de energia" });
-            dgLista.Rows.Add(new string[] { "    EP (kWh)", registro1.P[Variaveis.fEP.indice].ToString(), registro2.P[Variaveis.fEP.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "    EQ (kVArh)", registro1.P[Variaveis.fEQ.indice].ToString(), registro2.P[Variaveis.fEQ.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "    ES (kVAh)", registro1.P[Variaveis.fES.indice].ToString(), registro2.P[Variaveis.fES.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "    EP (kWh)", 
+                ExibeFloat(registro1.P[Variaveis.fEP.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fEP.indice]) });
+            dgLista.Rows.Add(new string[] { "    EQ (kVArh)",
+                ExibeFloat(registro1.P[Variaveis.fEQ.indice]),
+                ExibeFloat(registro2.P[Variaveis.fEQ.indice]) });
+            dgLista.Rows.Add(new string[] { "    ES (kVAh)",
+                ExibeFloat(registro1.P[Variaveis.fES.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fES.indice]) });
             dgLista.Rows.Add(new string[] { "  Valores de demanda média" });
             dgLista.Rows.Add(new string[] { "    Corrente IM" });
-            dgLista.Rows.Add(new string[] { "      IMa (A)", registro1.P[Variaveis.fIMa.indice].ToString(), registro2.P[Variaveis.fIMa.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "      IMb (A)", registro1.P[Variaveis.fIMb.indice].ToString(), registro2.P[Variaveis.fIMb.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "      IMc (A)", registro1.P[Variaveis.fIMc.indice].ToString(), registro2.P[Variaveis.fIMc.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "      IMa (A)", 
+                ExibeFloat(registro1.P[Variaveis.fIMa.indice]),
+                ExibeFloat(registro2.P[Variaveis.fIMa.indice]) });
+            dgLista.Rows.Add(new string[] { "      IMb (A)", 
+                ExibeFloat(registro1.P[Variaveis.fIMb.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fIMb.indice]) });
+            dgLista.Rows.Add(new string[] { "      IMc (A)", 
+                ExibeFloat(registro1.P[Variaveis.fIMc.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fIMc.indice]) });
             dgLista.Rows.Add(new string[] { "    Potência" });
-            dgLista.Rows.Add(new string[] { "      PM (kW)", registro1.P[Variaveis.fPM.indice].ToString(), registro2.P[Variaveis.fPM.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "      QM (kVAr)", registro1.P[Variaveis.fQM.indice].ToString(), registro2.P[Variaveis.fQM.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "      SM (kVA)", registro1.P[Variaveis.fSM.indice].ToString(), registro2.P[Variaveis.fSM.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "      PM (kW)", 
+                ExibeFloat(registro1.P[Variaveis.fPM.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fPM.indice]) });
+            dgLista.Rows.Add(new string[] { "      QM (kVAr)", 
+                ExibeFloat(registro1.P[Variaveis.fQM.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fQM.indice]) });
+            dgLista.Rows.Add(new string[] { "      SM (kVA)", 
+                ExibeFloat(registro1.P[Variaveis.fSM.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fSM.indice]) });
             dgLista.Rows.Add(new string[] { "   Valores de demanda máxima" });
             dgLista.Rows.Add(new string[] { "      Corrente Máxima" });
-            dgLista.Rows.Add(new string[] { "        IPa (A)", registro1.P[Variaveis.fIPa.indice].ToString(), registro2.P[Variaveis.fIPa.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "        IPb (A)", registro1.P[Variaveis.fIPb.indice].ToString(), registro2.P[Variaveis.fIPb.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "        IPc (A)", registro1.P[Variaveis.fIPc.indice].ToString(), registro2.P[Variaveis.fIPc.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "        IPa (A)", 
+                ExibeFloat(registro1.P[Variaveis.fIPa.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fIPa.indice]) });
+            dgLista.Rows.Add(new string[] { "        IPb (A)", 
+                ExibeFloat(registro1.P[Variaveis.fIPb.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fIPb.indice]) });
+            dgLista.Rows.Add(new string[] { "        IPc (A)", 
+                ExibeFloat(registro1.P[Variaveis.fIPc.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fIPc.indice]) });
             dgLista.Rows.Add(new string[] { "      Potência" });
-            dgLista.Rows.Add(new string[] { "        PP (kW)", registro1.P[Variaveis.fPP.indice].ToString(), registro2.P[Variaveis.fPP.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "        QP (kVAr)", registro1.P[Variaveis.fQP.indice].ToString(), registro2.P[Variaveis.fQP.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "        SP (kVA)", registro1.P[Variaveis.fSP.indice].ToString(), registro2.P[Variaveis.fSP.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "        PP (kW)", 
+                ExibeFloat(registro1.P[Variaveis.fPP.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fPP.indice]) });
+            dgLista.Rows.Add(new string[] { "        QP (kVAr)", 
+                ExibeFloat(registro1.P[Variaveis.fQP.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fQP.indice]) });
+            dgLista.Rows.Add(new string[] { "        SP (kVA)", 
+                ExibeFloat(registro1.P[Variaveis.fSP.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fSP.indice]) });
             dgLista.Rows.Add(new string[] { "Outras variáveis" });
             dgLista.Rows.Add(new string[] { "  Temperatura" });
-            dgLista.Rows.Add(new string[] { "    Enrolamentos (°C)", registro1.P[Variaveis.fTEnrolamento.indice].ToString(), registro2.P[Variaveis.fTEnrolamento.indice].ToString() });
-            dgLista.Rows.Add(new string[] { "    Óleo (°C)", registro1.P[Variaveis.fTOleo.indice].ToString(), registro2.P[Variaveis.fTOleo.indice].ToString() });
+            dgLista.Rows.Add(new string[] { "    Enrolamentos (°C)", 
+                ExibeFloat(registro1.P[Variaveis.fTEnrolamento.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fTEnrolamento.indice]) });
+            dgLista.Rows.Add(new string[] { "    Óleo (°C)", 
+                ExibeFloat(registro1.P[Variaveis.fTOleo.indice]), 
+                ExibeFloat(registro2.P[Variaveis.fTOleo.indice]) });
             dgLista.Rows.Add(new string[] { "  Nível do óleo",
-                ((registro1.P[Variaveis.fNivelOleo.indice]<Global.intNOleoBaixo)?Global.strNOleoBaixo:(registro1.P[Variaveis.fNivelOleo.indice]>Global.intNOleoAlto)?Global.strNOleoAlto:Global.strNOleoNormal).Replace('\n',' '),
-                ((registro2.P[Variaveis.fNivelOleo.indice]<Global.intNOleoBaixo)?Global.strNOleoBaixo:(registro2.P[Variaveis.fNivelOleo.indice]>Global.intNOleoAlto)?Global.strNOleoAlto:Global.strNOleoNormal).Replace('\n',' ')});
+                ((registro1.P[Variaveis.fNivelOleo.indice]==Global.intNOleoBaixo)?Global.strNOleoBaixo:(registro1.P[Variaveis.fNivelOleo.indice]>=Global.intNOleoAlto)?Global.strNOleoAlto:Global.strNOleoNormal).Replace('\n',' '),
+                ((registro2.P[Variaveis.fNivelOleo.indice]==Global.intNOleoBaixo)?Global.strNOleoBaixo:(registro2.P[Variaveis.fNivelOleo.indice]>=Global.intNOleoAlto)?Global.strNOleoAlto:Global.strNOleoNormal).Replace('\n',' ')});
             dgLista.Rows.Add(new string[] { "  Válvula de alívio de pressão",
-                ((registro1.P[Variaveis.fValvulaPressao.indice]==0)?Global.strValvulaNormal:Global.strValvulaAtivada)});
-//                registro1.P[Variaveis.fValvulaPressao.indice].ToString(), registro2.P[Variaveis.fValvulaPressao.indice].ToString() });
+                ((registro1.P[Variaveis.fValvulaPressao.indice]==0)?Global.strValvulaNormal:Global.strValvulaAtivada),//});
+                ((registro2.P[Variaveis.fValvulaPressao.indice]==0)?Global.strValvulaNormal:Global.strValvulaAtivada)});
+                //registro2.P[Variaveis.fValvulaPressao.indice].ToString(), registro2.P[Variaveis.fValvulaPressao.indice].ToString() });
 
             dgLista.ResumeLayout();
+        }
+
+        private string ExibeFloat(float valor)
+        {
+            if (float.IsNaN(valor))
+            {
+                return "-";
+            }
+            else
+            {
+                return valor.ToString();
+            }
         }
 
         private uint Time2Unix(DateTime dateTime)
@@ -544,6 +617,7 @@ namespace InterfaceDesktop
                     }
                 }
             }
+            Registros = Registros.OrderBy(registro => registro.Horario).ToList<RegistroDB>();
         }
 
         private void chrGrafico1_MouseUp(object sender, MouseEventArgs e)

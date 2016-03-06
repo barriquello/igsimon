@@ -56,24 +56,35 @@ namespace InterfaceDesktop
                 chartTemperatura.Legends[kk].Alignment = System.Drawing.StringAlignment.Center; // Alinhamento das legendas
                 chartTemperatura.Legends[kk].LegendStyle = LegendStyle.Column; // legendas em uma coluna
                 chartTemperatura.Legends[kk].BackColor = chartTemperatura.BackColor;
+                
                 // Habilita os cursores
                 chartTemperatura.ChartAreas[kk].CursorX.IsUserEnabled = true;
                 chartTemperatura.ChartAreas[kk].CursorX.LineWidth = 2;
                 chartTemperatura.ChartAreas[kk].CursorX.LineColor = System.Drawing.Color.Red;
                 chartTemperatura.ChartAreas[kk].CursorX.LineDashStyle = ChartDashStyle.Dot;
-                chartTemperatura.ChartAreas[kk].CursorX.SelectionColor = System.Drawing.Color.DeepSkyBlue;
                 // Melhoras no visual
-                chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.Size = 10;
-                chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.IsPositionedInside = false;
+                chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.Size =
+                    chartTemperatura.ChartAreas[kk].AxisY.ScrollBar.Size = 10;
+                chartTemperatura.ChartAreas[kk].AxisX.ScrollBar.IsPositionedInside =
+                    chartTemperatura.ChartAreas[kk].AxisY.ScrollBar.IsPositionedInside = false;
+                chartTemperatura.ChartAreas[kk].CursorX.SelectionColor =
+                    chartTemperatura.ChartAreas[kk].CursorY.SelectionColor = System.Drawing.Color.DeepSkyBlue;
+
                 // Habilita o zoom
-                chartTemperatura.ChartAreas[kk].CursorX.IsUserSelectionEnabled = true;
-                chartTemperatura.ChartAreas[kk].CursorY.IsUserSelectionEnabled = true;
+                chartTemperatura.ChartAreas[kk].CursorX.IsUserSelectionEnabled =
+                    chartTemperatura.ChartAreas[kk].CursorY.IsUserSelectionEnabled = true;
                 // Resolução máxima
                 chartTemperatura.ChartAreas[kk].CursorX.IntervalType = DateTimeIntervalType.Minutes;
                 chartTemperatura.ChartAreas[kk].CursorX.Interval = 10;// minutos
                 chartTemperatura.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSize = 1;
                 chartTemperatura.ChartAreas[kk].AxisX.ScaleView.SmallScrollMinSizeType = DateTimeIntervalType.Minutes;
+                // Não iniciar por zero as escalas no eixo vertical
+                chartTemperatura.ChartAreas[kk].AxisY.IsStartedFromZero = false;
+                //chartTemperatura.ChartAreas[kk].AxisY.ScaleBreakStyle.Enabled = true;
+                //chartTemperatura.ChartAreas[kk].AxisY.ScaleBreakStyle.LineColor = Color.Transparent;
+                //chartTemperatura.ChartAreas[kk].AxisY.ScaleBreakStyle.StartFromZero = StartFromZero.Yes;
             }
+            
             // desabilita as barras de rolagem dos gráficos de cima
             chartTemperatura.ChartAreas["P"].AxisX.ScrollBar.Enabled =
                 chartTemperatura.ChartAreas["Vl"].AxisX.ScrollBar.Enabled =
@@ -87,12 +98,13 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
                 //chartTemperatura.ChartAreas["T"].AxisX.LabelStyle.Enabled =
                 chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled = false;
+
             // Alinhamento dos gráficos das chartareas (alinhados com o gráfico debaixo)
             chartTemperatura.ChartAreas["P"].AlignWithChartArea =
-                //chartTemperatura.ChartAreas["Vl"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["Vl"].AlignWithChartArea =
                 chartTemperatura.ChartAreas["Vf"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["T"].AlignWithChartArea =
-                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "Vl";
+                //chartTemperatura.ChartAreas["T"].AlignWithChartArea =
+                chartTemperatura.ChartAreas["I"].AlignWithChartArea = "T";
 
             // Posiciona as várias chartáreas:
             // talvez seja necessário rever esses valores:
@@ -160,11 +172,11 @@ namespace InterfaceDesktop
             // séries de dados não visíveis (para garantir o alinhamento das escalas)
             for (int jj = 0; jj < chartTemperatura.ChartAreas.Count; jj++)
             {
-                Series srSerie = new Series(string.Format("{0}!{1}", chartTemperatura.ChartAreas[jj].Name, jj));
+                Series srSerie = new Series(string.Format("{0}__{1}", chartTemperatura.ChartAreas[jj].Name, jj));
                 srSerie.Legend = "Oculta";
                 srSerie.ChartArea = chartTemperatura.ChartAreas[jj].Name;
-                srSerie.XValueType = ChartValueType.Time;
-                srSerie.ChartType = SeriesChartType.FastPoint;
+                srSerie.XValueType = ChartValueType.Auto;
+                srSerie.ChartType = SeriesChartType.FastLine;
                 srSerie.Color = Color.Transparent;
                 chartTemperatura.Series.Add(srSerie);
             }
@@ -193,6 +205,10 @@ namespace InterfaceDesktop
             // Classifica por horário (no caso de alteração nos limites
             Registros =
                 Registros.OrderBy(RegistroDB => RegistroDB.Horario).ToList<RegistroDB>();
+            // Máximo e mínimo de cada série de dados
+            RegistroDB rMaximos = new RegistroDB();
+            RegistroDB rMinimos = new RegistroDB();
+
             // Elimina registros mais antigos com a finalidade de reduzir o uso de memória
             while (Registros.Count > Global.intRegistrosMAXIMO)
             {
@@ -202,11 +218,20 @@ namespace InterfaceDesktop
             for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
             {
                 chartTemperatura.Series[jj].XValueType = ChartValueType.Auto;//bug do .NET
+                chartTemperatura.Series[jj].Points.Clear();
             }
             FeedServidor[] strTodas = Variaveis.strVariaveis();
+
+            for (int mm = 0; mm < strTodas.Length; mm++)
+            {
+                rMaximos.P[mm] = float.MinValue;
+                rMinimos.P[mm] = float.MaxValue;
+            }
+
             for (int mm = 0; mm < Registros.Count; mm++)
             {
                 if (Registros[mm].Horario >= Start)
+                {
                     if (Registros[mm].Horario > End)
                     {
                         break; // Os dados estão em ordem cronológica
@@ -216,17 +241,43 @@ namespace InterfaceDesktop
                         DateTime Horario = Uteis.Unix2time(Registros[mm].Horario);
                         for (int kk = 0; kk < strTodas.Length; kk++)
                         {
+                            int mmm = strTodas[kk].indice;
                             if (Func2str(strTodas[kk].Funcao) != "")
                             {
-                                if (!float.IsNaN(Registros[mm].P[strTodas[kk].indice]))
+                                if (!float.IsNaN(Registros[mm].P[mmm]))
                                 {
-                                    chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[strTodas[kk].indice]);
+                                    chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[mmm]);
+
+                                    rMaximos.P[mmm] = Math.Max(Registros[mm].P[mmm], rMaximos.P[mmm]);
+                                    rMinimos.P[mmm] = Math.Min(Registros[mm].P[mmm], rMinimos.P[mmm]);
+
                                 }
                                 if (kk == 0)
                                 {
                                     for (int jjj = 0; jjj < chartTemperatura.ChartAreas.Count; jjj++)
                                     {
-                                        chartTemperatura.Series[string.Format("{0}!{1}", chartTemperatura.ChartAreas[jjj].Name, jjj)].Points.AddXY(Horario, 0);
+                                        float valor = 0;
+                                        switch (chartTemperatura.ChartAreas[jjj].Name)
+                                        {
+                                            case "P":
+                                                valor = RegistroMaisAtualizado.P[Variaveis.fP.indice];
+                                                break;
+                                            case "Vl":
+                                                valor = RegistroMaisAtualizado.P[Variaveis.fVab.indice];
+                                                break;
+                                            case "Vf":
+                                                valor = RegistroMaisAtualizado.P[Variaveis.fVan.indice];
+                                                break;
+                                            case "I":
+                                                valor = RegistroMaisAtualizado.P[Variaveis.fIa.indice];
+                                                break;
+                                            case "T":
+                                                valor = RegistroMaisAtualizado.P[Variaveis.fTEnrolamento.indice];
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        chartTemperatura.Series[string.Format("{0}__{1}", chartTemperatura.ChartAreas[jjj].Name, jjj)].Points.AddXY(Horario, valor);// 190);
                                     }
                                 }
                                 //else
@@ -237,6 +288,7 @@ namespace InterfaceDesktop
                             }
                         }
                     }
+                }
             }
             ChartValueType TipoJanela;
             if ((End - Start) > Uteis.Time2Unix(new DateTime(1970, 1, 1).AddDays(1)))
@@ -251,6 +303,20 @@ namespace InterfaceDesktop
             {
                 chartTemperatura.Series[jj].XValueType = TipoJanela;
             }
+            //chartTemperatura.ChartAreas["P"].AxisY.Minimum = Math.Floor(Math.Min(chartTemperatura.Series[Variaveis.fP.NomeFeed].
+
+            chartTemperatura.ChartAreas["P"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fP.indice], rMinimos.P[Variaveis.fQ.indice]), rMinimos.P[Variaveis.fS.indice]));
+            chartTemperatura.ChartAreas["Vl"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fVab.indice], rMinimos.P[Variaveis.fVbc.indice]), rMinimos.P[Variaveis.fVca.indice]));
+            chartTemperatura.ChartAreas["Vf"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fVcn.indice], rMinimos.P[Variaveis.fVbn.indice]), rMinimos.P[Variaveis.fVan.indice]));
+            chartTemperatura.ChartAreas["I"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fIa.indice], rMinimos.P[Variaveis.fIb.indice]), rMinimos.P[Variaveis.fIc.indice]));
+            chartTemperatura.ChartAreas["T"].AxisY.Minimum = Math.Floor(Math.Min(rMinimos.P[Variaveis.fTEnrolamento.indice], rMinimos.P[Variaveis.fTOleo.indice]));
+
+            chartTemperatura.ChartAreas["P"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(Math.Max(rMaximos.P[Variaveis.fP.indice], rMaximos.P[Variaveis.fQ.indice]), rMaximos.P[Variaveis.fS.indice]));
+            chartTemperatura.ChartAreas["Vl"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(Math.Max(rMaximos.P[Variaveis.fVab.indice], rMaximos.P[Variaveis.fVbc.indice]), rMaximos.P[Variaveis.fVca.indice]));
+            chartTemperatura.ChartAreas["Vf"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(Math.Max(rMaximos.P[Variaveis.fVcn.indice], rMaximos.P[Variaveis.fVbn.indice]), rMaximos.P[Variaveis.fVan.indice]));
+            chartTemperatura.ChartAreas["I"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(Math.Max(rMaximos.P[Variaveis.fIa.indice], rMaximos.P[Variaveis.fIb.indice]), rMaximos.P[Variaveis.fIc.indice]));
+            chartTemperatura.ChartAreas["T"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(rMaximos.P[Variaveis.fTEnrolamento.indice], rMaximos.P[Variaveis.fTOleo.indice]));
+
             ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
 

@@ -197,7 +197,14 @@ namespace InterfaceDesktop
                                 reg.Horario = Convert.ToUInt32(campos[0]);
                                 for (int jj = 1; jj < campos.Length; jj++)
                                 {
-                                    reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                                    if (campos[jj] == "")
+                                    {
+                                        reg.P[indices[jj]] = float.NaN;
+                                    }
+                                    else
+                                    {
+                                        reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                                    }
                                 }
                                 Registros.Add(reg);
                             }
@@ -582,15 +589,18 @@ namespace InterfaceDesktop
                 if (Func2str(vars[IndiceMarcado].Funcao) != "")
                 {
                     chrGrafico.Series[vars[IndiceMarcado].NomeFeed].Enabled = Marcado == CheckState.Checked;
-
-                    chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled =
-                        !((chrGrafico.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fTOleo.NomeFeed].Enabled));
-                    chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
-                        (!((chrGrafico.Series[Variaveis.fIa.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fIb.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fIc.NomeFeed].Enabled))) & chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled;
-                    chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
-                        (!((chrGrafico.Series[Variaveis.fVan.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVbn.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVcn.NomeFeed].Enabled))) & chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled;
-                    chrGrafico.ChartAreas["P"].AxisX.LabelStyle.Enabled =
-                        (!((chrGrafico.Series[Variaveis.fVab.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVca.NomeFeed].Enabled))) & chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled;
+                    chrGrafico.ChartAreas["T"].Visible = !(
+                        chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled =
+                        !((chrGrafico.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fTOleo.NomeFeed].Enabled)));
+                    chrGrafico.ChartAreas["I"].Visible = !(
+                        chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
+                        (!((chrGrafico.Series[Variaveis.fIa.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fIb.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fIc.NomeFeed].Enabled))) & chrGrafico.ChartAreas["I"].AxisX.LabelStyle.Enabled);
+                    chrGrafico.ChartAreas["Vf"].Visible = !(
+                        chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
+                        (!((chrGrafico.Series[Variaveis.fVan.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVbn.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVcn.NomeFeed].Enabled))) & chrGrafico.ChartAreas["Vf"].AxisX.LabelStyle.Enabled);
+                    chrGrafico.ChartAreas["Vl"].Visible = !(
+                        chrGrafico.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                        (!((chrGrafico.Series[Variaveis.fVab.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chrGrafico.Series[Variaveis.fVca.NomeFeed].Enabled))) & chrGrafico.ChartAreas["Vl"].AxisX.LabelStyle.Enabled);
                 }
             }
         }

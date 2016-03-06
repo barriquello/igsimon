@@ -398,7 +398,7 @@ namespace InterfaceDesktop
                     for (int kk = 0; kk < Dados.Count; kk++)
                     {
                         Horario_ = Dados[kk].timeUnix();
-                        int indice = Registros2.FindIndex(x => x.Horario == Horario_);
+                        int indice = Registros2.FindIndex(x => Math.Abs(x.Horario - Horario_) <= 30);
                         if (indice < 0) // se não existe vamos criar um novo
                         {
                             RegistroDB novoRegistro = new RegistroDB() { Horario = Horario_ };
@@ -1356,14 +1356,18 @@ namespace InterfaceDesktop
                 }
                 catch { }
             }
-            chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled =
-                !((chartTemperatura.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fTOleo.NomeFeed].Enabled));
-            chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
-                (!((chartTemperatura.Series[Variaveis.fIa.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fIb.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fIc.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled;
-            chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
-                (!((chartTemperatura.Series[Variaveis.fVan.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbn.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVcn.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled;
-            chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
-                (!((chartTemperatura.Series[Variaveis.fVab.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVca.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled;
+            chartTemperatura.ChartAreas["T"].Visible = !(
+                chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled =
+                !((chartTemperatura.Series[Variaveis.fTEnrolamento.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fTOleo.NomeFeed].Enabled)));
+            chartTemperatura.ChartAreas["I"].Visible = !(
+                chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled =
+                (!((chartTemperatura.Series[Variaveis.fIa.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fIb.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fIc.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["I"].AxisX.LabelStyle.Enabled);
+            chartTemperatura.ChartAreas["Vf"].Visible = !(
+                chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled =
+                (!((chartTemperatura.Series[Variaveis.fVan.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbn.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVcn.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vf"].AxisX.LabelStyle.Enabled);
+            chartTemperatura.ChartAreas["Vl"].Visible = !(
+                chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
+                (!((chartTemperatura.Series[Variaveis.fVab.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVca.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled);
         }
         /// <summary>Procura um item na treeview e marca/desmarca tudo abaixo</summary>
         private void MarcarTodasAbaixo(TreeNodeCollection Item, string p1, bool p2)

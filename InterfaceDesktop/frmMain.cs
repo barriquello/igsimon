@@ -247,9 +247,11 @@ namespace InterfaceDesktop
                                 if (!float.IsNaN(Registros[mm].P[mmm]))
                                 {
                                     chartTemperatura.Series[strTodas[kk].NomeFeed].Points.AddXY(Horario, Registros[mm].P[mmm]);
-
-                                    rMaximos.P[mmm] = Math.Max(Registros[mm].P[mmm], rMaximos.P[mmm]);
-                                    rMinimos.P[mmm] = Math.Min(Registros[mm].P[mmm], rMinimos.P[mmm]);
+                                    if (!float.IsNaN(Registros[mm].P[mmm]))
+                                    {
+                                        rMaximos.P[mmm] = Math.Max(Registros[mm].P[mmm], rMaximos.P[mmm]);
+                                        rMinimos.P[mmm] = Math.Min(Registros[mm].P[mmm], rMinimos.P[mmm]);
+                                    }
 
                                 }
                                 if (kk == 0)
@@ -304,7 +306,18 @@ namespace InterfaceDesktop
                 chartTemperatura.Series[jj].XValueType = TipoJanela;
             }
             //chartTemperatura.ChartAreas["P"].AxisY.Minimum = Math.Floor(Math.Min(chartTemperatura.Series[Variaveis.fP.NomeFeed].
-
+            for (int mm = 0; mm < strTodas.Length; mm++)
+            {
+                if (rMaximos.P[mm] == float.MinValue)
+                {
+                    rMaximos.P[mm] = 0;
+                }
+                if (rMinimos.P[mm] == float.MaxValue)
+                {
+                    rMinimos.P[mm] = 0;
+                }
+            }
+            
             chartTemperatura.ChartAreas["P"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fP.indice], rMinimos.P[Variaveis.fQ.indice]), rMinimos.P[Variaveis.fS.indice]));
             chartTemperatura.ChartAreas["Vl"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fVab.indice], rMinimos.P[Variaveis.fVbc.indice]), rMinimos.P[Variaveis.fVca.indice]));
             chartTemperatura.ChartAreas["Vf"].AxisY.Minimum = Math.Floor(Math.Min(Math.Min(rMinimos.P[Variaveis.fVcn.indice], rMinimos.P[Variaveis.fVbn.indice]), rMinimos.P[Variaveis.fVan.indice]));
@@ -316,7 +329,7 @@ namespace InterfaceDesktop
             chartTemperatura.ChartAreas["Vf"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(Math.Max(rMaximos.P[Variaveis.fVcn.indice], rMaximos.P[Variaveis.fVbn.indice]), rMaximos.P[Variaveis.fVan.indice]));
             chartTemperatura.ChartAreas["I"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(Math.Max(rMaximos.P[Variaveis.fIa.indice], rMaximos.P[Variaveis.fIb.indice]), rMaximos.P[Variaveis.fIc.indice]));
             chartTemperatura.ChartAreas["T"].AxisY.Maximum = 1 + Math.Ceiling(Math.Max(rMaximos.P[Variaveis.fTEnrolamento.indice], rMaximos.P[Variaveis.fTOleo.indice]));
-
+            
             ResumeLayout(); chartTemperatura.Series.ResumeUpdates();
         }
 

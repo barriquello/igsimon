@@ -5,14 +5,21 @@ using System.IO;
 using System.Windows.Forms;
 namespace InterfaceDesktop
 {
+    // Classe que provê recursos para o acesso ao banco de dados local (sqlite)
     class BancoDeDados
     {
+        // Comando SQL para criar a tabela de usuários no banco de dados local
         public static string ComandoCriarTabelas = "CREATE TABLE IF NOT EXISTS [Usuarios] ([Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [Usuario] TEXT NULL, [Senha] TEXT NULL, [Permissao] INTEGER NULL)";
+        // Comando SQL para inserir ou atualizar a senha de um usuário no banco de dados local
         public static string ComandoInserirUsuario = "INSERT INTO Usuarios (Usuario, Senha, Permissao) VALUES (@Usuario, @Senha, @Permissao)";
+        // Comando SQL para listar os nomes de usuário presentes no banco de dados local
         public static string ComandoSelect = "SELECT * FROM Usuarios";
+        // Comando SQL para buscar a senha (criptografida) e acesso do usuário
         public static string ComandoSenha = "SELECT * FROM Usuarios WHERE Usuario='{0}' ORDER BY Usuario DESC LIMIT 0,1";
+        // String de conexão com o banco de dados local
         public static string ConnectionString = "Data Source=|DataDirectory|\\Usuarios.db;Pooling=True;Synchronous=Off;journal mode=Wal";
 
+        /// <summary>Subrotina responsável por criar a tabela de usuários no banco de dados local</summary>
         public static void CriarTabela()
         {
             // Banco de dados: ID, Usuário, Senha, Permissoes
@@ -39,13 +46,17 @@ namespace InterfaceDesktop
                     }
                     catch
                     {
+                        // Caso a pasta do programa não seja gravável ou o usuário não tenha permissões de gravação
                         MessageBox.Show("Erro ao criar o banco de dados, o programa será encerrado agora");
                         Environment.Exit(-1);
                     }
                 }
             }
         }
-
+        /// <summary>Subrotina responsável pela inserção de um novo usuário no banco de dados</summary>
+        /// <param name="Usuario">Nome do usuário</param>
+        /// <param name="Senha">Senha criptografada</param>
+        /// <param name="Permissao">Permissão de acesso ao painel de configurações</param>
         public static void InserirUsuario(string Usuario, string Senha, int Permissao)
         {
             SQLiteConnection Conexao = new SQLiteConnection(ConnectionString);
@@ -59,7 +70,8 @@ namespace InterfaceDesktop
                 Conexao.Close();
             }
         }
-
+        /// <summary>Função para retornar a lista de usuários</summary>
+        /// <returns>Retorna uma matriz de strings contendo a lista de usuários presente no banco de dados</returns>
         public static string[] ListaDeUsuarios()
         {
             List<string> Usuarios = new List<string>();
@@ -79,6 +91,10 @@ namespace InterfaceDesktop
             }
             return Usuarios.ToArray();
         }
+
+        /// <summary>Função para retornar a senha criptografada de um usuário</summary>
+        /// <param name="Usuario">Nome do usuário</param>
+        /// <returns>Senha criptografada</returns>
         public static string SenhaDoUsuario(string Usuario)
         {
             string Senha = "";
@@ -98,6 +114,10 @@ namespace InterfaceDesktop
             }
             return Senha;
         }
+
+        /// <summary>Função para retornar </summary>
+        /// <param name="Usuario"></param>
+        /// <returns></returns>
         public static int PermissoesDoUsuario(string Usuario)
         {
             int Permissao = 0;

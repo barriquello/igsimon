@@ -113,12 +113,24 @@ namespace InterfaceDesktop
             this.SuspendLayout();
             Centraliza();
             range = _max - _min;
-            lineShape1.X1 = (int)(TamanhoPonteiro * Math.Cos(Math.PI * (_max - _Valor) / (range))) + lineShape1.X2;
-            lineShape2.X1 = (int)(TamanhoPonteiro * 1.1 * Math.Cos(Math.PI * (_max - _ValorMaximo) / (range))) + lineShape2.X2;
-            lineShape3.X1 = (int)(TamanhoPonteiro * 1.1 * Math.Cos(Math.PI * (_max - _ValorMinimo) / (range))) + lineShape3.X2;
-            lineShape1.Y1 = (int)(-TamanhoPonteiro * 2 * Height / Width * Math.Sin(Math.PI * (_max - _Valor) / range)) + lineShape1.Y2;
-            lineShape2.Y1 = (int)(-TamanhoPonteiro * 1.1 * 2 * Height / Width * Math.Sin(Math.PI * (_max - _ValorMaximo) / range)) + lineShape2.Y2;
-            lineShape3.Y1 = (int)(-TamanhoPonteiro * 1.1 * 2 * Height / Width * Math.Sin(Math.PI * (_max - _ValorMinimo) / range)) + lineShape3.Y2;
+            if (range > 0)
+            {
+                lineShape1.X1 = (int)(TamanhoPonteiro * Math.Cos(Math.PI * (_max - _Valor) / (range))) + lineShape1.X2;
+                lineShape2.X1 = (int)(TamanhoPonteiro * 1.1 * Math.Cos(Math.PI * (_max - _ValorMaximo) / (range))) + lineShape2.X2;
+                lineShape3.X1 = (int)(TamanhoPonteiro * 1.1 * Math.Cos(Math.PI * (_max - _ValorMinimo) / (range))) + lineShape3.X2;
+                lineShape1.Y1 = (int)(-TamanhoPonteiro * 2 * Height / Width * Math.Sin(Math.PI * (_max - _Valor) / range)) + lineShape1.Y2;
+                lineShape2.Y1 = (int)(-TamanhoPonteiro * 1.1 * 2 * Height / Width * Math.Sin(Math.PI * (_max - _ValorMaximo) / range)) + lineShape2.Y2;
+                lineShape3.Y1 = (int)(-TamanhoPonteiro * 1.1 * 2 * Height / Width * Math.Sin(Math.PI * (_max - _ValorMinimo) / range)) + lineShape3.Y2;
+            }
+            else
+            {
+                lineShape1.X1 = lineShape1.X2;
+                lineShape2.X1 = lineShape2.X2;
+                lineShape3.X1 = lineShape3.X2;
+                lineShape1.Y1 = lineShape1.Y2;
+                lineShape2.Y1 = lineShape2.Y2;
+                lineShape3.Y1 = lineShape3.Y2;
+            }
             this.Refresh();
             this.ResumeLayout();
         }

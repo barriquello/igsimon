@@ -709,7 +709,7 @@ namespace InterfaceDesktop
         /// Essa função não será utilizada nessa classe.
         /// </summary>
         /// <param name="strArquivoCSV">Nome do arquivo de banco de dados</param>
-        /// <returns>Retorna uma lista contendo todos os registros do banco de dados informado</returns>
+        /// <returns>Retorna uma lista contendo todos os registros do banco de dados informado.</returns>
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
         {
             List<RegistroDB> Regs = new List<RegistroDB>();
@@ -759,7 +759,11 @@ namespace InterfaceDesktop
             return Regs;
         }
 
-
+        /// <summary>
+        /// Evento disparado periodicamente para atualizar a utilização de memória e o horário atual.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais</param>
         private void timerRelogio_Tick(object sender, EventArgs e)
         {
             // Relógio
@@ -769,6 +773,11 @@ namespace InterfaceDesktop
         }
 
         // Atualiza os gráficos
+        /// <summary>
+        /// Evento disparado periodicamente para buscar novas informações no servidor web.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void tmrGraficos_Tick(object sender, EventArgs e)
         {
             tmrGraficos.Enabled = false;
@@ -877,7 +886,11 @@ namespace InterfaceDesktop
             tmrGraficos.Interval = Global.intTaxaAtualizacao;
             tmrGraficos.Enabled = true;
         }
-
+        /// <summary>
+        /// Função que converte o horário do servidor para data/hora.
+        /// </summary>
+        /// <param name="strTime">string contendo o horário (como unix time no formato "data hora").</param>
+        /// <returns>data/hora</returns>
         private DateTime DTData2DateTime(string strTime)
         {
             if (strTime.Length > 1)
@@ -897,7 +910,10 @@ namespace InterfaceDesktop
                 //qualquer coisa
                 return DateTime.Now;
         }
-
+        /// <summary>
+        /// Subrotina responsável pela atualização das últimas informações no formulário principal.
+        /// </summary>
+        /// <param name="registroDB">Este parâmetro não é mais relevante e será substituído dentro da subrotina.</param>
         private void AtualizaLabels(RegistroDB registroDB)
         {
             tmrBlink_Tick(new object(), new EventArgs());
@@ -1109,6 +1125,11 @@ namespace InterfaceDesktop
         }
 
         // Rotina recursiva para marcar todas as checkbox do treeview
+        /// <summary>
+        /// Subrotina com o objetivo de marcar/desmarcar subitens do controle treeview.
+        /// </summary>
+        /// <param name="treeNodeCollection">Conjunto de nós do treeview</param>
+        /// <param name="Marcar">Opção Marcar/desmarcar</param>
         private void MarcarTodas(TreeNodeCollection treeNodeCollection, bool Marcar)
         {
             foreach (TreeNode No in treeNodeCollection)
@@ -1123,24 +1144,46 @@ namespace InterfaceDesktop
                 catch { }
             }
         }
-
+        /// <summary>
+        /// Função responsável por formatar a informação como uma string para a exibição no formulário.
+        /// </summary>
+        /// <param name="feedServidor">Feed da variável.</param>
+        /// <param name="REG">Registro a ser exibido.</param>
+        /// <returns>string formatada conforme configurações do feed.</returns>
         private string FormataTexto(FeedServidor feedServidor, RegistroDB REG)
         {
             return string.Format(feedServidor.formato, REG.P[feedServidor.indice]);
         }
-
+        /// <summary>
+        /// Subrotina para o ajuste de dados(overload).
+        /// Essa subrotina converte data/hora em uint32 e chama a rotina correta.
+        /// </summary>
+        /// <param name="dateTime1">Data e hora</param>
+        /// <param name="dateTime2">Data e hora</param>
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
         {
             PlotaGrafico(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
         }
-
+        /// <summary>
+        /// Subrotina para o ajuste de dados (overload).
+        /// Essa subrotina converte data/hora em uint32 e chama a rotina correta.
+        /// </summary>
+        /// <param name="dateTime1">Data e hora</param>
+        /// <param name="dateTime2">Data e hora</param>
         private void BuscaDados(DateTime dateTime1, DateTime dateTime2)
         {
             BuscaDados(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
         }
 
         // Esta rotina deve ser utilizada considerando um intervalo de tempo limitado
-        /// <summary>Retorna um arquivo CSV</summary>
+        /// <summary>
+        /// Função responsável por buscar as informações no servidor web.
+        /// </summary>
+        /// <param name="Comando">Comando a ser executado pelo servidor web.</param>
+        /// <param name="Inicio">Data inicial.</param>
+        /// <param name="Fim">Data final.</param>
+        /// <param name="ID">ID do feed no servidor.</param>
+        /// <returns>String contendo o arquivo CSV correspondente.</returns>
         private string GetCSV(string Comando, UInt32 Inicio, UInt32 Fim, string ID)
         {
             try
@@ -1168,6 +1211,11 @@ namespace InterfaceDesktop
         }
 
         // Transforma uma lista CSV em uma matriz
+        /// <summary>
+        /// Função que transforma um arquivo CSV em uma lista de registros CSV para posterior agregamento ao registro completo.
+        /// </summary>
+        /// <param name="strCSV">String contendo o arquivo CSV.</param>
+        /// <returns>Lista de registros.</returns>
         private List<RegistroCSV> CSV2Matriz(string strCSV)
         {
             char TerminadorDeLinha = '\n'; // \n (O CSV gerado pela página tem como terminador '\n' mas em outros casos pode ser '\r' ou '\r\n')
@@ -1208,7 +1256,11 @@ namespace InterfaceDesktop
             }
             return Registros;
         }
-
+        /// <summary>
+        /// Evento disparado pela alteração da escala / zoom no gráfico.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chartTemperatura_AxisViewChanged(object sender, ViewEventArgs e)
         {
             ChartValueType Escala; //Nova escala (data ou hora)

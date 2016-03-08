@@ -5,13 +5,23 @@ using System.Windows.Forms; // Formulários
 
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Formulário de autenticação.
+    /// </summary>
     public partial class frmLogin : Form
     {
+        /// <summary>
+        /// Subrotina responsável por contruir o formulário.
+        /// </summary>
         public frmLogin()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Subrotina responsável por verificar se a senha informada corresponde às informações armazenadas no banco de dados local.
+        /// Essa subrotina oculta as entradas de texto para o caso de a senha estar correta.
+        /// </summary>
+        /// <returns>Retorna true para o caso de a senha informada ser correspondende às informações armazenadas ou false para o caso contrário.</returns>
         private bool verificaSenha()
         {
 #if DEBUG
@@ -39,6 +49,12 @@ namespace InterfaceDesktop
             }
             return retorno;
         }
+        /// <summary>
+        /// Evento disparado ao clicar no botão "interface Online".
+        /// Essa subrotina é responsável por ocultar a tela de login e mostrar a interface online
+        /// </summary>
+        /// <param name="sender">Objeto responsável pela chamada do evento</param>
+        /// <param name="e">Parâmetros adicionais</param>
         private void btnOnline_Click(object sender, EventArgs e)
         {
             if (verificaSenha())
@@ -54,14 +70,23 @@ namespace InterfaceDesktop
                 this.Show();
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao carregar o formulário.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmLogin_Load(object sender, EventArgs e)
         {
             txtUsername.Text = Servidor.Username;
             txtSenha.Text = "";
             this.Icon =System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "interface offline".
+        /// Essa subrotina esconde a interface de autenticação e exibe a interface offline, caso os dados de autenticação estejam corretos.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void btnOffline_Click(object sender, EventArgs e)
         {
             if (verificaSenha())
@@ -73,7 +98,11 @@ namespace InterfaceDesktop
                 this.Show();
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "configurações".
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void btnConfig_Click(object sender, EventArgs e)
         {
             if (verificaSenha())
@@ -92,7 +121,11 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "Comparações".
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             if (verificaSenha())

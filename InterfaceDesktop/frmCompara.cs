@@ -11,32 +11,66 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Formulário para a comparação de uma variável em dois intervalos diferentes.
+    /// </summary>
     public partial class frmCompara : Form
     {
+        /// <summary>
+        /// Janela de tempo a ser considerada (padrão = 2 horas, definido na interface principal).
+        /// </summary>
         TimeSpan JanelaTempo = new TimeSpan(2, 0, 1);
-
+        /// <summary>
+        /// Inicio do primeiro intervalo.
+        /// </summary>
         UInt32 Inicio1 = 0;
+        /// <summary>
+        /// Inicio do segundo intervalo.
+        /// </summary>
         UInt32 Inicio2 = 0;
-
+        /// <summary>
+        /// Cor da curva do primeiro intervalo.
+        /// </summary>
         Color Cor1 = Color.Green;
+        /// <summary>
+        /// Cor da curva do segundo intervalo.
+        /// </summary>
         Color Cor2 = Color.Red;
+        /// <summary>
+        /// Lista de variáveis.
+        /// </summary>
         FeedServidor[] vars = Variaveis.strVariaveis();
-
+        /// <summary>
+        /// Lista de registros para apresentar na tabela lateral.
+        /// </summary>
         public static List<RegistroDB> reg1 = new List<RegistroDB>();
-
+        /// <summary>
+        /// Lista de registros carregados do arquivo CSV.
+        /// </summary>
         public static List<RegistroDB> Registros = new List<RegistroDB>();
-
+        /// <summary>
+        /// Função para inicialização da clase.
+        /// </summary>
         public frmCompara()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Evento do temporizador responsável pela atualização da quantidade de memória ram utilizada.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo acionamento do evento.</param>
+        /// <param name="e">Parâmetros adicionais do evento.</param>
         private void tmrRelogio_Tick(object sender, EventArgs e)
         {
             lblRelogio.Text = DateTime.Now.ToString();
             lblStatus.Text = string.Format("Memória utilizada {0:G5} MB", System.Diagnostics.Process.GetCurrentProcess().PagedMemorySize64 / 1024f / 1024f);
         }
-
+        /// <summary>
+        /// Evento relacionado ao carregamento do formulário.
+        /// Esse evento carrega a lista de arquvios de banco de dados presentes e define um intervalo de seleção para o usuário escolher, além de atualizar a interface principal.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmCompara_Load(object sender, EventArgs e)
         {
             string[] ListaDeArquivos = System.IO.Directory.GetFiles(Application.StartupPath, "DB_*.csv");
@@ -73,7 +107,11 @@ namespace InterfaceDesktop
                 this.Close();
             }
         }
-
+        /// <summary>
+        /// Rotina responsável pela detecção da data de um arquivo de banco de dados local.
+        /// </summary>
+        /// <param name="p">Nome do arquivo.</param>
+        /// <returns>Retorna a data dos dados do arquivo.</returns>
         private DateTime ArquivoParaData(string p)
         {
             int Ano = 1970; int Mes = 1; int Dia = 1;
@@ -89,7 +127,12 @@ namespace InterfaceDesktop
             catch { }
             return data;
         }
-
+        /// <summary>
+        /// Subrotina responsável por intepretar o texto inserido referente ao tamanho da janela de tempo dos intervalos.
+        /// A janela de tempo informada pode ser em semanas, dias, horas ou em minutos.
+        /// </summary>
+        /// <param name="strJanela">Texto informado.</param>
+        /// <returns>Retorna um intervalo de tempo.</returns>
         private TimeSpan JanelaText(string strJanela)
         {
             bool erro = false;
@@ -169,7 +212,12 @@ namespace InterfaceDesktop
             }
             return retorno;
         }
-
+        /// <summary>
+        /// Evento acionado ao clicar no botão buscar da barra de ferramentas.
+        /// Essa subrotina é responsável por chamar a subrotina de busca de dados, classificar a lista de registros, chamar a rotina de gerar o gráfico e habilitar o botão para exportar os dados.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo acionamento do evento.</param>
+        /// <param name="e">Parâmetros adicionais para o evento.</param>
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             //calcula o intervalo de tempo informado
@@ -220,7 +268,11 @@ namespace InterfaceDesktop
             AtualizaLista(RegistroMaisProximo(Inicio1), RegistroMaisProximo(Inicio2));
             btnExcel.Enabled = true;
         }
-
+        /// <summary>
+        /// Subrotina responsável por detectar o registro (carregado na memória ram) mais próximo ao momento informado.
+        /// </summary>
+        /// <param name="Comeco">Momento informado.</param>
+        /// <returns>Retorna o registro anterior mais próximo do momento informado.</returns>
         private RegistroDB RegistroMaisProximo(uint Comeco)
         {
             int indice = -1;
@@ -255,7 +307,11 @@ namespace InterfaceDesktop
                 return Registros[indice];
             }
         }
-
+        /// <summary>
+        /// Subrotina responsável pela atualização da tabela lateral.
+        /// </summary>
+        /// <param name="registro1">Registro referente ao primeiro intervalo.</param>
+        /// <param name="registro2">Registro referente ao segundo intervalo.</param>
         private void AtualizaLista(RegistroDB registro1, RegistroDB registro2)
         {
             reg1.Clear();
@@ -397,7 +453,11 @@ namespace InterfaceDesktop
 
             dgLista.ResumeLayout();
         }
-
+        /// <summary>
+        /// Rotina responsável por apresentar corretamente os valores para tabela lateral.
+        /// </summary>
+        /// <param name="valor">Número informado.</param>
+        /// <returns>"-" se não for um número válido, "xyz" se o número for igual a xyz.</returns>
         private string ExibeFloat(float valor)
         {
             if (float.IsNaN(valor))
@@ -409,12 +469,19 @@ namespace InterfaceDesktop
                 return valor.ToString();
             }
         }
-
+        /// <summary>
+        /// Função responsável por transformar uma data em unix time.
+        /// </summary>
+        /// <param name="dateTime">Data/hora desejada.</param>
+        /// <returns>Unix time correspondente.</returns>
         private uint Time2Unix(DateTime dateTime)
         {
             return (UInt32)dateTime.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
-
+        /// <summary>
+        /// Subrotina responsável por gerar o gráfico a ser exibido.
+        /// Essa rotina limpa totalmente o gráfico, cria e configura uma ChartArea, cria, configura e exibe duas séries de dados.
+        /// </summary>
         private void GeraGradico()
         {
             chrGrafico1.Series.Clear();
@@ -459,13 +526,22 @@ namespace InterfaceDesktop
             chrGrafico1.Series.Add(srSerie1);
             chrGrafico1.Series.Add(srSerie2);
         }
-
+        /// <summary>
+        /// Evento ao clicar na cor do primeiro intervalo.
+        /// Esse evento modifica a cor do primeiro intervalo.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void pic1_Click(object sender, EventArgs e)
         {
             Cor1 =
                 pic1.BackColor = escolheCor(pic1.BackColor);
         }
-
+        /// <summary>
+        /// Função responsável por exibir a janela de selção de cor e traduzir a cor selecionada no formulário em uma cor RGB.
+        /// </summary>
+        /// <param name="CorAntiga">Cor antiga, para o caso de o usuário selecionar "Cancelar".</param>
+        /// <returns>Retorna a cor selecionada.</returns>
         private Color escolheCor(Color CorAntiga)
         {
             ColorDialog Cor = new ColorDialog();
@@ -475,14 +551,24 @@ namespace InterfaceDesktop
             }
             return CorAntiga;
         }
-
+        /// <summary>
+        /// Evento ao clicar na cor do segundo intervalo.
+        /// Esse evento modifica a cor do segundo intervalo.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void pic2_Click(object sender, EventArgs e)
         {
             Cor2 =
                 pic2.BackColor = escolheCor(pic2.BackColor);
         }
 
-
+        /// <summary>
+        /// Subrotina responsável por buscar as informações no banco de dados local.
+        /// Essa subrotina carrega cada linha de cada arquivo de banco de dados local dentro do intervalo informado, analiza se a informação está no intervalo e armazena as informações na memória RAM.
+        /// </summary>
+        /// <param name="inicio">Inicio do intervalo.</param>
+        /// <param name="fim">Final do intervalo.</param>
         private void BuscaDadosCSV(DateTime inicio, DateTime fim)
         {
             int[] indices = new int[vars.Length + 1];
@@ -619,7 +705,11 @@ namespace InterfaceDesktop
             }
             Registros = Registros.OrderBy(registro => registro.Horario).ToList<RegistroDB>();
         }
-
+        /// <summary>
+        /// Evento disparado ao soltar um botão do mouse sobre o gráfico. Esse evento tem o objetivo de resetar a situação de zoom do gráfico.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chrGrafico1_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
@@ -630,7 +720,12 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento acionado ao modificar a posição do cursor do gráfico.
+        /// Esse evento poderá chamar uma rotina para atualizar a tabela lateral.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais do evento.</param>
         private void chrGrafico1_CursorPositionChanged(object sender, CursorEventArgs e)
         {
             if (Registros.Count > 1)
@@ -665,7 +760,14 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento acionado ao clicar no botão 'Exportar'.
+        /// Essa subrotina é responsável por exibir uma janela para o usuário escolher onde salvar o arquivo e qual tipo de arquivo salvar.
+        /// Após isso, a subrotina detecta se o usuário selecionou a opção "Cancelar" ou o formato do arquivo e o endereço onde salvar o arquivo.
+        /// Em seguida a subrotina chama a subrotina necessária para salvar o arquivo.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void btnExcel_Click(object sender, EventArgs e)
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -756,7 +858,12 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao fechar o formulário.
+        /// Esse evento tem como objetivo acelerar o processo de coleta de lixo, liberando rapidamente a memória utilizada pelo formulário.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por acionar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmCompara_FormClosing(object sender, FormClosingEventArgs e)
         {
             Registros.Clear();

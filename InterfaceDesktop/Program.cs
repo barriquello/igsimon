@@ -2,9 +2,13 @@
 using System.Windows.Forms;
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Classe principal do programa.
+    /// Essa classe contém a rotina "void main"
+    /// </summary>
     static class Program
     {
-        /// <summary>The main entry point for the application</summary>
+        /// <summary>Subrotina responsável pela inicialização do programa e tomada de decisões a partir das confirações presentes ou não.</summary>
         [STAThread]
         static void Main()
         {
@@ -44,7 +48,9 @@ namespace InterfaceDesktop
 
             Application.Run(new frmLogin());
         }
-
+        /// <summary>
+        /// Subrotina responsável pela transferência das configurações armazenadas no arquivo de configurações para a memória RAM.
+        /// </summary>
         private static void CarregaConfig()
         {
             // Carrega os nomes das variaveis

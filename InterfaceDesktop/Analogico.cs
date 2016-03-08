@@ -3,39 +3,52 @@ using System.Drawing;
 using System.Windows.Forms;
 namespace InterfaceDesktop
 {
+    /// <summary>Controle para o mostrador analógico de temperatura.</summary>
     public partial class Analogico : UserControl
     {
-        /// <summary>Escala do tamanho do ponteiro</summary>
+        /// <summary>Escala do tamanho do ponteiro.</summary>
         private float EscalaTamanho = 0.75f / 2f;
-        /// <summary>Tamanho do poneiro</summary>
+        /// <summary>Tamanho do poneiro.</summary>
         private float TamanhoPonteiro = 5;
+        /// <summary>Valor mínimo da escala dos ponteiros.</summary>
         private float _min = 0;
+        /// <summary>Valor máximo da escala dos ponteiros.</summary>
         private float _max = 150;
+        /// <summary>Posição do ponteiro.</summary>
         private float _Valor = 0;
+        /// <summary>
+        /// Range do indicador.
+        /// </summary>
         private float range = 200;
+        /// <summary>
+        /// Ponteiro indicador de valor máximo.
+        /// </summary>
         private float _ValorMaximo = 0;
+        /// <summary>
+        /// Ponteiro indicador de valor mínimo.
+        /// </summary>
         private float _ValorMinimo = 0;
-        /// <summary>Retorna o valor máximo definido</summary>
+        /// <summary>Retorna o valor máximo definido.</summary>
         public float ValorMaximo()
         {
             return _ValorMaximo;
         }
-        /// <summary>Retorna o valor mínimo da escala</summary>
+        /// <summary>Retorna o valor mínimo da escala.</summary>
         public float Min()
         {
             return _min;
         }
-        /// <summary>Retorna o valor máximo da escala</summary>
+        /// <summary>Retorna o valor máximo da escala.</summary>
         public float Max()
         {
             return _max;
         }
-        /// <summary>Retorna o valor exibido</summary>
+        /// <summary>Retorna o valor exibido.</summary>
         public float Value()
         {
             return _Valor;
         }
-        /// <summary>Aponta no dial o valor máximo ocorrido</summary>
+        /// <summary>Aponta no mostrador o valor máximo ocorrido.</summary>
         public void ValorMaximo(float Maximo)
         {
             _ValorMaximo = Maximo;
@@ -43,7 +56,7 @@ namespace InterfaceDesktop
                 _ValorMaximo = _max;
             Redesenha();
         }
-        /// <summary>Aponta no dial o valor máximo ocorrido</summary>
+        /// <summary>Aponta no mostrador o valor máximo ocorrido.</summary>
         public void ValorMinimo(float Minimo)
         {
             _ValorMinimo = Minimo;
@@ -51,7 +64,7 @@ namespace InterfaceDesktop
                 _ValorMinimo = _min;
             Redesenha();
         }
-        /// <summary>Define o valor máximo</summary>
+        /// <summary>Define o valor máximo da escala.</summary>
         public void Max(float Valor)
         {
             _max = Valor;
@@ -65,7 +78,7 @@ namespace InterfaceDesktop
             //redesenha o ponteiro
             Redesenha();
         }
-        /// <summary>Define o valor mínimo da escala</summary>
+        /// <summary>Define o valor mínimo da escala.</summary>
         public void Min(float Valor)
         {
             _min = Valor;
@@ -76,7 +89,7 @@ namespace InterfaceDesktop
             lblMeio.Text = (_min + range / 2).ToString();
             Redesenha();
         }
-        /// <summary>Define a posição do ponteiro</summary>
+        /// <summary>Define a posição do ponteiro.</summary>
         public void Value(float Valor)
         {
             if (Valor > _max)
@@ -89,12 +102,12 @@ namespace InterfaceDesktop
                 _Valor = Valor;
             Redesenha();
         }
-        /// <summary>Define a imagem de fundo</summary>
+        /// <summary>Define a imagem de fundo.</summary>
         public void SetPicture(Image Pic)
         {
             BackgroundImage = Pic;
         }
-        /// <summary>Redesenha o componente</summary>
+        /// <summary>Redesenha o componente.</summary>
         private void Redesenha()
         {
             this.SuspendLayout();
@@ -110,7 +123,7 @@ namespace InterfaceDesktop
             this.ResumeLayout();
         }
 
-        /// <summary>Centraliza a base do ponteiro</summary>
+        /// <summary>Centraliza a base do ponteiro.</summary>
         private void Centraliza()
         {
             lineShape3.X2 =
@@ -134,19 +147,23 @@ namespace InterfaceDesktop
             lblMin.Text = _min.ToString();
             lblMeio.Text = (_min + range / 2).ToString();
         }
-
+        /// <summary>Inicializa o controle desenhando os contorles na posição pré-definida.</summary>
         public Analogico()
         {
             InitializeComponent();
         }
 
-
+        /// <summary>Evento acionado ao carregar o controle.</summary>
+        /// <param name="sender">Objeto responsável pelo o evento.</param>
+        /// <param name="e">Parâmetros adicionais do evento.</param>
         private void Analogico_Load(object sender, EventArgs e)
         {
             Redesenha();
 
         }
-
+        /// <summary>Evento acionado ao modificar o tamanhno da janela do controle.</summary>
+        /// <param name="sender">Objeto responsável pelo evento.</param>
+        /// <param name="e">Parâmetros adicionais do evento.</param>
         private void Analogico_SizeChanged(object sender, EventArgs e)
         {
             Centraliza();

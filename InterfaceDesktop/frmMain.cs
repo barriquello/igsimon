@@ -10,6 +10,9 @@ using System.Drawing;
 
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Formulário principal
+    /// </summary>
     public partial class frmMain : Form
     {
         /// <summary>Componente para comunicação via internet</summary>
@@ -20,6 +23,9 @@ namespace InterfaceDesktop
         UInt32 PrimeiroValor = UInt32.MaxValue;
         /// <summary>Alarme</summary>
         int blink = 1;
+        /// <summary>
+        /// Matriz com as cores que ficam alternando nos alarmes
+        /// </summary>
         Color[] Fundo = new Color[] { Color.Red, Color.Yellow };
         /// <summary>Janela de tempo</summary>
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
@@ -27,14 +33,24 @@ namespace InterfaceDesktop
         public static List<RegistroDB> Registros = new List<RegistroDB>();
         /// <summary>Registro mais atualizado obtido pelo comando /feed/list.json</summary>
         public static RegistroDB RegistroMaisAtualizado = new RegistroDB();
+        /// <summary>
+        /// Previne a busca de informações após o enderramento do formulário
+        /// </summary>
         private bool Encerrando = false;
-
+        
+        /// <summary>
+        /// subrotina que posiciona todos os controles em suas posições iniciais
+        /// </summary>
         public frmMain()
         {
             InitializeComponent();
         }
 
         // Cria a ESTRUTURA do gráfico
+        /// <summary>
+        /// Cria a estrutura dos gráficos
+        /// </summary>
+        /// <returns>Retorna true quando o gráfico é gerado normalmente ou false quando o gráfico existem feeds repetidos</returns>
         private bool GerarGrafico()
         {
             // Limpa o gráfico (tudo nele)

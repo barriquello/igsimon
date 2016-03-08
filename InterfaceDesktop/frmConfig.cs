@@ -4,13 +4,24 @@ using System.Net;
 using System.Windows.Forms;
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Formulário para a configuração do programa: endereço do servidor, chave de autenticação, nomes dos feeds e gerenciamento de usuários.
+    /// </summary>
     public partial class frmConfig : Form
     {
+        /// <summary>
+        /// Subrotina para a inicialização dos componentes do formulário.
+        /// </summary>
         public frmConfig()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Evento ao clicar no botão "OK".
+        /// Essa subrotina armazena no arquivo de configuração os nomes das variáveis e os dados do servidor.
+        /// </summary>
+        /// <param name="sender">objeto responsável por chamar o evento.</param>
+        /// <param name="e">parâmetros do evento.</param>
         private void btnOK_Click(object sender, EventArgs e)
         {
             // Salva as configurações
@@ -89,7 +100,12 @@ namespace InterfaceDesktop
             Global.boolReiniciar = true;
             this.Close();
         }
-
+        /// <summary>
+        /// Evento ao clicar no botão cancelar.
+        /// Essa subrotina fecha o formulário.
+        /// </summary>
+        /// <param name="sender">objeto responsável pelo evento.</param>
+        /// <param name="e">parâmetros adicionais.</param>
         private void btnCancelar_Click(object sender, EventArgs e)
         {
 
@@ -105,7 +121,12 @@ namespace InterfaceDesktop
                 this.Close();
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "Criar usuário / Trocar senha".
+        /// Essa rotina verifica a senha informada (do administrador), verifica se o nome de usuário e nova senha são consistentes e cria um novo usuário ou exibe uma mensagem de erro.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento</param>
+        /// <param name="e">Parâmetros adicionais</param>
         private void btnAddUser_Click(object sender, EventArgs e)
         {
             bool erro = false;
@@ -177,7 +198,12 @@ namespace InterfaceDesktop
                 MessageBox.Show("Senha incorreta");
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao carregar o formulário.
+        /// Essa subrotina faz os ajustes na interface do formulário conforme o caso (primeira utilizaçã ou utilização normal).
+        /// </summary>
+        /// <param name="sender">Objeto responsável por acionar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmConfig_Load(object sender, EventArgs e)
         {
             this.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -246,7 +272,12 @@ namespace InterfaceDesktop
                 this.Show();
             }
         }
-
+        /// <summary>
+        /// Evento acionado ao clicar no botão "Carregar".
+        /// Essa subrotina busca a lista de feeds do servidor indicado, utilizando a chave de autenticação informada e popula as listas de feeds com os nomes de feeds presentes no servidor web.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento</param>
+        /// <param name="e">Parâmetros adicionais</param>
         private void btnServidor_Click(object sender, EventArgs e)
         {
             // Carrega a lista de variáveis disponível no servidor web

@@ -12,7 +12,7 @@ namespace InterfaceDesktop
     class FeedServidor
     {
         /// <summary>
-        /// Inicializa a classe.
+        /// Inicializa a classe vazia, inicializando as variáveis com os valores padrão.
         /// </summary>
         public FeedServidor() { }
         /// <summary>

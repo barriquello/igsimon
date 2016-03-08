@@ -9,19 +9,41 @@ using System.Linq;
 
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Formulário para exibição da interface offline.
+    /// Esse formulário busca as informações no banco de dados local.
+    /// </summary>
     public partial class frmGraficos : Form
     {
+        /// <summary>
+        /// Lista de registos que serão carregados do banco de dados local para a memória RAM.
+        /// </summary>
         public static List<RegistroDB> Registros = new List<RegistroDB>();
+        /// <summary>
+        /// Lista de variáveis.
+        /// </summary>
         FeedServidor[] vars = Variaveis.strVariaveis();
-
+        /// <summary>
+        /// Data de inicio do intervalo.
+        /// </summary>
         private DateTime Inicio;
+        /// <summary>
+        /// Data de término do intervalo.
+        /// </summary>
         private DateTime Fim;
-
+        /// <summary>
+        /// Subrotina de inicialização do formulário.
+        /// </summary>
         public frmGraficos()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Evento disparado ao inicializar o formulário.
+        /// Essa subrotina é responsável pela inicialização dos controles de data/hora.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmGraficos_Load(object sender, EventArgs e)
         {
             this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -37,7 +59,11 @@ namespace InterfaceDesktop
                 dtpInicio.Value = ArquivoParaData(ListaDeArquivos[ListaDeArquivos.Length - 1]);
             }
         }
-
+        /// <summary>
+        /// Subrotina responsável por converter um nome de arquivo no formato "DB_2016_01_21.csv" para data.
+        /// </summary>
+        /// <param name="p">String contendo o nome do arquivo.</param>
+        /// <returns>Retorna uma data correspondente ao nome do arquivo.</returns>
         private DateTime ArquivoParaData(string p)
         {
             int Ano = 1970; int Mes = 1; int Dia = 1;
@@ -53,7 +79,12 @@ namespace InterfaceDesktop
             catch { }
             return data;
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão buscar.
+        /// Essa subrotina analiza o intervalo informado, chama as subrotinas para busca de dados, plotagem do gráfico e atualização da lista lateral.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (dtpInicio.Value < dtpFim.Value)
@@ -89,7 +120,10 @@ namespace InterfaceDesktop
                 lstValores.Items.Clear();
             }
         }
-
+        /// <summary>
+        /// Subrotina responsável pela atualização das informações da lista lateral.
+        /// </summary>
+        /// <param name="registroDB">Registro conténdo todas as informações necessárias para apresentar na lista.</param>
         private void AtualizaLista(RegistroDB registroDB)
         {
             lstValores.Items.Clear();
@@ -112,7 +146,12 @@ namespace InterfaceDesktop
             }
             lstValores.ResumeLayout();
         }
-
+        /// <summary>
+        /// Subrotina responsável pela busca das informações no banco de dados local.
+        /// As informações ficam armazenadas na variável Registros.
+        /// </summary>
+        /// <param name="_inicio">Inicio do intervalo.</param>
+        /// <param name="_fim">Final do intervalo.</param>
         private void BuscaDadosCSV(DateTime _inicio, DateTime _fim)
         {
             DateTime inicio = _inicio;
@@ -254,7 +293,9 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Subrotina responsável por gerar os gráficos.
+        /// </summary>
         private void GeraGrafico()
         {
             chrGrafico.Series.Clear();
@@ -337,7 +378,11 @@ namespace InterfaceDesktop
             chrGrafico.Legends["T"].Title = "Temperatura";
 
         }
-
+        /// <summary>
+        /// Subrotina responsável por decidir se a variável será plotada ou não.
+        /// </summary>
+        /// <param name="funcao">Tipo de variável.</param>
+        /// <returns>Retorna o nome da chararea onde a curva deve ser plotada ou uma string de comprimento zero, indicando que a curva não deve ser plotada.</returns>
         private string Func2str(func funcao)
         {
             if (funcao == func.Il) return "I";
@@ -348,6 +393,9 @@ namespace InterfaceDesktop
             return "";
 
         }
+        /// <summary>
+        /// Subrotina responsável por plotar o gráfico
+        /// </summary>
         private void PlotaGrafico()
         {
             chrGrafico.Series.Clear();
@@ -392,7 +440,12 @@ namespace InterfaceDesktop
                 chrGrafico.Series.Add(serie);
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão exportar dados.
+        /// Essa subrotina é responsável por apresentar uma caixa de seleção de local onde salvar, verificar o tipo de arquivo selecionado e salvar as informações.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void btnExcel_Click(object sender, EventArgs e)
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -482,7 +535,12 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao modificar a largura da janela de tempo no gráfico.
+        /// Essa subrotina decide qual escala horizontal deve ser utilizada.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chrGrafico_AxisViewChanged(object sender, ViewEventArgs e)
         {
             ChartValueType Escala = ChartValueType.Time;
@@ -514,7 +572,12 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao modificar a posição do cursor do gráfico.
+        /// Essa subrotina tem como objetivo identificar um momento anterior próximo à posição do cursor, posicionar o cursor na posição do registro próximo e atualizar a lista lateral.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chrGrafico_CursorPositionChanged(object sender, CursorEventArgs e)
         {
             if (Registros.Count > 1)
@@ -538,12 +601,17 @@ namespace InterfaceDesktop
             }
         }
 
-        /// <summary>Converte Horário em horário Unix</summary>
+        /// <summary>Converte Horário em horário Unix, considerando o timezone do computador.</summary>
         private UInt32 Time2Unix(DateTime Horario)
         {
             return (UInt32)Horario.Subtract(new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
         }
-
+        /// <summary>
+        /// Evento disparado ao soltar o botão do mouse sobre o gráfico.
+        /// Essa subrotina tem como função remover a personalização de zoom do gráfico.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chrGrafico_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
@@ -563,7 +631,12 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado por um temporizador.
+        /// Essa subrotina é responsável pela apresentação da data e hora atuais do computador e uso de memória pelo programa.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void tmrRelogio_Tick(object sender, EventArgs e)
         {
             // Relógio
@@ -571,14 +644,24 @@ namespace InterfaceDesktop
             System.Diagnostics.Process Processo = System.Diagnostics.Process.GetCurrentProcess();
             lblMEM.Text = string.Format("{0} registros na memória | Memória utilizada = {1:G5} MB", Registros.Count, Processo.PagedMemorySize64 / 1024f / 1024f);
         }
-
+        /// <summary>
+        /// Evento disparado ao fechar o formulário.
+        /// Essa subrotina tem como objetivo acelerar a coleta de lixo na memória, reduzindo a utilização de memória assim que o formulário é encerrado.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais ao evento.</param>
         private void frmGraficos_FormClosing(object sender, FormClosingEventArgs e)
         {
             Registros.Clear();
             chrGrafico.Dispose();
             GC.Collect(); GC.WaitForPendingFinalizers();
         }
-
+        /// <summary>
+        /// Evento disparado ao marcar ou dismarcar um item na lista lateral.
+        /// Essa subrotina é responsável por decidir quais gráficos serão ocultados ou exibidos, dentro das variáveis plotáveis.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais ao evento.</param>
         private void lstValores_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             int IndiceMarcado = e.Index;

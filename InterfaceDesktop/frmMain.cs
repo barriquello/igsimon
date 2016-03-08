@@ -11,35 +11,35 @@ using System.Drawing;
 namespace InterfaceDesktop
 {
     /// <summary>
-    /// Formulário principal
+    /// Formulário da interface online.
     /// </summary>
     public partial class frmMain : Form
     {
-        /// <summary>Componente para comunicação via internet</summary>
+        /// <summary>Componente para comunicação via internet.</summary>
         WebClient ServidorWeb = new WebClient();
-        /// <summary>Data do registro mais recente no servidor</summary>
+        /// <summary>Data do registro mais recente no servidor.</summary>
         DateTime tUltimaAtualizacao;
-        /// <summary>Registro mais antigo buscado</summary>
+        /// <summary>Registro mais antigo buscado.</summary>
         UInt32 PrimeiroValor = UInt32.MaxValue;
-        /// <summary>Alarme</summary>
+        /// <summary>Alarme.</summary>
         int blink = 1;
         /// <summary>
-        /// Matriz com as cores que ficam alternando nos alarmes
+        /// Matriz com as cores que ficam alternando nos alarmes.
         /// </summary>
         Color[] Fundo = new Color[] { Color.Red, Color.Yellow };
-        /// <summary>Janela de tempo</summary>
+        /// <summary>Janela de tempo.</summary>
         TimeSpan JanelaDeTempo = new TimeSpan(1, 0, 0, 0); // Um dia exato
-        /// <summary>Matriz de registros</summary>
+        /// <summary>Matriz de registros.</summary>
         public static List<RegistroDB> Registros = new List<RegistroDB>();
-        /// <summary>Registro mais atualizado obtido pelo comando /feed/list.json</summary>
+        /// <summary>Registro mais atualizado obtido pelo comando /feed/list.json.</summary>
         public static RegistroDB RegistroMaisAtualizado = new RegistroDB();
         /// <summary>
-        /// Previne a busca de informações após o enderramento do formulário
+        /// Previne a busca de informações após o enderramento do formulário.
         /// </summary>
         private bool Encerrando = false;
         
         /// <summary>
-        /// subrotina que posiciona todos os controles em suas posições iniciais
+        /// subrotina que posiciona todos os controles em suas posições iniciais.
         /// </summary>
         public frmMain()
         {
@@ -48,9 +48,9 @@ namespace InterfaceDesktop
 
         // Cria a ESTRUTURA do gráfico
         /// <summary>
-        /// Cria a estrutura dos gráficos
+        /// Cria a estrutura dos gráficos.
         /// </summary>
-        /// <returns>Retorna true quando o gráfico é gerado normalmente ou false quando o gráfico existem feeds repetidos</returns>
+        /// <returns>Retorna true quando o gráfico é gerado normalmente ou false quando o gráfico existem feeds repetidos.</returns>
         private bool GerarGrafico()
         {
             // Limpa o gráfico (tudo nele)
@@ -198,7 +198,11 @@ namespace InterfaceDesktop
             }
             return true;
         }
-
+        /// <summary>
+        /// Função que identifica qual chartarea determinada função deve ser plotada ou se não deve ser plotada.
+        /// </summary>
+        /// <param name="funcao">Função a ser verificada</param>
+        /// <returns>Nome da chartarea ou em branco, caso a curva não necessite ser plotada.</returns>
         private string Func2str(func funcao)
         {
             if (funcao == func.Il) return "I";
@@ -209,13 +213,19 @@ namespace InterfaceDesktop
             return "";
 
         }
-
+        /// <summary>
+        /// Subrotina responsável por apagar todos os pontos de todas as séries de dados do gráfico.
+        /// </summary>
         private void LimpaSeries()
         {
             for (int jj = 0; jj < chartTemperatura.Series.Count; jj++)
                 chartTemperatura.Series[jj].Points.Clear();
         }
-
+        /// <summary>
+        /// Função responsável por plotar os gráficos dentro de um intervalo.
+        /// </summary>
+        /// <param name="Start">Inicio do intervalo.</param>
+        /// <param name="End">Final do intervalo.</param>
         private void PlotaGrafico(UInt32 Start, UInt32 End)
         {
             // Classifica por horário (no caso de alteração nos limites
@@ -350,6 +360,12 @@ namespace InterfaceDesktop
         }
 
         // Busca todas as informações do intervalo informado
+        /// <summary>
+        /// Busca as informações de determinado intervalo no servidor web.
+        /// Essa rotina divide o intervalo em sub intervalos limitados a um dia, Busca as informações de cada feed e armazena no banco de dados local.
+        /// </summary>
+        /// <param name="Inicio">Inicio do intervalo.</param>
+        /// <param name="Final">Final do intervalo.</param>
         private void BuscaDados(UInt32 Inicio, UInt32 Final)
         {
             toolStrip1.Enabled =
@@ -537,7 +553,12 @@ namespace InterfaceDesktop
                 chartTemperatura.Enabled = true;
         }
 
-        /// <summary>Salva num arquivo CSV os dados</summary>
+        /// <summary>
+        /// Salva os dados no banco de dados local.
+        /// </summary>
+        /// <param name="reg">Registro a gravar.</param>
+        /// <param name="Gravar">Componente gravador de arquivo.</param>
+        /// <param name="Lista">Lista de linhas contidas no banco de dados local.</param>
         private void SalvarCSV(RegistroDB reg, StreamWriter Gravar, HashSet<string> Lista)
         {
             System.Globalization.NumberFormatInfo SeparadorDecimal = System.Globalization.NumberFormatInfo.InvariantInfo;
@@ -561,7 +582,12 @@ namespace InterfaceDesktop
             }
         }
 
-
+        /// <summary>
+        /// Evento disparado ao carregar o forumlário.
+        /// Essa subrotina tem como objetivo ajustar os parâmetros iniciais de alguns componentes, verificar se todos os nomes de feeds armazenados no sistema de configurações existem no servidor web, e apresentar a interface de configuração, caso necessário.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmMain_Load(object sender, EventArgs e)
         {
             // Buscar índices no servidor:
@@ -678,7 +704,12 @@ namespace InterfaceDesktop
             JanelaDeTempo = new TimeSpan(2, 0, 1);
             cmbJanela.Text = Properties.Settings.Default.Janela;
         }
-
+        /// <summary>
+        /// Função responsável pela leitura de registros no banco de dados local
+        /// Essa função não será utilizada nessa classe.
+        /// </summary>
+        /// <param name="strArquivoCSV">Nome do arquivo de banco de dados</param>
+        /// <returns>Retorna uma lista contendo todos os registros do banco de dados informado</returns>
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
         {
             List<RegistroDB> Regs = new List<RegistroDB>();

@@ -2,14 +2,19 @@
 namespace InterfaceDesktop
 {
     // Converte um registro CSV em DateTime e double.
+    /// <summary>
+    /// Classe que converte um registro recebido do servidor web para valores apropriados para a exibição em gráficos.
+    /// </summary>
     class RegistroCSV
     {
         /// <summary>
         /// String Time (entrada).
+        /// Valor a ser convertido de string para uint32.
         /// </summary>
         public string Time;
         /// <summary>
         /// Valor (entrada).
+        /// Valor a ser convertido de srting para float.
         /// </summary>
         public string Valor;
         /// <summary>
@@ -29,7 +34,7 @@ namespace InterfaceDesktop
             return Uteis.Unix2time(timeUnix());
         }
         /// <summary>
-        /// Converte string valor para double valor.
+        /// Converte string valor para double.
         /// </summary>
         /// <returns>retorna o valor como double ou -1 em caso de erro.</returns>
         public double valor()
@@ -50,7 +55,8 @@ namespace InterfaceDesktop
 
     // Informações do banco de dados do servidor armazenadas na memória (isso pode ocupar bastante memória)
     /// <summary>
-    /// classe que armazena cada registro do servidor na memória RAM.
+    /// Classe que armazena cada registro do servidor na memória RAM.
+    /// Essa classe é capaz de armazenar um único registro contendo todas as variáveis do servidor, mantendo os dados sincronizados.
     /// </summary>
     public class RegistroDB
     {
@@ -59,7 +65,7 @@ namespace InterfaceDesktop
         /// </summary>
         public UInt32 Horario;
         /// <summary>
-        /// variáveis como float.
+        /// Variáveis como float.
         /// </summary>
         public float[] P = new float[Variaveis.NumVars];
     }

@@ -19,7 +19,10 @@ namespace InterfaceDesktop
         /// <summary>String de conexão com o banco de dados local.</summary>
         public static string ConnectionString = "Data Source=|DataDirectory|\\Usuarios.db;Pooling=True;Synchronous=Off;journal mode=Wal";
 
-        /// <summary>Subrotina responsável por criar a tabela de usuários no banco de dados local.</summary>
+        /// <summary>
+        /// Subrotina responsável por criar a tabela de usuários no banco de dados local.
+        /// Caso necessário, essa subrotina cria o arquivo de banco de dados.
+        /// </summary>
         public static void CriarTabela()
         {
             // Banco de dados: ID, Usuário, Senha, Permissoes

@@ -51,10 +51,10 @@ namespace InterfaceDesktop
         }
         /// <summary>
         /// Evento disparado ao clicar no botão "interface Online".
-        /// Essa subrotina é responsável por ocultar a tela de login e mostrar a interface online
+        /// Essa subrotina é responsável por ocultar a tela de login e mostrar a interface online.
         /// </summary>
-        /// <param name="sender">Objeto responsável pela chamada do evento</param>
-        /// <param name="e">Parâmetros adicionais</param>
+        /// <param name="sender">Objeto responsável pela chamada do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void btnOnline_Click(object sender, EventArgs e)
         {
             if (verificaSenha())

@@ -471,6 +471,7 @@ namespace InterfaceDesktop
         }
         /// <summary>
         /// Função responsável por transformar uma data em unix time.
+        /// Essa função considera o fuso-horário e horário de verão de acordo com as configurações do computador.
         /// </summary>
         /// <param name="dateTime">Data/hora desejada.</param>
         /// <returns>Unix time correspondente.</returns>

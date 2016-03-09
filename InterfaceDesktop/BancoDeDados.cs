@@ -5,7 +5,9 @@ using System.IO;
 using System.Windows.Forms;
 namespace InterfaceDesktop
 {
-    // Classe que provê recursos para o acesso ao banco de dados local (sqlite).
+    /// <summary>
+    /// Classe que provê recursos para o acesso ao banco de dados local (sqlite).
+    /// </summary> 
     class BancoDeDados
     {
         /// <summary>Comando SQL para criar a tabela de usuários no banco de dados local.</summary> 

@@ -2,8 +2,16 @@
 using System.Collections.Generic;
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Classe para o tratamento de strings na notação JSON.
+    /// </summary>
     class json
     {
+        /// <summary>
+        /// Função para converter uma string JSON em uma lista de feeds.
+        /// </summary>
+        /// <param name="Requisicao">String na notação JSON</param>
+        /// <returns>Lista de feeds (nome e id)</returns>
         public static List<Feed> json2Feed(string Requisicao)
         {
             string strListaRemover = "[{\":,}]";

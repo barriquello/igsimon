@@ -201,7 +201,7 @@ namespace InterfaceDesktop
         /// <summary>
         /// Função que identifica qual chartarea determinada função deve ser plotada ou se não deve ser plotada.
         /// </summary>
-        /// <param name="funcao">Função a ser verificada</param>
+        /// <param name="funcao">Função a ser verificada.</param>
         /// <returns>Nome da chartarea ou em branco, caso a curva não necessite ser plotada.</returns>
         private string Func2str(func funcao)
         {
@@ -708,7 +708,7 @@ namespace InterfaceDesktop
         /// Função responsável pela leitura de registros no banco de dados local
         /// Essa função não será utilizada nessa classe.
         /// </summary>
-        /// <param name="strArquivoCSV">Nome do arquivo de banco de dados</param>
+        /// <param name="strArquivoCSV">Nome do arquivo de banco de dados.</param>
         /// <returns>Retorna uma lista contendo todos os registros do banco de dados informado.</returns>
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
         {
@@ -763,7 +763,7 @@ namespace InterfaceDesktop
         /// Evento disparado periodicamente para atualizar a utilização de memória e o horário atual.
         /// </summary>
         /// <param name="sender">Objeto responsável por disparar o evento.</param>
-        /// <param name="e">Parâmetros adicionais</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void timerRelogio_Tick(object sender, EventArgs e)
         {
             // Relógio
@@ -890,7 +890,7 @@ namespace InterfaceDesktop
         /// Função que converte o horário do servidor para data/hora.
         /// </summary>
         /// <param name="strTime">string contendo o horário (como unix time no formato "data hora").</param>
-        /// <returns>data/hora</returns>
+        /// <returns>data/hora.</returns>
         private DateTime DTData2DateTime(string strTime)
         {
             if (strTime.Length > 1)
@@ -1128,8 +1128,8 @@ namespace InterfaceDesktop
         /// <summary>
         /// Subrotina com o objetivo de marcar/desmarcar subitens do controle treeview.
         /// </summary>
-        /// <param name="treeNodeCollection">Conjunto de nós do treeview</param>
-        /// <param name="Marcar">Opção Marcar/desmarcar</param>
+        /// <param name="treeNodeCollection">Conjunto de nós do treeview.</param>
+        /// <param name="Marcar">Opção Marcar/desmarcar.</param>
         private void MarcarTodas(TreeNodeCollection treeNodeCollection, bool Marcar)
         {
             foreach (TreeNode No in treeNodeCollection)
@@ -1158,8 +1158,8 @@ namespace InterfaceDesktop
         /// Subrotina para o ajuste de dados(overload).
         /// Essa subrotina converte data/hora em uint32 e chama a rotina correta.
         /// </summary>
-        /// <param name="dateTime1">Data e hora</param>
-        /// <param name="dateTime2">Data e hora</param>
+        /// <param name="dateTime1">Data e hora.</param>
+        /// <param name="dateTime2">Data e hora.</param>
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
         {
             PlotaGrafico(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
@@ -1168,8 +1168,8 @@ namespace InterfaceDesktop
         /// Subrotina para o ajuste de dados (overload).
         /// Essa subrotina converte data/hora em uint32 e chama a rotina correta.
         /// </summary>
-        /// <param name="dateTime1">Data e hora</param>
-        /// <param name="dateTime2">Data e hora</param>
+        /// <param name="dateTime1">Data e hora.</param>
+        /// <param name="dateTime2">Data e hora.</param>
         private void BuscaDados(DateTime dateTime1, DateTime dateTime2)
         {
             BuscaDados(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
@@ -1299,7 +1299,7 @@ namespace InterfaceDesktop
         /// Evento disparado ao clicar no botão "Configurações".
         /// </summary>
         /// <param name="sender">Objeto responsável por disparar o evento.</param>
-        /// <param name="e">Parâmetros adicionais</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void tooConfig_Click(object sender, EventArgs e)
         {
             if (Servidor.Permissoes == 1)

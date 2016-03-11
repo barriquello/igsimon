@@ -201,7 +201,7 @@ namespace InterfaceDesktop
         /// <summary>
         /// Função que identifica qual chartarea determinada função deve ser plotada ou se não deve ser plotada.
         /// </summary>
-        /// <param name="funcao">Função a ser verificada</param>
+        /// <param name="funcao">Função a ser verificada.</param>
         /// <returns>Nome da chartarea ou em branco, caso a curva não necessite ser plotada.</returns>
         private string Func2str(func funcao)
         {
@@ -708,7 +708,7 @@ namespace InterfaceDesktop
         /// Função responsável pela leitura de registros no banco de dados local
         /// Essa função não será utilizada nessa classe.
         /// </summary>
-        /// <param name="strArquivoCSV">Nome do arquivo de banco de dados</param>
+        /// <param name="strArquivoCSV">Nome do arquivo de banco de dados.</param>
         /// <returns>Retorna uma lista contendo todos os registros do banco de dados informado.</returns>
         private List<RegistroDB> LeituraCSVs(string strArquivoCSV)
         {
@@ -763,7 +763,7 @@ namespace InterfaceDesktop
         /// Evento disparado periodicamente para atualizar a utilização de memória e o horário atual.
         /// </summary>
         /// <param name="sender">Objeto responsável por disparar o evento.</param>
-        /// <param name="e">Parâmetros adicionais</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void timerRelogio_Tick(object sender, EventArgs e)
         {
             // Relógio
@@ -890,7 +890,7 @@ namespace InterfaceDesktop
         /// Função que converte o horário do servidor para data/hora.
         /// </summary>
         /// <param name="strTime">string contendo o horário (como unix time no formato "data hora").</param>
-        /// <returns>data/hora</returns>
+        /// <returns>data/hora.</returns>
         private DateTime DTData2DateTime(string strTime)
         {
             if (strTime.Length > 1)
@@ -1128,8 +1128,8 @@ namespace InterfaceDesktop
         /// <summary>
         /// Subrotina com o objetivo de marcar/desmarcar subitens do controle treeview.
         /// </summary>
-        /// <param name="treeNodeCollection">Conjunto de nós do treeview</param>
-        /// <param name="Marcar">Opção Marcar/desmarcar</param>
+        /// <param name="treeNodeCollection">Conjunto de nós do treeview.</param>
+        /// <param name="Marcar">Opção Marcar/desmarcar.</param>
         private void MarcarTodas(TreeNodeCollection treeNodeCollection, bool Marcar)
         {
             foreach (TreeNode No in treeNodeCollection)
@@ -1158,8 +1158,8 @@ namespace InterfaceDesktop
         /// Subrotina para o ajuste de dados(overload).
         /// Essa subrotina converte data/hora em uint32 e chama a rotina correta.
         /// </summary>
-        /// <param name="dateTime1">Data e hora</param>
-        /// <param name="dateTime2">Data e hora</param>
+        /// <param name="dateTime1">Data e hora.</param>
+        /// <param name="dateTime2">Data e hora.</param>
         private void PlotaGrafico(DateTime dateTime1, DateTime dateTime2)
         {
             PlotaGrafico(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
@@ -1168,8 +1168,8 @@ namespace InterfaceDesktop
         /// Subrotina para o ajuste de dados (overload).
         /// Essa subrotina converte data/hora em uint32 e chama a rotina correta.
         /// </summary>
-        /// <param name="dateTime1">Data e hora</param>
-        /// <param name="dateTime2">Data e hora</param>
+        /// <param name="dateTime1">Data e hora.</param>
+        /// <param name="dateTime2">Data e hora.</param>
         private void BuscaDados(DateTime dateTime1, DateTime dateTime2)
         {
             BuscaDados(Uteis.Time2Unix(dateTime1), Uteis.Time2Unix(dateTime2));
@@ -1295,7 +1295,11 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "Configurações".
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void tooConfig_Click(object sender, EventArgs e)
         {
             if (Servidor.Permissoes == 1)
@@ -1324,11 +1328,20 @@ namespace InterfaceDesktop
                 MessageBox.Show("Este usuário não tem permissões para acessar o painel de configurações");
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao modificar a posição do cursor. Essa subrotina não foi implementada.
+        /// </summary>
+        /// <param name="sender">Objeto responsável por disparar o evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chartTemperatura_CursorPositionChanged(object sender, CursorEventArgs e)
         {
         }
-
+        /// <summary>
+        /// Evento disparado ao modificar o conteúdo do texto da caixa de seleção de janela de tempo.
+        /// Essa subrotina altera o tamanho da janela de tempo conforme as informações contidas na caixa de seleção.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais do evento.</param>
         private void toolStripComboBox1_TextChanged(object sender, EventArgs e)
         {
             // Converter o texto para intervalo de tempo
@@ -1428,7 +1441,12 @@ namespace InterfaceDesktop
                 cmbJanela.BackColor = System.Drawing.Color.Yellow;
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao soltar o botão direito do mouse sobre o gráfico.
+        /// Essa rotina tem como objetivo redefinir o estado de zoom do gráfico, considerando a escala horizontal.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void chartTemperatura_MouseUp(object sender, MouseEventArgs e)
         {
             // botão direito
@@ -1481,7 +1499,12 @@ namespace InterfaceDesktop
                 chartTemperatura.ChartAreas["P"].AxisX.LabelStyle.Enabled =
                 (!((chartTemperatura.Series[Variaveis.fVab.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVbc.NomeFeed].Enabled) | (chartTemperatura.Series[Variaveis.fVca.NomeFeed].Enabled))) & chartTemperatura.ChartAreas["Vl"].AxisX.LabelStyle.Enabled);
         }
-        /// <summary>Procura um item na treeview e marca/desmarca tudo abaixo</summary>
+        /// <summary>
+        /// Subrotina para procurar e desmarcar ou marcar ítens na treeview.
+        /// </summary>
+        /// <param name="Item">Nó do treeview.</param>
+        /// <param name="p1">Texto a procurar.</param>
+        /// <param name="p2">Marcar ou desmarcar.</param>
         private void MarcarTodasAbaixo(TreeNodeCollection Item, string p1, bool p2)
         {
             for (int jj = 0; jj < Item.Count; jj++)
@@ -1499,7 +1522,12 @@ namespace InterfaceDesktop
                 }
             }
         }
-
+        /// <summary>
+        /// Evento disparado ao fechar o formulário.
+        /// Essa subrotina tem como objetivo salvar as configurações (tamanho da janela) e antecipar a coleta de lixo na memória para liberar memória.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             Encerrando = true;
@@ -1509,7 +1537,11 @@ namespace InterfaceDesktop
             chartTemperatura.Dispose();
             GC.Collect(); GC.WaitForPendingFinalizers();
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "Interface offline".
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void toolGraficos_Click(object sender, EventArgs e)
         {
             tmrGraficos.Enabled = false;
@@ -1521,7 +1553,12 @@ namespace InterfaceDesktop
             tmrGraficos.Enabled = true;
             tmrGraficos_Tick(null, null);
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "Exportar"
+        /// Essa subrotina é responsável por apresentar a tela de seleção para salvar o arquivo, identificar o tipo de arquivo e providenciar a ação adequada para salvar o arquivo.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void toolExcel_Click(object sender, EventArgs e)
         {
             string Pasta = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -1614,7 +1651,11 @@ namespace InterfaceDesktop
             }
             tmrGraficos.Enabled = true;
         }
-
+        /// <summary>
+        /// Evento disparado periodicamente para possibilitar o efeito visual para os alarmes.
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void tmrBlink_Tick(object sender, EventArgs e)
         {
             // Nível do óleo alto ou baixo
@@ -1688,7 +1729,11 @@ namespace InterfaceDesktop
             blink = 1 - blink;
 
         }
-
+        /// <summary>
+        /// Evento disparado ao clicar no botão "Comparação".
+        /// </summary>
+        /// <param name="sender">Objeto responsável pelo disparo do evento.</param>
+        /// <param name="e">Parâmetros adicionais.</param>
         private void toolComparar_Click(object sender, EventArgs e)
         {
             tmrGraficos.Enabled = false;

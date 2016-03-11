@@ -4,8 +4,18 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Classe para exportar os dados no formato XLSX (Excel).
+    /// </summary>
     public class SalvarExcel
     {
+        /// <summary>
+        /// Subrotina para salvar um arquivo com os registros armazenados na memória RAM.
+        /// </summary>
+        /// <param name="Arquivo">Endereço completo do arquivo a salvar.</param>
+        /// <param name="Inicio">Horário do inicio do intervalo.</param>
+        /// <param name="Final">Horário do final do intervalo.</param>
+        /// <param name="formulario">Indicador de qual formulário necessita salvar em XLSX.</param>
         public void SalvarXLSX(string Arquivo, System.UInt32 Inicio, System.UInt32 Final, FormSalvarExcel formulario)
         {
             using (SpreadsheetDocument excel = SpreadsheetDocument.Create(Arquivo, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook))

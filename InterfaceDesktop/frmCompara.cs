@@ -655,7 +655,21 @@ namespace InterfaceDesktop
                                 reg.Horario = Convert.ToUInt32(campos[0]);
                                 for (int jj = 1; jj < campos.Length; jj++)
                                 {
-                                    reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                                    if (campos[jj] != "")
+                                    {
+                                        try
+                                        {
+                                            reg.P[indices[jj]] = Convert.ToSingle(campos[jj]);
+                                        }
+                                        catch
+                                        {
+                                            reg.P[indices[jj]] = float.NaN;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        reg.P[indices[jj]] = float.NaN;
+                                    }
                                 }
                                 Registros.Add(reg);
                             }

@@ -1,14 +1,17 @@
 ﻿namespace InterfaceDesktop
 {
+    /// <summary>
+    /// Mostrador analógico para temperatura.
+    /// </summary>
     partial class Analogico
     {
         /// <summary> 
-        /// Required designer variable.
+        /// Variável necessária para o construtor.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary> 
-        /// Clean up any resources being used.
+        /// Limpeza dos recursos utilizados.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
